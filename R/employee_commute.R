@@ -2,7 +2,7 @@ employeeCommute <- function(dailyCommuteNo, projectStart, projectLifetime, avera
   
   workingDays <- 260  # Assuming 260 working days per year
   
-  # Generate list of project years
+  # Generate years project covers
   projectYears <- seq(projectStart, projectStart + projectLifetime - 1)
   
   # Initialize vectors to store results
