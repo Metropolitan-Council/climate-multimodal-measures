@@ -1,34 +1,34 @@
-employee_commute <- function(daily_commute_no, project_start, project_lifetime, 
-                             average_commute) {
+employeeCommute <- function(dailyCommuteNo, projectStart, projectLifetime, averageCommute) {
   
-  working_days <- 260  # Assuming 260 working days per year
+  workingDays <- 260  # Assuming 260 working days per year
   
   # Generate list of project years
-  project_years <- seq(project_start, project_start + project_lifetime - 1)
+  projectYears <- seq(projectStart, projectStart + projectLifetime - 1)
   
   # Initialize vectors to store results
-  VMT_displaced <- numeric(length(project_years))
-  GHG_impact <- numeric(length(project_years))
+  vmtDisplaced <- numeric(length(projectYears))
+  ghgImpact <- numeric(length(projectYears))
   
-  for (i in seq_along(project_years)) {
-    year <- project_years[i]
+  for (i in seq_along(projectYears)) {
+    year <- projectYears[i]
     
     # Calculate VMT displaced for the current year
-    VMT_displaced_year <- daily_commute_no * average_commute * working_days
+    vmtDisplacedYear <- dailyCommuteNo * averageCommute * workingDays
     
     # Filter GHG emission factor (EF) for the current year
-    Greet_EF_year <- Greet_EF %>% filter(year == year)
+    greetEfYear <- GREETCarbonIntensity %>% filter(year == year)
     
-    discount_rate <- SCC %>% filter(year == year )
+    discountRate <- SocialCostCarbon %>% filter(year == year )
     
     # Calculate GHG impact for the current year
-    GHG_impact_year <- VMT_displaced_year * Greet_EF_year$EF * discount_rate
+    ghgImpactYear <- vmtDisplacedYear * greetEfYear$EF * discountRate
     
     # Store results for the current year
-    VMT_displaced[i] <- VMT_displaced_year
-    GHG_impact[i] <- GHG_impact_year
+    vmtDisplaced[i] <- vmtDisplacedYear
+    ghgImpact[i] <- ghgImpactYear
   }
   
-# What format are we returning this in Shiny? 
-  return(data.frame(Year = project_years, VMT_displaced = VMT_displaced, GHG_impact = GHG_impact))
+  # Returning the results as a data frame
+  return(data.frame(year = projectYears, vmtDisplaced = vmtDisplaced, ghgImpact = ghgImpact))
 }
+
