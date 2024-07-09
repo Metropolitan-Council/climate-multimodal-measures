@@ -5,8 +5,6 @@ employee_commute <- function(daily_commute_no, project_start, project_lifetime, 
   # Generate years project covers
   project_years <- seq(project_start, project_start + project_lifetime - 1)
   
-  print(project_lifetime)
-  
   # Initialize vectors to store results
   vmt_displaced <- numeric(length(project_years))
   ghg_impact <- numeric(length(project_years))
@@ -30,8 +28,17 @@ employee_commute <- function(daily_commute_no, project_start, project_lifetime, 
     ghg_impact[i] <- ghg_impact_year
   }
   
-  # Returning the results as a data frame
-  return(data.frame(year = project_years, vmt_displaced = vmt_displaced, ghg_impact = ghg_impact))
+  # Calculate total vmt_displaced and ghg_impact
+  total_vmt_displaced <- sum(vmt_displaced)
+  total_ghg_impact <- sum(ghg_impact)
+  
+  # Create a data frame with results including totals
+  results <- data.frame(year = c(project_years, "Total"),
+                        vmt_displaced = c(vmt_displaced, total_vmt_displaced),
+                        ghg_impact = c(ghg_impact, total_ghg_impact))
+  
+  return(results)
 }
 
-#test <- employee_commute(200, 2025, 10, 2.8)
+
+test <- employee_commute(200, 2025, 10, 2.8)
