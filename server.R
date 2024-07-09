@@ -8,4 +8,9 @@ server <- function(input, output) {
       average_commute = input$average_commute
     )
   })
+  
+  # Render the table - ADD TO UI
+  output$employee_commute_table <- renderTable({
+    employee_commute_results()
+  })
 }
