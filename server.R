@@ -1,4 +1,5 @@
 server <- function(input, output) {
+  
   # Employee Commute Reduction Calculation
   employee_commute_results <- reactive({
     employee_commute(
@@ -13,4 +14,6 @@ server <- function(input, output) {
   output$employee_commute_table <- renderTable({
     employee_commute_results()
   })
+  
+  
 }
