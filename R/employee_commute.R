@@ -20,9 +20,16 @@ employee_commute <- function(daily_commute_no, project_start, project_lifetime, 
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == year)
     
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
+  
+    fleet_proportion <- FleetProportion %>% filter(Year == year)
     
     # Calculate GHG impact for the current year
-    ghg_impact_year <- vmt_displaced_year * greet_ef_year$gasoline 
+    ghg_impact_year <-
+      (vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+      (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+      (vmt_displaced_year * greet_ef_year$compressed_natural_gas * fleet_proportion$compressed_natural_gas) +
+      (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)
+    
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
     
     # Store results for the current year
@@ -46,4 +53,4 @@ employee_commute <- function(daily_commute_no, project_start, project_lifetime, 
 }
 
 
-# test <- employee_commute(200, 2025, 10, 2.8)
+test <- employee_commute(200, 2025, 10, 2.8)
