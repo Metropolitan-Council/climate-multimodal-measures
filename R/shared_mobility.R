@@ -1,5 +1,6 @@
 shared_mobility <-
-  function(no_vehicles,
+  function(no_bikes,
+           no_cars,
            average_annual_trips_bike,
            average_annual_trips_ride,
            project_lifetime,
@@ -22,11 +23,14 @@ shared_mobility <-
       year <- project_years[i]
       
       # Calculate new service vehicle miles traveled (VMT)
-      new_service_vmt_year <-
-        no_vehicles * (
-          average_annual_trips_bike * bike_trip_miles +
-            average_annual_trips_ride * ride_share_miles
-        )
+      new_service_vmt_year_ride <-
+        (no_cars * average_annual_trips_ride * ride_share_miles)
+      
+      new_service_vmt_year_bike <-
+        (no_bikes * average_annual_trips_bike * bike_trip_miles) +
+        
+        total_new_service_vmt <-
+        new_service_vmt_year_ride + new_service_vmt_year_ride
       
       # Calculate auto VMT displaced
       vmt_displaced_year <-
@@ -46,24 +50,27 @@ shared_mobility <-
           (
             vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity
           )
-        ) -
-        ((
-          new_service_vmt_year * greet_ef_year$gasoline * fleet_proportion$gasoline
-        ) +
-          (
-            new_service_vmt_year * greet_ef_year$diesel * fleet_proportion$diesel
-          ) +
-          (
-            new_service_vmt_year * greet_ef_year$compressed_natural_gas * fleet_proportion$compressed_natural_gas +
-              (
-                new_service_vmt_year * greet_ef_year$electricity * fleet_proportion$electricity
-              )
-          )
         )
+      # -
+      #adjust logic based on their proposed fleet
+      # ((
+      #   new_service_vmt_year * greet_ef_year$gasoline * fleet_proportion$gasoline
+      # ) +
+      #   (
+      #     new_service_vmt_year * greet_ef_year$diesel * fleet_proportion$diesel
+      #   ) +
+      #   (
+      #     new_service_vmt_year * greet_ef_year$compressed_natural_gas * fleet_proportion$compressed_natural_gas +
+      #       (
+      #         new_service_vmt_year * greet_ef_year$electricity * fleet_proportion$electricity
+      #       )
+      #   )
+      # )
       
       # Calculate social cost of carbon for the current year
       discount_rate <-
-        SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
+        SocialCostCarbon %>% filter(`emission.year` == year &
+                                      gas == "CO2")
       social_cost_carbon <-
         ghg_impact_year * discount_rate$`2.0% Ramsey`
       
