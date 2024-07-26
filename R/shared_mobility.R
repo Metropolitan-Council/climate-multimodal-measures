@@ -5,9 +5,10 @@ shared_mobility <-
            average_annual_trips_ride,
            project_lifetime,
            project_start) {
+    
     bike_trip_miles <- 1.4
     ride_share_miles <- 7.7
-    adjustment_factor <- X
+    adjustment_factor <- #Short or long distance 
     
     # Generate years project covers
     project_years <-
