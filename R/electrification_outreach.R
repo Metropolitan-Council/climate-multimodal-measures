@@ -1,4 +1,4 @@
-electrification_outreach <- function(no_participants, conversion_rate, project_start, project_lifetime) {
+ev_outreach <- function(no_participants, conversion_rate, project_start, project_lifetime) {
   average_annual_accrual <- 5567
   
   # Generate years project covers
@@ -52,4 +52,4 @@ electrification_outreach <- function(no_participants, conversion_rate, project_s
 }
 
 # Example usage
-test <- electrification_outreach(4000, .04, 2025, 5)
+test <- ev_outreach(4000, .04, 2025, 5)
