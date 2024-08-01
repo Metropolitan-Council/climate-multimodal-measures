@@ -31,3 +31,8 @@ FleetData <- total_vmt_by_fuel_type %>%
   left_join(total_vmt_by_ctu_year, by = c("ctu", "year")) %>%
   mutate(percentage_vmt = (total_vmt.x / total_vmt.y) * 100) %>%
   select(ctu, year, fuel_type, percentage_vmt)
+
+FleetData <- FleetData %>% pivot_wider(names_from = fuel_type, values_from = c(percentage_vmt))
+
+FleetData <- FleetData %>%
+  mutate(year = as.numeric(year))
