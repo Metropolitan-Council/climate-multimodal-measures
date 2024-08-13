@@ -41,28 +41,33 @@ shared_mobility <-
       }
       
       if (fleet == "Bike" || fleet == "Scooter"){
-        #figure out correct EF
+        vmt_displaced_year <-
+          adjustment_factor * average_occupancy * trip_miles
       }
+      
+      ###################################################################################################
       
       
       if (fleet == "Non-EV Rideshares") {
-        #figure out correct EF
+        ((vmt_displaced_year * greet_ef_year$gasoline))
       }
       
-      if (fleet == "Non-EV Rideshares") {
+      if (fleet == "EV Rideshares") {
         ghg_impact_year <-
           ((vmt_displaced_year * greet_ef_year$electricity))
       }
       
       if (fleet == "Bike") {
         ghg_impact_year <-
-          ((vmt_displaced_year * greet_ef_year$electricity))
+          ((vmt_displaced_year))
       }
       
       if (fleet == "Scooter") {
         ghg_impact_year <-
           ((vmt_displaced_year * greet_ef_year$electricity))
       }
+      
+      #################################################################################################
       
       # Calculate social cost of carbon for the current year
       discount_rate <-
