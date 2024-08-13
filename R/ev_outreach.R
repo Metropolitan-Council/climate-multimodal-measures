@@ -1,4 +1,4 @@
-ev_outreach <- function(no_participants, conversion_rate, project_start, project_lifetime) {
+ev_outreach <- function(no_participants, conversion_rate, audience, project_start, project_lifetime) {
   average_annual_accrual <- 5567
   
   # Generate years project covers
@@ -20,14 +20,13 @@ ev_outreach <- function(no_participants, conversion_rate, project_start, project
     
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
     
-    fleet_proportion <- FleetProportion %>% filter(Year == year)
+    if (audience == "Light Duty") {
+      ghg_impact_year <-(vmt_displaced_year * greet_ef_year$gasoline)
+    }
     
-    # Calculate GHG impact for the current year
-    ghg_impact_year <-
-      ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-         (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
-         (vmt_displaced_year * greet_ef_year$compressed_natural_gas * fleet_proportion$compressed_natural_gas) +
-         (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity))
+    if (audience == "Heavy Duty") {
+      ghg_impact_year <-(vmt_displaced_year * greet_ef_year$diesel)
+    }
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
     
@@ -52,4 +51,4 @@ ev_outreach <- function(no_participants, conversion_rate, project_start, project
 }
 
 # Example usage
-test <- ev_outreach(4000, .04, 2025, 5)
+test <- ev_outreach(4000, .04, "Light Duty", 2025, 5)
