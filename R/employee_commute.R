@@ -1,9 +1,7 @@
 #' Calculate the VMT Displaced, GHG Impact, and Social Cost of Carbon from Employee Commutes
 #'
 #' This function estimates the Vehicle Miles Traveled (VMT) displaced, the Greenhouse Gas (GHG) impact, 
-#' and the social cost of carbon over the lifetime of a project, based on employee commute data, fleet 
-#' proportions, and emissions factors. The function is designed to assess the environmental benefits 
-#' of reducing daily commutes by employees working on a project.
+#' and the social cost of carbon over the lifetime of a project.
 #'
 #' @param daily_commute_no Integer. The number of daily commutes that are reduced or avoided.
 #' @param project_start Integer. The start year of the project.
