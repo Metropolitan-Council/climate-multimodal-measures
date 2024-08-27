@@ -2,6 +2,7 @@ transit_expansion <-
   function(ridership_increase,
            route_type,
            added_transit,
+           fleet_type,
            project_start,
            project_lifetime) {
     # Select average trip length by route type
@@ -39,6 +40,9 @@ transit_expansion <-
       
       #Filter fleet percentages for the current year 
       fleet_proportion <- FleetProportion %>% filter(Year == year)
+      
+      if(fleet_type == "")
+      fleet_ghg_added <- added_transit 
       
       # Calculate GHG impact for the current year
       ghg_impact_year <-
