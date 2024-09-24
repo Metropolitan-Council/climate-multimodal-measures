@@ -36,13 +36,14 @@ transit_expansion <-
       
       # Filter discount rate for the current year
       discount_rate <-
-        SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
+        SocialCostCarbon %>% filter(`emission.year` == year &
+                                      gas == "CO2")
       
-      #Filter fleet percentages for the current year 
+      #Filter fleet percentages for the current year
       fleet_proportion <- FleetProportion %>% filter(Year == year)
       
-      if(fleet_type == "")
-      fleet_ghg_added <- added_transit 
+      if (fleet_type == "")
+        fleet_ghg_added <- added_transit
       
       # Calculate GHG impact for the current year
       ghg_impact_year <-
@@ -58,10 +59,10 @@ transit_expansion <-
           (
             vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity
           )
-        ) +
+        ) -
         (added_transit * greet_ef_year$diesel) #Change to what the fleet proposed is made of - maybe make user input
-        
-        social_cost_carbon <-
+      
+      social_cost_carbon <-
         ghg_impact_year * discount_rate$`2.0% Ramsey`
       
       # Store results for the current year
