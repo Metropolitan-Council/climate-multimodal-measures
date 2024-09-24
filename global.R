@@ -4,8 +4,9 @@ library(shiny)
 library(bslib)
 library(readxl)
 library(tidyverse)
-library(here)
+# library(here)
 library(DT)
+library(lubridate)
 
 
 #Reading in our background data
@@ -16,3 +17,5 @@ backgroundDataNames <- excel_sheets(backgroundDataPath)
 for (sheet in backgroundDataNames) {
   assign(sheet, read_excel(backgroundDataPath, sheet = sheet), envir = .GlobalEnv)
 }
+
+FleetData <- read_xlsx(paste0(here::here(),"/data/FleetData.xlsx"))
