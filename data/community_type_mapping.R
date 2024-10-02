@@ -1,0 +1,14 @@
+# Assuming community_type_shape is your data frame
+CommunityTypeShape <- CommunityTypeShape %>%
+  mutate(MappedCommunity = case_when(
+    COMDESNAME %in% c("Urban", "Urban Center") ~ "Urban",
+    COMDESNAME == "Suburban" ~ "Suburban",
+    COMDESNAME %in% c("Suburban Edge", "Emerging Suburban Edge") ~ "Suburban Edge",
+    COMDESNAME %in% c("Diversified Rural", "Rural Residential", "Rural Center", "Agricultural", "Non-Council Area") ~ "Rural / Non-Council",
+    TRUE ~ NA_character_  # For any unexpected values
+  ))
+
+CommunityTypeShape <- CommunityTypeShape %>%
+  group_by(CTU_ID) %>%
+  filter(Shape_Area == max(Shape_Area)) %>%
+  ungroup()
