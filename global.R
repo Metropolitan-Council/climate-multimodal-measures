@@ -1,12 +1,12 @@
 #Loading Packages
 library(shiny)
-# library(shinydashboard)
 library(bslib)
 library(readxl)
 library(tidyverse)
-# library(here)
+library(here)
 library(DT)
 library(lubridate)
+library(sf)
 
 
 #Reading in our background data
@@ -19,5 +19,7 @@ for (sheet in backgroundDataNames) {
 }
 
 FleetData <- read_xlsx(paste0(here::here(),"/data/FleetData.xlsx"))
+CommunityTypeShape <- st_read(paste0(here::here(),"/data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
+source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
 source(paste0(getwd(),"/R Scripts/employee_commute.R"))
