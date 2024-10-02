@@ -4,14 +4,12 @@ employee_commute <- function(daily_commute_no,
                              community_type, 
                              location) {
   
-  working_days <- 260  # Assuming 260 working days per year - ADD SOURCE
+  working_days <- 260  # Assuming 260 working days per year
   
   # Generate years project covers based on project start date and length of project
   project_start <- lubridate::year(project_start)
   project_start <- as.numeric(project_start)
   project_years <- seq(project_start, project_start + project_lifetime - 1)
-  
-  # project_years <- c(2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038)
   
   # Initialize vectors to store results
   vmt_displaced <- numeric(length(project_years))
@@ -29,9 +27,7 @@ employee_commute <- function(daily_commute_no,
     average_two_way_commute <- VMTByCommunityType %>% 
       filter(cd_year == closest_year_vmt, CD == community_type, survey_year == 2021)
     
-    average_commute <- average_two_way_commute$vmt
-    
-    print(average_commute)
+    average_commute <- average_two_way_commute$vmt/2
     
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- daily_commute_no * average_commute * working_days
@@ -43,19 +39,19 @@ employee_commute <- function(daily_commute_no,
     discount_rate <- SocialCostCarbon %>% 
       filter(`emission.year` == current_year & gas == "CO2")
     
-    # Filter to CTU provided
+   # Filter to CTU provided
     FleetData <- FleetData %>% filter(ctu == location)
-    
+
     FleetData <- FleetData %>% mutate(year = as.numeric(year))
-    
-    # Determine the closest year
+
+    # # Determine the closest year
     closest_year <- FleetData %>%
       summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
       pull(closest_year)
-    
-    # Filter the data set to get the fleet proportions from the closest year
-    fleet_proportion <- FleetProportion %>%
-      filter(Year == closest_year)
+
+    # # Filter the data set to get the fleet proportions from the closest year
+    fleet_proportion <- FleetData %>%
+      filter(year == closest_year)
     
     # Calculate GHG impact for the current year
     ghg_impact_year <- 
