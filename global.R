@@ -19,5 +19,5 @@ for (sheet in backgroundDataNames) {
 }
 
 FleetData <- read_xlsx(paste0(here::here(),"/data/FleetData.xlsx"))
-
+source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
 source(paste0(getwd(),"/R Scripts/employee_commute.R"))
