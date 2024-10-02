@@ -31,6 +31,8 @@ employee_commute <- function(daily_commute_no,
     
     average_commute <- average_two_way_commute$vmt
     
+    print(average_commute)
+    
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- daily_commute_no * average_commute * working_days
     
@@ -50,8 +52,6 @@ employee_commute <- function(daily_commute_no,
     closest_year <- FleetData %>%
       summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
       pull(closest_year)
-    
-    print(closest_year)
     
     # Filter the data set to get the fleet proportions from the closest year
     fleet_proportion <- FleetProportion %>%
@@ -90,5 +90,5 @@ employee_commute <- function(daily_commute_no,
 # test <- employee_commute(daily_commute_no = 200,
 #                          project_start = 2029,
 #                          project_lifetime = 10,
-#                          community_type = "Urban", 
+#                          community_type = "Urban",
 #                          location = "Andover")
