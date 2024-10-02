@@ -8,7 +8,7 @@
 #' @param project_lifetime Integer. The number of years the project is expected to last.
 #' @param community_type Character. The type of community (e.g., Urban, Suburban, Rural) where the 
 #'        employees are based. This parameter will be used to filter VMT data.
-#' @param location Character. The specific location or CTU (Census Transportation Unit) used to filter 
+#' @param v_location Character. The specific location or CTU (Census Transportation Unit) used to filter 
 #'        the fleet data for determining the vehicle fleet proportions.
 #'
 #' @return A data frame containing the VMT displaced, GHG impact, and social cost of carbon for each year 
@@ -35,15 +35,19 @@
 #'
 #' @export
 employee_commute <- function(daily_commute_no,
-                             project_start,
                              project_lifetime,
-                             community_type, 
-                             location) {
+                             ## need to remove defaults ##
+                             project_start = "2024-01-01",
+                             v_location = "Andover",
+                             community_type = "Urban") {
   
   working_days <- 260  # Assuming 260 working days per year - ADD SOURCE
+  project_start <- ymd(project_start)
   
   # Generate years project covers based on project start date and length of project
-  project_years <- seq(project_start, project_start + project_lifetime - 1)
+  # project_years <- seq(year(project_start),
+  #                      year(project_start + years(project_lifetime - 1)))
+  project_years <- seq(2024, 2027)
   
   # Initialize vectors to store results
   vmt_displaced <- numeric(length(project_years))
@@ -74,16 +78,17 @@ employee_commute <- function(daily_commute_no,
       filter(`emission.year` == current_year & gas == "CO2")
     
     # Filter to CTU provided
-    FleetData <- FleetData %>% filter(ctu == location)
+    FleetData <- FleetData %>% filter(ctu == v_location)
     
     # Determine the closest year
     closest_year <- FleetData %>%
-      summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
+      summarise(closest_year = year[which.min(abs(as.integer(year) - current_year))]) %>%
       pull(closest_year)
     
     # Filter the data set to get the fleet proportions from the closest year
-    fleet_proportion <- FleetData %>%
-      filter(year == closest_year)
+    # fleet_proportion <- FleetData %>%
+    fleet_proportion <- FleetProportion %>%
+      filter(Year == as.integer(closest_year))
     
     # Calculate GHG impact for the current year
     ghg_impact_year <- 

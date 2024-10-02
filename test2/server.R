@@ -1,18 +1,17 @@
-server <- function(input, output) {
-    
-  output$tableDT <- DT::renderDataTable({
-    iris
-  })
-  
-  output$table <- renderTable({
-    iris
-  })
-  
-  output$dat <- renderUI({
-    table <- DT::datatable(mtcars
-                           # , fillContainer = TRUE, style = "bootstrap4", rownames = FALSE
-                           )
-    card(table)
+#
+# This is the server logic of a Shiny web application. You can run the
+# application by clicking 'Run App' above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+function(input, output) {
+  output$dt <- renderDataTable({
+    datatable(
+      mtcars, fillContainer = TRUE
+    )
   })
   
   # Employee Commute Reduction Calculation
@@ -32,6 +31,8 @@ server <- function(input, output) {
     project_lifetime <- input$project_lifetime
     average_commute <- input$average_commute
     community_type <- "Urban"
+    v_location = "Andover"
+    community_type = "Urban"
     # ---------------------------------------------------
     working_days <- 260  # Assuming 260 working days per year - ADD SOURCE
     project_start <- ymd(project_start)
@@ -102,25 +103,32 @@ server <- function(input, output) {
     total_carbon_cost <- sum(carbon_cost)
     
     # Create a data frame with results including totals
-    results <- data.frame(
+    data.frame(
       year = c(project_years, "Total"),
       vmt_displaced = c(vmt_displaced, total_vmt_displaced),
       ghg_impact = c(ghg_impact, total_ghg_impact),
       carbon_cost = c(carbon_cost, total_carbon_cost)
     )
     
-    results
     # ---------------------------------------------------
     
   })
   
-  # Render the table - ADD TO UI
-  output$employee_commute_table <- renderTable({
+  # # Render the table - ADD TO UI
+  # output$employee_commute_table <- renderTable({
+  #   if (is.null(input$project_start)) {
+  #     return ()
+  #   }
+  #   employee_commute_results()
+  # })
+  
+  output$employee_commute_table <- renderDataTable({
     if (is.null(input$project_start)) {
       return ()
     }
-    employee_commute_results()
+    datatable(
+      employee_commute_results(), fillContainer = TRUE
+    )
   })
 
-  
 }
