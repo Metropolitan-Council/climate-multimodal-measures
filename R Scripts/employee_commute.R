@@ -1,7 +1,7 @@
 employee_commute <- function(daily_commute_no,
                              project_start,
                              project_lifetime,
-                             community_type, 
+                             community_type = NULL, 
                              location) {
   
   working_days <- 260  # Assuming 260 working days per year
@@ -10,6 +10,7 @@ employee_commute <- function(daily_commute_no,
   project_start <- lubridate::year(project_start)
   project_start <- as.numeric(project_start)
   project_years <- seq(project_start, project_start + project_lifetime - 1)
+  
   
   # Initialize vectors to store results
   vmt_displaced <- numeric(length(project_years))
@@ -20,13 +21,23 @@ employee_commute <- function(daily_commute_no,
   for (i in seq_along(project_years)) {
     current_year <- project_years[i]
     
+    # Choosing the closest year to grab VMT data from
     closest_year_vmt <- VMTByCommunityType %>%
       summarise(closest_year = cd_year[which.min(abs(cd_year - current_year))]) %>%
       pull(closest_year)
     
+    # Choosing community type based on location if community_type is NULL
+    if (is.null(community_type)) {
+      community_type <- CommunityTypeShape %>% 
+        filter(CTU_NAME == location) %>% 
+        pull(MappedCommunity)
+    }
+    
+    # Finding the average two way commute based on community type 
     average_two_way_commute <- VMTByCommunityType %>% 
       filter(cd_year == closest_year_vmt, CD == community_type, survey_year == 2021)
     
+    # Making average commute a one way commute 
     average_commute <- average_two_way_commute$vmt/2
     
     # Calculate VMT displaced for the current year
@@ -83,8 +94,9 @@ employee_commute <- function(daily_commute_no,
   return(results)
 }
 
+
 # test <- employee_commute(daily_commute_no = 200,
-#                          project_start = 2029,
+#                          project_start = "2024-01-01",
 #                          project_lifetime = 10,
-#                          community_type = "Urban",
-#                          location = "Andover")
+#                          location = "Andover",
+#                          community_type = "Urban")
