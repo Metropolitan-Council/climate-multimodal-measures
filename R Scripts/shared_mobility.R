@@ -4,6 +4,7 @@ shared_mobility <-
            no_trips,
            project_lifetime,
            project_start) {
+    
     if (fleet == "Bike" || fleet == "Scooter"){
       trip_miles = 1.4
       adjustment_factor = .5
@@ -27,14 +28,24 @@ shared_mobility <-
     carbon_cost <- numeric(length(project_years))
     
     for (i in seq_along(project_years)) {
-      year <- project_years[i]
+      # year <- project_years[i]
       
-      # Calculate new service vehicle miles traveled (VMT)
-      new_service_vmt_year <-
-        (no_vehicles * no_trips * ride_share_miles * trip_miles)
+      current_year <- project_years[i]
       
+      #################################################################################################
+      # Calculate new service vmt
       
+      if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
+      new_service_vmt = no_vehicles * no_trips * trip_miles  
+      }
+      
+      if (fleet == "Bike" || fleet == "Scooter"){
+        new_service_vmt = no_vehicles * no_trips * trip_miles  
+      }
+      
+      ##################################################################################################
       # Calculate auto VMT displaced
+      
       if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
         vmt_displaced_year <-
           adjustment_factor * average_occupancy * trip_miles * (1 - prct_deadhead_miles)
@@ -46,56 +57,79 @@ shared_mobility <-
       }
       
       ###################################################################################################
+      # Calculate GHG impact
+      greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
       
+      # Pulling in our FleetData
+      FleetData <- FleetData %>% mutate(year = as.numeric(year))
+      
+      # # Determine the closest year
+      closest_year <- FleetData %>%
+        summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
+        pull(closest_year)
+      
+      # # Filter the data set to get the fleet proportions from the closest year
+      fleet_proportion <- FleetData %>%
+        filter(year == closest_year) %>% group_by(year) %>% summarize(
+          diesel = mean(diesel, na.rm = TRUE),
+          electricity = mean(electricity, na.rm = TRUE),
+          gasoline = mean(gasoline, na.rm = TRUE)
+        )
       
       if (fleet == "Non-EV Rideshares") {
-        ((vmt_displaced_year * greet_ef_year$gasoline))
+        ghg_impact_year <- (vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+        (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+        (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity) / (new_service_vmt * greet_ef_year$gasoline)
       }
       
       if (fleet == "EV Rideshares") {
-        ghg_impact_year <-
-          ((vmt_displaced_year * greet_ef_year$electricity))
+        ghg_impact_year <- (vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+          (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+          (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity) / (new_service_vmt * greet_ef_year$electricity)
       }
       
       if (fleet == "Bike") {
-        ghg_impact_year <-
-          ((vmt_displaced_year))
+        ghg_impact_year <- (vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+          (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+          (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)
       }
       
       if (fleet == "Scooter") {
-        ghg_impact_year <-
-          ((vmt_displaced_year * greet_ef_year$electricity))
+        ghg_impact_year <- (vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+          (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+          (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)
       }
       
       #################################################################################################
       
       # Calculate social cost of carbon for the current year
       discount_rate <-
-        SocialCostCarbon %>% filter(`emission.year` == year &
+        SocialCostCarbon %>% filter(`emission.year` == current_year &
                                       gas == "CO2")
       social_cost_carbon <-
         ghg_impact_year * discount_rate$`2.0% Ramsey`
-      
       # Store results for the current year
-      new_service_vmt[i] <- new_service_vmt_year
-      auto_vmt_displaced[i] <- auto_vmt_displaced_year
+      auto_vmt_displaced[i] <- vmt_displaced_year
       ghg_impact[i] <- ghg_impact_year
       carbon_cost[i] <- social_cost_carbon
     }
     
-    # Calculate total new_service_vmt and total_ghg_impact
-    total_new_service_vmt <- sum(new_service_vmt)
+    # Calculate total vmt_displaced and ghg_impact
+    total_vmt_displaced <- sum(auto_vmt_displaced)
     total_ghg_impact <- sum(ghg_impact)
     total_carbon_cost <- sum(carbon_cost)
     
     # Create a data frame with results including totals
-    results <- data.frame(
-      year = c(project_years, "Total"),
-      new_service_vmt = c(new_service_vmt, total_new_service_vmt),
-      auto_vmt_displaced = auto_vmt_displaced,
-      ghg_impact = c(ghg_impact, total_ghg_impact),
-      carbon_cost = c(carbon_cost, total_carbon_cost)
-    )
+    results <- data.frame(year = c(project_years, "Total"),
+                          vmt_displaced = c(auto_vmt_displaced, total_vmt_displaced),
+                          ghg_impact = c(ghg_impact, total_ghg_impact),
+                          carbon_cost = c(carbon_cost, total_carbon_cost))
     
     return(results)
   }
+
+shared_mobility (fleet = 'EV Rideshares',
+           no_vehicles = 20,
+           no_trips = 5000,
+           project_lifetime = 10,
+           project_start = 2025)
