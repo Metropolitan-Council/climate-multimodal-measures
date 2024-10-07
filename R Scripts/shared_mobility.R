@@ -128,8 +128,8 @@ shared_mobility <-
     return(results)
   }
 
-shared_mobility (fleet = 'EV Rideshares',
-           no_vehicles = 20,
-           no_trips = 5000,
-           project_lifetime = 10,
-           project_start = 2025)
+# shared_mobility (fleet = 'EV Rideshares',
+#            no_vehicles = 20,
+#            no_trips = 5000,
+#            project_lifetime = 10,
+#            project_start = 2025)
