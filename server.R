@@ -105,3 +105,39 @@ function(input, output) {
     )
   })
 }
+
+
+
+function(input, output) {
+  # First DataTable output
+  output$dt <- renderDataTable({
+    datatable(
+      mtcars, fillContainer = TRUE
+    )
+  })
+  
+  # EV Outreach Reduction Calculation
+  shared_mobility_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    shared_mobility(
+      fleet = input$fleet, #Options are scooter or bicycle, non-ev fleet, and ev fleet
+      no_vehicles = input$no_vehicles,
+      no_trips = input$no_trips,
+      project_lifetime = input$project_lifetime,
+      project_start = input$project_start,
+      location = input$location
+    )
+  })
+  
+  output$shared_mobility_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    datatable(
+      shared_mobility_results(), fillContainer = TRUE
+    )
+  })
+}
+
