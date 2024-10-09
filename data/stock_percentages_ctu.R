@@ -36,3 +36,9 @@ FleetData <- FleetData %>% pivot_wider(names_from = fuel_type, values_from = c(p
 
 FleetData <- FleetData %>%
   mutate(year = as.numeric(year))
+
+FleetData <- FleetData %>%
+  mutate(year = as.numeric(year),
+         diesel = diesel / 100,
+         electricity = electricity / 100,
+         gasoline = gasoline / 100)
