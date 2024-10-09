@@ -58,7 +58,7 @@ function(input, output) {
       project_start = input$project_start,
       project_lifetime = input$project_lifetime,
       conversion_rate = input$conversion_rate,
-      audience = input$audeince
+      audience = input$audience #LD or HD
     )
   })
   
@@ -68,6 +68,40 @@ function(input, output) {
     }
     datatable(
       ev_outreach_results(), fillContainer = TRUE
+    )
+  })
+}
+
+function(input, output) {
+  # First DataTable output
+  output$dt <- renderDataTable({
+    datatable(
+      mtcars, fillContainer = TRUE
+    )
+  })
+  
+  # EV Outreach Reduction Calculation
+  ev_infrastructure_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    ev_infrastructure(
+      ev_type = input$ev_type, #LD or HD
+      no_chargers = input$no_chargers,
+      charge_power = input$charge_power,
+      annual_hours_available = input$annual_hours_available,
+      location = input$location, #all locations can be extracted from CommunityTypeShape
+      project_start = input$project_start,
+      project_lifetime = input$project_lifetime
+      )
+  })
+  
+  output$ev_infrastructure_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    datatable(
+      ev_infrastructure_results(), fillContainer = TRUE
     )
   })
 }
