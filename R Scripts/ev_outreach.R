@@ -3,6 +3,8 @@ ev_outreach <- function(no_participants, conversion_rate, audience, project_star
   average_annual_accrual <- 5567
   
   # Generate years project covers
+  project_start <- lubridate::year(project_start)
+  project_start <- as.numeric(project_start)
   project_years <- seq(project_start, project_start + project_lifetime - 1)
   
   # Initialize vectors to store results
@@ -51,5 +53,5 @@ ev_outreach <- function(no_participants, conversion_rate, audience, project_star
   return(results)
 }
 
-# Example usage
-test <- ev_outreach(4000, .04, "Light Duty", 2025, 5)
+# # Example usage
+# test <- ev_outreach(4000, .04, "Light Duty", project_start = "2024-01-01", 5)
