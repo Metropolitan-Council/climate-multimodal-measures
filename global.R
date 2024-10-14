@@ -8,6 +8,12 @@ library(DT)
 library(lubridate)
 library(sf)
 
+library(tidycensus)
+library(tigris)
+library(mapview)
+library(leaflet)
+library(rmapshaper)
+options(tigris_use_cache = TRUE)
 
 #Reading in our background data
 backgroundDataPath <- paste0(here::here(),"/data/MetCouncilTables.xlsx")
@@ -23,3 +29,15 @@ CommunityTypeShape <- st_read(paste0(here::here(),"/data/shp_society_thrive_msp2
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
 source(paste0(getwd(),"/R Scripts/employee_commute.R"))
+
+population <- get_acs(
+  geography = "tract",
+  table = "B01003",
+  state = "MN",
+  geometry = TRUE,
+  cache_table = TRUE
+) %>%
+  sf::st_transform('+proj=longlat +datum=WGS84')
+
+population <- ms_simplify(population, keep = 0.05,
+                          keep_shapes = TRUE)

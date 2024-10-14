@@ -26,6 +26,14 @@ page_navbar(
   # nav_panel(title = "Introduction", p("Overview of app")),
   nav_panel(title = "Calculations", 
             navset_pill_list(
+              nav_panel(title = "Map", 
+                        page_fillable(
+                          card(leaflet::leafletOutput( outputId = "myMap"
+                                                       , height = 850
+                          ),
+                          verbatimTextOutput("tract_info")),
+                          "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
+                        )),
               # nav_panel(title = "Employee Commute Reduction", !!!employee_commute_reduction),
               nav_panel(title = "Two",
                         page_fillable(

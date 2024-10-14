@@ -1,4 +1,4 @@
-FleetData <- read_xlsx("C:/Users/61886/OneDrive - ICF/Desktop/transport-emission-shiny/data/FleetData.xlsx")
+# FleetData <- read_xlsx("C:/Users/61886/OneDrive - ICF/Desktop/transport-emission-shiny/data/FleetData.xlsx")
 
 # Create a mapping of stock to fuel type
 stock_to_fuel_type <- c(
