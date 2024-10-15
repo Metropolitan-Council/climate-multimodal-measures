@@ -93,7 +93,7 @@ function(input, output) {
   })
 
   
-  # EV Outreach Reduction Calculation
+  # Shared Mobility
   # double checking this name?
   shared_mobility_results <- reactive({
     if (is.null(input$project_start)) {
@@ -115,6 +115,31 @@ function(input, output) {
     }
     datatable(
       shared_mobility_results(), fillContainer = TRUE
+    )
+  })
+  
+  # EV Outreach Reduction Calculation
+  transit_expansion_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    transit_expansion(
+      ridership_increase = input$ridership$increase,
+      route_type = input$route_type, #options in AdjustmentFactorsAndTripLengths
+      added_transit = input$added_transit,
+      fleet_type = input$fleet_type, #gasoline, diesel, or electricity for now 
+      location = input$location,
+      project_start = input$project_start,
+      project_lifetime = input$project_lifetime
+    )
+  })
+  
+  output$transit_expansion_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    datatable(
+      transit_expansion_results(), fillContainer = TRUE
     )
   })
   
