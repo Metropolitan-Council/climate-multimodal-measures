@@ -24,6 +24,8 @@ shared_mobility <-
       average_occupancy = 1.55
     }
     # Generate years project covers
+    project_start <- lubridate::year(project_start)
+    project_start <- as.numeric(project_start)
     project_years <-
       seq(project_start, project_start + project_lifetime - 1)
     
@@ -136,9 +138,9 @@ shared_mobility <-
     return(results)
   }
 
-shared_mobility (fleet = 'EV Rideshares',
-           no_vehicles = 20,
-           no_trips = 50000,
-           project_lifetime = 10,
-           project_start = 2025,
-           location = "Andover")
+# shared_mobility (fleet = 'EV Rideshares',
+#            no_vehicles = 20,
+#            no_trips = 50000,
+#            project_lifetime = 10,
+#            project_start = "2024-01-01",
+#            location = "Andover")
