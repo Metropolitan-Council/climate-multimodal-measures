@@ -14,8 +14,6 @@ pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length
     TRUE ~ NA_character_
   )
   
-  print(paste("Traffic Range:" , traffic_range))
-  
   # Use case_when for facility length range
   facility_length_range <- case_when(
     one_way_facility_length == 1 ~ "1",
@@ -24,15 +22,11 @@ pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length
     TRUE ~ NA_character_
   )
   
-  print(paste("Traffic facility_length_range:" , facility_length_range))
-  
   # Using dplyr to filter and pull the mode_shift_factor_m value
   mode_shift_factor <- ModeShiftFactor %>%
     filter(average_daily_traffic_vehicle_trips_per_day == traffic_range,
            one_way_facility_length_miles_low == facility_length_range) %>%
     pull(mode_shift_factor_m)
-  
-  print(mode_shift_factor)
   
   key_destination_credit <- CreditForKeyDestinations %>%
     filter(
@@ -44,8 +38,6 @@ pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length
       )
     ) %>%
     pull(credit_within_1_2_mile_of_facility_c)
-  
-  print(key_destination_credit)
   
   # Generate years project covers
   project_start <- lubridate::year(project_start)
