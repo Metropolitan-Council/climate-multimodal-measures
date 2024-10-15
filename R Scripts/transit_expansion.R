@@ -1,10 +1,7 @@
-# Are we displacing electricity, diesel, and gasoline vehicle proportions by ctu?
-# Should we ask the user for input on the type of fuel their fleet will run on?
 transit_expansion <-
   function(ridership_increase,
            route_type,
            added_transit,
-           fleet_type,
            location,
            project_start,
            project_lifetime) {
@@ -28,6 +25,22 @@ transit_expansion <-
     vmt_displaced <- numeric(length(project_years))
     ghg_impact <- numeric(length(project_years))
     carbon_cost <- numeric(length(project_years))
+    
+    if(route_type == "Commuter Rail Diesel") {
+      fuel_type = "diesel_commuter_rail"
+    }
+    
+    if(route_type == "Commuter Rail Electric") {
+      fuel_type = "electric_commuter_rail"
+    }
+    
+    if(route_type == "Light Rail Transit") {
+      fuel_type = "light_rail"
+    } 
+    
+    else {
+      fuel_type = "diesel"
+    }
     
     for (i in seq_along(project_years)) {
       current_year <- project_years[i]
@@ -60,21 +73,20 @@ transit_expansion <-
       
       # Calculate GHG impact for the current year
       ghg_impact_year <- 
-        ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+        (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
         (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
         (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
-        (added_transit * (greet_ef_year[[fleet_type]]))
+        (added_transit * (greet_ef_year[[fuel_type]]))) / 1000000
       
-      # print(paste("ghg impact", ghg_impact_year))
+      print(greet_ef_year$gasoline)
+      print(greet_ef_year$diesel)
+      print(greet_ef_year$electricity)
       
       # Filter Discount Rate for the current year
       discount_rate <- SocialCostCarbon %>% 
         filter(`emission.year` == current_year & gas == "CO2")
       
       social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
-      # print(paste("social cost carbon", social_cost_carbon))
-      
-      # print(social_cost_carbon)
       
       # Store results for the current year
       vmt_displaced[i] <- vmt_displaced_year
@@ -99,10 +111,9 @@ transit_expansion <-
   }
 
 
-test <- transit_expansion(ridership_increase = 100000,
+test <- transit_expansion(ridership_increase = 10000,
                           route_type = "Core Local",
-                          added_transit = 100000,
-                          fleet_type = "diesel",
+                          added_transit = 35000,
                           location = "Andover",
                           project_start = "2027-01-01",
                           project_lifetime = 5)

@@ -124,11 +124,10 @@ function(input, output) {
       return ()
     }
     transit_expansion(
-      ridership_increase = input$ridership$increase,
+      ridership_increase = input$ridership$increase, #no default in Task 4 Memo
       route_type = input$route_type, #options in AdjustmentFactorsAndTripLengths
-      added_transit = input$added_transit,
-      fleet_type = input$fleet_type, #gasoline, diesel, or electricity for now 
-      location = input$location,
+      added_transit = input$added_transit, #no default in Task 4 Memo
+      location = input$location, 
       project_start = input$project_start,
       project_lifetime = input$project_lifetime
     )
