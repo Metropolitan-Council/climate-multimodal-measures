@@ -29,6 +29,9 @@ CommunityTypeShape <- st_read(paste0(here::here(),"/data/shp_society_thrive_msp2
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
 source(paste0(getwd(),"/R Scripts/employee_commute.R"))
+source(paste0(getwd(),"/R Scripts/ev_outreach.R"))
+source(paste0(getwd(),"/R Scripts/ev_infrastructure.R"))
+source(paste0(getwd(),"/R Scripts/shared_mobility.R"))
 
 population <- get_acs(
   geography = "tract",
