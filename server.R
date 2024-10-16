@@ -104,7 +104,7 @@ function(input, output) {
       fleet = input$fleet, #Options are scooter or bicycle, non-ev fleet, and ev fleet
       no_vehicles = input$no_vehicles,
       no_trips = input$no_trips,
-      project_lifetime = input$shared_mobility_project_lifetime,
+      project_lifetime = input$shared_mobility_project_lifetime, # 8 default
       project_start = input$shared_mobility_project_start,
       location = input$shared_mobility_location
     )
