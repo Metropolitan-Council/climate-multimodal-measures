@@ -1,20 +1,20 @@
-# Remaining Questions:
-# What is our utilization rate
-# confirm data for fuel efficiency
-# confirm ICE vehicles is appropriately being calculated 
-# Do we want project start year and lifetiem for something that gets implemented once? 
-
 ev_infrastructure <- function(ev_type,
                               no_chargers,
+                              charger_type,
                               charge_power,
                               annual_hours_available,
-                              EV_type,
                               location,
                               project_start,
                               project_lifetime) {
 
   
-  utilization_rate <- .4 #find lit backed rate
+  if (charger_type == "DCFC"){
+    utilization_rate = ChargerUtilizationRates$DC_fast
+  }
+  
+  if (charger_type == "Level 2"){
+    utilization_rate = ChargerUtilizationRates$level_2
+  }
   
   if (ev_type == "Light-Duty") {
     average_energy_efficiency <- FuelEfficiency %>% filter(`Vehicle Type` == "Light-Duty") %>%
@@ -78,7 +78,10 @@ ev_infrastructure <- function(ev_type,
     carbon_intensity_grid <- greet_ef_year %>%
       pull(electricity)
     
-    ghg_impact_year <- vmt_displaced_year * (carbon_intensity - carbon_intensity_grid)
+    print(paste("carbon_intensity: ", carbon_intensity))
+    print(paste("carbon_intensity_grid: ", carbon_intensity_grid))
+    
+    ghg_impact_year <- vmt_displaced_year * (carbon_intensity - carbon_intensity_grid) / 1000000
     
     # Filter Discount Rate for the current year
     discount_rate <- SocialCostCarbon %>% 
@@ -110,11 +113,11 @@ ev_infrastructure <- function(ev_type,
 
 # test <- ev_infrastructure(
 #   ev_type = "Light-Duty",
-#   no_chargers = 10,
-#   charge_power = 50,
-#   annual_hours_available = 7200,
-#   EV_type = "Light-Duty",
+#   no_chargers = 25,
+#   charge_power = 19.2,
+#   charger_type = "Level 2",
+#   annual_hours_available = 8760,
 #   location = "Andover",
 #   project_start = "2024-01-01",
-#   project_lifetime = 15
+#   project_lifetime = 1
 # )

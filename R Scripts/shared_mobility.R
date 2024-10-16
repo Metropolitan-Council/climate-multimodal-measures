@@ -1,8 +1,3 @@
-# Remaining Questions:
-# Do we want to specify location? To get proportion of fleet 
-# confirm equation for vmt displaced from rideshares - 
-# in the task 4 memo we the equation is A × O × (1- DM) - I think we are forgetting something 
-
 shared_mobility <-
   function(fleet,
            no_vehicles,
@@ -11,18 +6,32 @@ shared_mobility <-
            project_start,
            location) {
     
-    if (fleet == "Bike" || fleet == "Scooter"){
-      trip_miles = 1.4
-      adjustment_factor = .5
-      average_occupancy = 1
+    average_trip_bike <- TripDistances %>% filter(mode_type == "Bicycle") %>% pull(distance_avg)
+    average_trip_scooter <- TripDistances %>% filter(mode_type == "Micromobility") %>% pull(distance_avg)
+    average_trip_rideshare <- TripDistances %>% filter(mode_type == "Smartphone ridehailing service") %>% pull(distance_avg)
+    
+    # Assign Bike fleet
+    if (fleet == "Bike") {
+      trip_miles <- average_trip_bike
+      adjustment_factor <- 0.5
+      average_occupancy <- 1
     }
     
-    if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
-      trip_miles = 7.7
-      adjustment_factor = .83
-      prct_deadhead_miles = 0.4
-      average_occupancy = 1.55
+    # Assign Scooter fleet
+    if (fleet == "Scooter") {
+      trip_miles <- average_trip_scooter
+      adjustment_factor <- 0.5
+      average_occupancy <- 1
     }
+    
+    # Assign Non-EV Rideshares and EV Rideshares fleet
+    if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
+      trip_miles <- 7.7
+      adjustment_factor <- 0.83
+      prct_deadhead_miles <- 0.4
+      average_occupancy <- 1.55
+    }
+    
     # Generate years project covers
     project_start <- lubridate::year(project_start)
     project_start <- as.numeric(project_start)
@@ -42,29 +51,24 @@ shared_mobility <-
       # Calculate new service vmt
       
       if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
-      new_service_vmt = no_vehicles * no_trips * trip_miles  
+      new_service_vmt = no_vehicles * no_trips * trip_miles 
       }
       
       if (fleet == "Bike" || fleet == "Scooter"){
         new_service_vmt = no_vehicles * no_trips * trip_miles  
       }
-      
-      print(paste("New service vmt:" , new_service_vmt))
-      
       ##################################################################################################
       # Calculate auto VMT displaced
       
       if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
         vmt_displaced_year <-
-          adjustment_factor * average_occupancy * trip_miles * (1 - prct_deadhead_miles)
+          no_vehicles * no_trips * adjustment_factor * average_occupancy * trip_miles * (1 - prct_deadhead_miles)
       }
       
       if (fleet == "Bike" || fleet == "Scooter"){
         vmt_displaced_year <-
-          adjustment_factor * average_occupancy * trip_miles
+          no_vehicles * no_trips * adjustment_factor * average_occupancy * trip_miles
       }
-      
-      print(paste("vmt displaced:" , vmt_displaced_year))
       ###################################################################################################
       # Calculate GHG impact
       greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
@@ -84,30 +88,30 @@ shared_mobility <-
         filter(year == closest_year)
       
       if (fleet == "Non-EV Rideshares") {
-        ghg_impact_year <- ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
                               (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
-                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) / 
-          (new_service_vmt * greet_ef_year$gasoline)
+                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
+          (new_service_vmt * greet_ef_year$gasoline)) / 1000000
       }
       
       
       if (fleet == "EV Rideshares") {
-        ghg_impact_year <- ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
                               (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
-                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) / 
-          (new_service_vmt * greet_ef_year$electricity)
+                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
+          (new_service_vmt * greet_ef_year$electricity)) / 1000000
       }
       
       if (fleet == "Bike") {
-        ghg_impact_year <- ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
                               (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
-                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity))
+                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity))) / 1000000
       }
       
       if (fleet == "Scooter") {
-        ghg_impact_year <- ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
                               (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
-                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity))
+                              (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity))) / 1000000
       }
       
       #################################################################################################
@@ -138,9 +142,9 @@ shared_mobility <-
     return(results)
   }
 
-# shared_mobility (fleet = 'EV Rideshares',
+# test<- shared_mobility (fleet = 'Non-EV Rideshares',
 #            no_vehicles = 20,
-#            no_trips = 50000,
-#            project_lifetime = 10,
+#            no_trips = 5000,
+#            project_lifetime = 1,
 #            project_start = "2024-01-01",
 #            location = "Andover")

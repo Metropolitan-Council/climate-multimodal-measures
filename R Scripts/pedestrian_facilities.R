@@ -1,6 +1,7 @@
 # Do we want to calculate this or have them supply it: 
 # AADT = Average annual daily traffic (two-way) on road parallel or adjacent to facility
-# What proportion of HD/LD vehicles are we displacing?
+# What proportion of HD/LD vehicles are we displacing? Right now I am just multiplying it by the gasoline EF
+# Assume all light duty now 
 pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length, no_key_destinations, project_start, project_lifetime) {
 
   annual_use_days <- 214

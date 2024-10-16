@@ -22,8 +22,8 @@ function(input, output) {
     employee_commute(
       daily_commute_no = input$daily_commute_no,
       project_start = input$project_start,
-      project_lifetime = input$project_lifetime,
-      community_type = input$community_type, 
+      project_lifetime = input$project_lifetime, #default of 4 years
+      # community_type = input$community_type, #decided to remove and assign based on location, or the map once we get it up and running 
       location = input$location
       # ,
       # average_commute = input$average_commute
@@ -51,8 +51,8 @@ function(input, output) {
     ev_outreach(
       no_participants = input$no_participants,
       project_start = input$ev_outreach_project_start,
-      project_lifetime = input$ev_outreach_project_lifetime,
-      conversion_rate = input$conversion_rate,
+      project_lifetime = input$ev_outreach_project_lifetime, #8 years default for light duty 14 years for heavy duty
+      conversion_rate = input$conversion_rate, #default .04
       audience = input$audience #LD or HD
     )
   })
@@ -75,11 +75,12 @@ function(input, output) {
     ev_infrastructure(
       ev_type = input$ev_type, #LD or HD
       no_chargers = input$no_chargers,
-      charge_power = input$charge_power,
+      charger_type = input$charger_type, #newly added - options are level 2 chargers of DCFC chargers
+      charge_power = input$charge_power, #19.2kwh for level 2 and 150 kwh for DCDC chargers 
       annual_hours_available = input$annual_hours_available,
       location = input$ev_infrastructure_location, #all locations can be extracted from CommunityTypeShape
       project_start = input$ev_infrastructure_project_start,
-      project_lifetime = input$ev_infrastructure_project_lifetime
+      project_lifetime = input$ev_infrastructure_project_lifetime #10 year default
       )
   })
   
@@ -129,7 +130,7 @@ function(input, output) {
       added_transit = input$added_transit, #no default in Task 4 Memo
       location = input$location, 
       project_start = input$project_start,
-      project_lifetime = input$project_lifetime
+      project_lifetime = input$project_lifetime #20 year default
     )
   })
   

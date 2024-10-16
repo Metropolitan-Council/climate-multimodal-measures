@@ -24,11 +24,11 @@ ev_outreach <- function(no_participants, conversion_rate, audience, project_star
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
     
     if (audience == "Light Duty") {
-      ghg_impact_year <-(vmt_displaced_year * (greet_ef_year$gasoline - greet_ef_year$electricity))
+      ghg_impact_year <-(vmt_displaced_year * (greet_ef_year$gasoline - greet_ef_year$electricity)) / 1000000
     }
     
     if (audience == "Heavy Duty") {
-      ghg_impact_year <-(vmt_displaced_year * (greet_ef_year$diesel - greet_ef_year$electricity))
+      ghg_impact_year <-(vmt_displaced_year * (greet_ef_year$diesel - greet_ef_year$electricity)) / 1000000
     }
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
@@ -52,6 +52,12 @@ ev_outreach <- function(no_participants, conversion_rate, audience, project_star
   
   return(results)
 }
+# 
+# test<- ev_outreach(
+#   no_participants = 4000,
+#   conversion_rate = .04,
+#   audience = "Light Duty",
+#   project_start = "2024-01-01",
+#   project_lifetime = 5
+# )
 
-# # Example usage
-# test <- ev_outreach(4000, .04, "Light Duty", project_start = "2024-01-01", 5)
