@@ -166,7 +166,30 @@ page_navbar(
               # nav_panel(title = "Three", p("Third tab content"))
               widths = c(2, 10)
             )),
-  nav_panel(title = "Sources", p("Links to resources etc."))   #,
+  nav_panel(title = "Sources", 
+            page_fillable(
+              card(
+                h2("Employee Commute VMT Reduction"),
+                p("Auto VMT Displaced (annual) = N × TC × D"),
+                br(),
+                
+                h2("Shared Mobility"),
+                p(""),
+                br(),
+                
+                h2("Electric Vehicle Education & Outreach "),
+                p(""),
+                br(),
+                
+                h2("Public Outreach Infrastructure"),
+                p(""),
+                br(),
+                
+                h2("Transit Expansion"),
+                p("")
+              )
+            )
+  )   #,
   # nav_spacer(),
   # nav_menu(
   #   title = "Links",
