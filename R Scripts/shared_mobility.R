@@ -142,9 +142,9 @@ shared_mobility <-
     return(results)
   }
 
-# test<- shared_mobility (fleet = 'Non-EV Rideshares',
+# test<- shared_mobility (fleet = 'EV Rideshares',
 #            no_vehicles = 20,
 #            no_trips = 5000,
-#            project_lifetime = 1,
+#            project_lifetime = 8,
 #            project_start = "2024-01-01",
-#            location = "Andover")
+#            location = "St. Paul")
