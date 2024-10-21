@@ -244,7 +244,7 @@ function(input, output, session) {
     CTU_NAME <- map_selected_location()
     
     if (!is.null(CTU_NAME)) {
-      output$map_tab_label <- renderText(paste("Map (selected", CTU_NAME, ")"))
+      output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
       updateSelectInput(session, "location", selected = CTU_NAME)
       updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
       updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)

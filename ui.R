@@ -41,10 +41,11 @@ page_navbar(
                           card(
                             layout_column_wrap(
                               width = 1/2,
-                              selectInput("community_type",
-                                          "Community Type",
-                                          choices = unique(VMTByCommunityType$CD),
-                                          selected = VMTByCommunityType$CD[1]),
+                              # NEED TO SET FROM CommunityTypeShape
+                              # selectInput("community_type",
+                              #             "Community Type",
+                              #             choices = unique(VMTByCommunityType$CD),
+                              #             selected = VMTByCommunityType$CD[1]),
                               selectInput("location",
                                           "Location",
                                           choices = unique(FleetData$ctu),
