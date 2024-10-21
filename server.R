@@ -7,7 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
-function(input, output) {
+function(input, output, session) {
   # output$dt <- renderDataTable({
   #   datatable(
   #     mtcars, fillContainer = TRUE
@@ -69,7 +69,7 @@ function(input, output) {
   
   # EV Outreach Reduction Calculation
   ev_infrastructure_results <- reactive({
-    if (is.null(input$project_start)) {
+    if (is.null(input$ev_infrastructure_project_start)) {
       return ()
     }
     ev_infrastructure(
@@ -85,7 +85,7 @@ function(input, output) {
   })
   
   output$ev_infrastructure_table <- renderDataTable({
-    if (is.null(input$project_start)) {
+    if (is.null(input$ev_infrastructure_project_start)) {
       return ()
     }
     datatable(
@@ -125,12 +125,12 @@ function(input, output) {
       return ()
     }
     transit_expansion(
-      ridership_increase = input$ridership$increase, #no default in Task 4 Memo
+      ridership_increase = input$ridership_increase, #no default in Task 4 Memo
       route_type = input$route_type, #options in AdjustmentFactorsAndTripLengths
       added_transit = input$added_transit, #no default in Task 4 Memo
-      location = input$location, 
-      project_start = input$project_start,
-      project_lifetime = input$project_lifetime #20 year default
+      location = input$transit_expansion_location, 
+      project_start = input$transit_expansion_project_start,
+      project_lifetime = input$transit_expansion_project_lifetime #20 year default
     )
   })
   
@@ -148,10 +148,29 @@ function(input, output) {
       addTiles( urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
       addPolygons( data = population
                    , fillOpacity = 0
-                   , opacity = 0.2
+                   # , opacity = 0.2
+                   , opacity = 0
                    , color = "#000000"
                    , weight = 2
                    , layerId = population$GEOID
+      ) %>%
+      addPolygons(
+        data = locations,
+        fillColor = "#0062cc",  
+        fillOpacity = 0.3,  
+        color = "black",       
+        weight = 1,          
+        layerId = locations$CTU_NAME,  
+        label = ~CTU_NAME,  
+        labelOptions = labelOptions(
+          style = list("color" = "black"),
+          textsize = "12px",
+          direction = "auto"
+        )
+      ) %>%
+      fitBounds(
+        lng1 = -94.01256, lat1 = 44.47124,
+        lng2 = -92.73191, lat2 = 45.41455
       )
   })
   
@@ -203,10 +222,37 @@ function(input, output) {
         addCircles(
           lng = click$lng,
           lat = click$lat,
-          radius = 16093,
+          radius = 4828,
           group = "circle"
         )
     } 
   }) 
+  
+  map_selected_location <- reactiveVal()
+  # First observeEvent to capture the map click and store the CTU_NAME
+  observeEvent(input$myMap_shape_click, {
+    click <- input$myMap_shape_click
+    
+    if (!is.null(click)) {
+      clicked_CTU_NAME <- click$id 
+      map_selected_location(clicked_CTU_NAME)
+      # print(paste("Clicked CTU_NAME:", clicked_CTU_NAME))
+    }
+  })
+  
+  observe({
+    CTU_NAME <- map_selected_location()
+    
+    if (!is.null(CTU_NAME)) {
+      output$map_tab_label <- renderText(paste("Map (selected", CTU_NAME, ")"))
+      updateSelectInput(session, "location", selected = CTU_NAME)
+      updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
+      updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
+      updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
+    } else {
+      output$map_tab_label <- renderText("Map")
+    }
+  })
+  
 }
 

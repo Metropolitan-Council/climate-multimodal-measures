@@ -28,10 +28,12 @@ FleetData <- read_xlsx(paste0(here::here(),"/data/FleetData.xlsx"))
 CommunityTypeShape <- st_read(paste0(here::here(),"/data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
-source(paste0(getwd(),"/R Scripts/employee_commute.R"))
-source(paste0(getwd(),"/R Scripts/ev_outreach.R"))
-source(paste0(getwd(),"/R Scripts/ev_infrastructure.R"))
-source(paste0(getwd(),"/R Scripts/shared_mobility.R"))
+
+added_functions <- c("employee_commute", "ev_outreach", "ev_infrastructure",
+                     "shared_mobility", "transit_expansion")
+for(added_function in added_functions) {
+  source(paste0(getwd(),"/R Scripts/", added_function, ".R"))
+}
 
 population <- get_acs(
   geography = "tract",
@@ -44,3 +46,8 @@ population <- get_acs(
 
 population <- ms_simplify(population, keep = 0.05,
                           keep_shapes = TRUE)
+
+locations <- st_read(paste0(getwd(),"/data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp")) %>%
+  st_transform(., crs = 4326)
+
+# location_bounds <- st_bbox(locations) 

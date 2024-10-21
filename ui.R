@@ -26,7 +26,8 @@ page_navbar(
   # nav_panel(title = "Introduction", p("Overview of app")),
   nav_panel(title = "Calculations", 
             navset_pill_list(
-              nav_panel(title = "Map", 
+              # nav_panel(title = "Map", 
+              nav_panel(title = textOutput("map_tab_label"), 
                         page_fillable(
                           card(leaflet::leafletOutput( outputId = "myMap"
                                                        , height = 850
@@ -102,6 +103,10 @@ page_navbar(
                                            "EV Type",
                                            choices = c("Light-Duty", "Heavy-Duty"),
                                            selected = "Light-Duty"),
+                              radioButtons("charger_type", 
+                                           "Charger Type",
+                                           choices = c("DCFC", "Level 2"),
+                                           selected = "DCFC"),
                               selectInput("ev_infrastructure_location",
                                           "EV Infrastructure Location",
                                           choices = unique(FleetData$ctu),
@@ -130,7 +135,6 @@ page_navbar(
                           card(dataTableOutput("ev_infrastructure_table"))
                         )),
               nav_panel(title = "Shared Mobility",
-                        
                         page_fillable(
                           card(
                             layout_column_wrap(
@@ -162,6 +166,38 @@ page_navbar(
                             )
                           ),
                           card(dataTableOutput("shared_mobility_table"))
+                        )),
+              nav_panel(title = "Transit Expansion",
+                        page_fillable(
+                          card(
+                            layout_column_wrap(
+                              width = 1/2,
+                              selectInput("route_type",
+                                          "Route Type",
+                                          choices = AdjustmentFactorsAndTripLengths$route_type,
+                                          selected = AdjustmentFactorsAndTripLengths$route_type[1]),
+                              selectInput("transit_expansion_location",
+                                          "Location",
+                                          choices = unique(FleetData$ctu),
+                                          selected = FleetData$ctu[1]),
+                              numericInput("ridership_increase", 
+                                           "Ridership Increase", 
+                                           #  NEED DEFAULT
+                                           value = 1),
+                              dateInput("transit_expansion_project_start", 
+                                        "Project Start", 
+                                        value = "2024-01-01"),
+                              numericInput("transit_expansion_project_lifetime", 
+                                           "Project Lifetime (in years)", 
+                                           #  NEED DEFAULT
+                                           value = 20),
+                              numericInput("added_transit", 
+                                           "Added Transit", 
+                                           #  NEED DEFAULT, NONEIN MEMO
+                                           value = 1)
+                            )
+                          ),
+                          card(dataTableOutput("transit_expansion_table"))
                         )),
               # nav_panel(title = "Three", p("Third tab content"))
               widths = c(2, 10)
