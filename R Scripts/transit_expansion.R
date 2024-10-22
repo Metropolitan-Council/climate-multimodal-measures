@@ -33,20 +33,14 @@ transit_expansion <-
     ghg_impact <- numeric(length(project_years))
     carbon_cost <- numeric(length(project_years))
     
-    if(route_type == "Commuter Rail Diesel") {
-      fuel_type = "diesel_commuter_rail"
-    }
-    
-    if(route_type == "Commuter Rail Electric") {
-      fuel_type = "electric_commuter_rail"
-    }
-    
-    if(route_type == "Light Rail Transit") {
-      fuel_type = "light_rail"
-    } 
-    
-    else {
-      fuel_type = "diesel"
+    if (route_type == "Commuter Rail Diesel") {
+      fuel_type <- "diesel_commuter_rail"
+    } else if (route_type == "Commuter Rail Electric") {
+      fuel_type <- "electric_commuter_rail"
+    } else if (route_type == "Light Rail Transit") {
+      fuel_type <- "light_rail"
+    } else {
+      fuel_type <- "diesel"  # Default fuel type
     }
     
     for (i in seq_along(project_years)) {
@@ -85,10 +79,6 @@ transit_expansion <-
         (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
         (added_transit * (greet_ef_year[[fuel_type]]))) / 1000000
       
-      print(greet_ef_year$gasoline)
-      print(greet_ef_year$diesel)
-      print(greet_ef_year$electricity)
-      
       # Filter Discount Rate for the current year
       discount_rate <- SocialCostCarbon %>% 
         filter(`emission.year` == current_year & gas == "CO2")
@@ -119,8 +109,8 @@ transit_expansion <-
 
 
 # test <- transit_expansion(ridership_increase = 10000,
-#                           route_type = "Core Local",
+#                           route_type = "Commuter Rail Electric",
 #                           added_transit = 35000,
 #                           location = "Andover",
 #                           project_start = "2027-01-01",
-#                           project_lifetime = 5)
+#                           project_lifetime = 1)
