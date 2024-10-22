@@ -132,10 +132,14 @@ function(input, output, session) {
     transit_expansion(
       ridership_increase = input$ridership_increase, #no default in Task 4 Memo
       route_type = input$route_type, #options in AdjustmentFactorsAndTripLengths
-      added_transit = input$added_transit, #no default in Task 4 Memo
+      added_transit = input$added_transit, #no default in Task 4 Memo CHANGE UI NAME TO ADDED TRANSIT VMT
       location = input$transit_expansion_location, 
       project_start = input$transit_expansion_project_start,
       project_lifetime = input$transit_expansion_project_lifetime #20 year default
+      # average_trip_length = input$average_trip_length, #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
+      # adjustment_factor = input$adjustment_factor #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
+      # ADD TEXT TO UI TO EXPLAIN ADJUSTMENT FACTOR
+    )
     )
   })
   
