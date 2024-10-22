@@ -140,7 +140,6 @@ function(input, output, session) {
       # adjustment_factor = input$adjustment_factor #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
       # ADD TEXT TO UI TO EXPLAIN ADJUSTMENT FACTOR
     )
-    )
   })
   
   output$transit_expansion_table <- renderDataTable({
