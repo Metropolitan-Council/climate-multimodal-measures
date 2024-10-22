@@ -4,7 +4,7 @@ employee_commute <- function(daily_commute_no,
                              community_type = NULL, 
                              location,
                              working_days = NULL,
-                             average_two_way_commute = NULL) {
+                             average_commute = NULL) {
   
   if (is.null(working_days)) {
     working_days <- 260  # Assuming 260 working days per year
@@ -38,13 +38,13 @@ employee_commute <- function(daily_commute_no,
     }
     
     # Finding the average two way commute based on community type 
-    if (is.null(average_two_way_commute)) {
+    if (is.null(average_commute)) {
     average_two_way_commute <- VMTByCommunityType %>% 
       filter(cd_year == closest_year_vmt, CD == community_type, survey_year == 2021)
-    }
     
     # Making average commute a one way commute 
     average_commute <- average_two_way_commute$vmt/2
+    }
     
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- daily_commute_no * average_commute * working_days
