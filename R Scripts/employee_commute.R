@@ -2,9 +2,13 @@ employee_commute <- function(daily_commute_no,
                              project_start,
                              project_lifetime,
                              community_type = NULL, 
-                             location) {
+                             location,
+                             working_days = NULL,
+                             average_two_way_commute = NULL) {
   
-  working_days <- 260  # Assuming 260 working days per year
+  if (is.null(working_days)) {
+    working_days <- 260  # Assuming 260 working days per year
+  }
   
   # Generate years project covers based on project start date and length of project
   project_start <- lubridate::year(project_start)
@@ -34,8 +38,10 @@ employee_commute <- function(daily_commute_no,
     }
     
     # Finding the average two way commute based on community type 
+    if (is.null(average_two_way_commute)) {
     average_two_way_commute <- VMTByCommunityType %>% 
       filter(cd_year == closest_year_vmt, CD == community_type, survey_year == 2021)
+    }
     
     # Making average commute a one way commute 
     average_commute <- average_two_way_commute$vmt/2
@@ -98,4 +104,5 @@ employee_commute <- function(daily_commute_no,
 # test <- employee_commute(daily_commute_no = 200,
 #                          project_start = "2024-01-01",
 #                          project_lifetime = 10,
-#                          location = "Andover")
+#                          location = "Andover",
+#                          working_days = 250)
