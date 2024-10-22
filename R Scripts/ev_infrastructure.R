@@ -5,7 +5,8 @@ ev_infrastructure <- function(ev_type,
                               annual_hours_available,
                               location,
                               project_start,
-                              project_lifetime) {
+                              project_lifetime,
+                              utilization_rate = NULL) {
 
   
   if (charger_type == "DCFC"){
