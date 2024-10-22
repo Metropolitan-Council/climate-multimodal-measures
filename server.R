@@ -108,6 +108,10 @@ function(input, output, session) {
       project_lifetime = input$shared_mobility_project_lifetime, # 8 default
       project_start = input$shared_mobility_project_start,
       location = input$shared_mobility_location
+      # adjustment_factor = input$adjustment_factor, #default is based on fleet type (.5 for bikes and scooters, .83 for rideshares)
+      # average_occupancy = input$average_occupancy, #default is 1 for bikes and scooters and 1.55 for rideshares
+      # trip_miles = input$trip_miles, # based on fleet assignment and can be found in the TripDistances dataset - bicylce, micromobility for scooters, and Smartphone ridehailing service for rideshares
+      # prct_deadhead_miles = input$prct_deadhead_miles #default zero for bike and scooter and .4 for rideshares
     )
   })
   

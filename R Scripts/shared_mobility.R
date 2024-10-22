@@ -4,32 +4,52 @@ shared_mobility <-
            no_trips,
            project_lifetime,
            project_start,
-           location) {
-    
-    average_trip_bike <- TripDistances %>% filter(mode_type == "Bicycle") %>% pull(distance_avg)
-    average_trip_scooter <- TripDistances %>% filter(mode_type == "Micromobility") %>% pull(distance_avg)
-    average_trip_rideshare <- TripDistances %>% filter(mode_type == "Smartphone ridehailing service") %>% pull(distance_avg)
+           location,
+           adjustment_factor = NULL,
+           average_occupancy = NULL,
+           trip_miles = NULL,
+           prct_deadhead_miles = NULL) {
     
     # Assign Bike fleet
     if (fleet == "Bike") {
-      trip_miles <- average_trip_bike
-      adjustment_factor <- 0.5
-      average_occupancy <- 1
+      if (is.null(trip_miles)) {
+        trip_miles <- TripDistances %>% filter(mode_type == "Bicycle") %>% pull(distance_avg)
+      }
+      if (is.null(adjustment_factor)) {
+        adjustment_factor <- 0.5
+      }
+      if (is.null(average_occupancy)) {
+        average_occupancy <- 1
+      }
     }
     
     # Assign Scooter fleet
     if (fleet == "Scooter") {
-      trip_miles <- average_trip_scooter
-      adjustment_factor <- 0.5
-      average_occupancy <- 1
+      if (is.null(trip_miles)) {
+        trip_miles <- TripDistances %>% filter(mode_type == "Micromobility") %>% pull(distance_avg)
+      }
+      if (is.null(adjustment_factor)) {
+        adjustment_factor <- 0.5
+      }
+      if (is.null(average_occupancy)) {
+        average_occupancy <- 1
+      }
     }
     
     # Assign Non-EV Rideshares and EV Rideshares fleet
     if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
-      trip_miles <- 7.7
-      adjustment_factor <- 0.83
-      prct_deadhead_miles <- 0.4
-      average_occupancy <- 1.55
+      if (is.null(trip_miles)) {
+        trip_miles <- TripDistances %>% filter(mode_type == "Smartphone ridehailing service") %>% pull(distance_avg)
+      }
+      if (is.null(adjustment_factor)) {
+        adjustment_factor <- 0.83
+      }
+      if (is.null(prct_deadhead_miles)) {
+        prct_deadhead_miles <- 0.4
+      }
+      if (is.null(average_occupancy)) {
+        average_occupancy <- 1.55
+      }
     }
     
     # Generate years project covers
