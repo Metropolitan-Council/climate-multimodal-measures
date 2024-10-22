@@ -4,16 +4,23 @@ transit_expansion <-
            added_transit,
            location,
            project_start,
-           project_lifetime) {
+           project_lifetime,
+           average_trip_length = NULL,
+           adjustment_factor = NULL) {
     
-    # Select average trip length by route type
-    average_trip_length <- AdjustmentFactorsAndTripLengths %>%
-      filter(route_type == !!route_type) %>%
-      pull(average_trip_length_mi_trip)
+    # Select average trip length by route type if it is NULL
+    if (is.null(average_trip_length)) {
+      average_trip_length <- AdjustmentFactorsAndTripLengths %>%
+        filter(route_type == !!route_type) %>%
+        pull(average_trip_length_mi_trip)
+    }
     
-    adjustment_factor <- AdjustmentFactorsAndTripLengths %>% 
-      filter(route_type == !!route_type) %>% 
-      pull(adjustment_factor)
+    # Select adjustment factor by route type if it is NULL
+    if (is.null(adjustment_factor)) {
+      adjustment_factor <- AdjustmentFactorsAndTripLengths %>% 
+        filter(route_type == !!route_type) %>% 
+        pull(adjustment_factor)
+    }
     
     # Generate years project covers
     project_start <- lubridate::year(project_start)
@@ -111,9 +118,9 @@ transit_expansion <-
   }
 
 
-test <- transit_expansion(ridership_increase = 10000,
-                          route_type = "Core Local",
-                          added_transit = 35000,
-                          location = "Andover",
-                          project_start = "2027-01-01",
-                          project_lifetime = 5)
+# test <- transit_expansion(ridership_increase = 10000,
+#                           route_type = "Core Local",
+#                           added_transit = 35000,
+#                           location = "Andover",
+#                           project_start = "2027-01-01",
+#                           project_lifetime = 5)
