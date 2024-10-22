@@ -207,7 +207,7 @@ page_navbar(
             page_fillable(
               card(
                 h2("Employee Commute VMT Reduction"),
-                p("Auto VMT Displaced (annual) = N × TC × D"),
+                p(""),
                 br(),
                 
                 h2("Shared Mobility"),
