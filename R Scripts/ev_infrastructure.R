@@ -9,12 +9,14 @@ ev_infrastructure <- function(ev_type,
                               utilization_rate = NULL) {
 
   
-  if (charger_type == "DCFC"){
-    utilization_rate = ChargerUtilizationRates$DC_fast
-  }
-  
-  if (charger_type == "Level 2"){
-    utilization_rate = ChargerUtilizationRates$level_2
+  if (is.null(utilization_rate)) {
+    if (charger_type == "DCFC"){
+      utilization_rate <- ChargerUtilizationRates$DC_fast
+    }
+    
+    if (charger_type == "Level 2"){
+      utilization_rate <- ChargerUtilizationRates$level_2
+    }
   }
   
   if (ev_type == "Light-Duty") {
@@ -26,6 +28,9 @@ ev_infrastructure <- function(ev_type,
     average_energy_efficiency <- FuelEfficiency %>% filter(`Vehicle Type` == "Heavy-Duty") %>%
       pull(`Fuel Efficiency (Wh/mi)`)
   }
+  
+  print(paste("utilization_rate: ", utilization_rate))
+  print(paste("average_energy_efficiency: ", average_energy_efficiency))
   
   # Generate years project covers based on project start date and length of project
   project_start <- lubridate::year(project_start)
@@ -58,7 +63,8 @@ ev_infrastructure <- function(ev_type,
     percentage_ICE <- (100 - fleet_proportion$electricity)
     
     # Calculate VMT displaced for the current year
-    vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / average_energy_efficiency * percentage_ICE
+    vmt_displaced_year <- vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / average_energy_efficiency * (percentage_ICE / 100)
+
     
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
@@ -109,13 +115,13 @@ ev_infrastructure <- function(ev_type,
   return(results)
 }
 
-# test <- ev_infrastructure(
-#   ev_type = "Light-Duty",
-#   no_chargers = 25,
-#   charge_power = 19.2,
-#   charger_type = "Level 2",
-#   annual_hours_available = 8760,
-#   location = "Andover",
-#   project_start = "2024-01-01",
-#   project_lifetime = 1
-# )
+test <- ev_infrastructure(
+  ev_type = "Light-Duty",
+  no_chargers = 25,
+  charge_power = 19.2,
+  charger_type = "Level 2",
+  annual_hours_available = 8760,
+  location = "Andover",
+  project_start = "2024-01-01",
+  project_lifetime = 1
+)
