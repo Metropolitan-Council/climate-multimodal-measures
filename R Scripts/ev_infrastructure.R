@@ -58,10 +58,7 @@ ev_infrastructure <- function(ev_type,
     percentage_ICE <- (100 - fleet_proportion$electricity)
     
     # Calculate VMT displaced for the current year
-    vmt_displaced_year <- ((
-      no_chargers + charge_power + utilization_rate + annual_hours_available
-    ) / average_energy_efficiency
-    ) * percentage_ICE
+    vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / average_energy_efficiency * percentage_ICE
     
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
