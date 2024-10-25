@@ -1,126 +1,265 @@
-server <- function(input, output) {
-    
-  output$tableDT <- DT::renderDataTable({
-    iris
-  })
-  
-  output$table <- renderTable({
-    iris
-  })
-  
-  output$dat <- renderUI({
-    table <- DT::datatable(mtcars
-                           # , fillContainer = TRUE, style = "bootstrap4", rownames = FALSE
-                           )
-    card(table)
-  })
+#
+# This is the server logic of a Shiny web application. You can run the
+# application by clicking 'Run App' above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+function(input, output, session) {
+  # output$dt <- renderDataTable({
+  #   datatable(
+  #     mtcars, fillContainer = TRUE
+  #   )
+  # })
   
   # Employee Commute Reduction Calculation
   employee_commute_results <- reactive({
     if (is.null(input$project_start)) {
       return ()
     }
-    # employee_commute(
-    #   daily_commute_no = input$daily_commute_no,
-    #   project_start = input$project_start,
-    #   project_lifetime = input$project_lifetime,
-    #   average_commute = input$average_commute
-    # )
-    # ---------------------------------------------------
-    daily_commute_no <- input$daily_commute_no
-    project_start <- input$project_start
-    project_lifetime <- input$project_lifetime
-    average_commute <- input$average_commute
-    community_type <- "Urban"
-    # ---------------------------------------------------
-    working_days <- 260  # Assuming 260 working days per year - ADD SOURCE
-    project_start <- ymd(project_start)
-    
-    # Generate years project covers based on project start date and length of project
-    # project_years <- seq(year(project_start),
-    #                      year(project_start + years(project_lifetime - 1)))
-    project_years <- seq(2024, 2027)
-    
-    # Initialize vectors to store results
-    vmt_displaced <- numeric(length(project_years))
-    ghg_impact <- numeric(length(project_years))
-    carbon_cost <- numeric(length(project_years))
-    
-    # Calculate vmt, ghg, and social cost of carbon for each year of the project timeline
-    for (i in seq_along(project_years)) {
-      current_year <- project_years[i]
-      
-      closest_year_vmt <- VMTByCommunityType %>%
-        summarise(closest_year = cd_year[which.min(abs(cd_year - current_year))]) %>%
-        pull(closest_year)
-      
-      average_two_way_commute <- VMTByCommunityType %>% 
-        filter(cd_year == closest_year_vmt, CD == community_type, survey_year == 2021)
-      
-      average_commute <- average_two_way_commute$vmt
-      
-      # Calculate VMT displaced for the current year
-      vmt_displaced_year <- daily_commute_no * average_commute * working_days
-      
-      # Filter GHG emission factor (EF) for the current year
-      greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
-      
-      # Filter Discount Rate for the current year
-      discount_rate <- SocialCostCarbon %>% 
-        filter(`emission.year` == current_year & gas == "CO2")
-      
-      # Filter to CTU provided
-      FleetData <- FleetData %>% filter(ctu == v_location)
-      
-      # Determine the closest year
-      closest_year <- FleetData %>%
-        summarise(closest_year = year[which.min(abs(as.integer(year) - current_year))]) %>%
-        pull(closest_year)
-      
-      # Filter the data set to get the fleet proportions from the closest year
-      # fleet_proportion <- FleetData %>%
-      fleet_proportion <- FleetProportion %>%
-        filter(Year == as.integer(closest_year))
-      
-      # Calculate GHG impact for the current year
-      ghg_impact_year <- 
-        (vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-        (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
-        (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)
-      
-      social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
-      
-      # Store results for the current year
-      vmt_displaced[i] <- vmt_displaced_year
-      ghg_impact[i] <- ghg_impact_year
-      carbon_cost[i] <- social_cost_carbon
-    }
-    
-    # Calculate total vmt_displaced and ghg_impact
-    total_vmt_displaced <- sum(vmt_displaced)
-    total_ghg_impact <- sum(ghg_impact)
-    total_carbon_cost <- sum(carbon_cost)
-    
-    # Create a data frame with results including totals
-    results <- data.frame(
-      year = c(project_years, "Total"),
-      vmt_displaced = c(vmt_displaced, total_vmt_displaced),
-      ghg_impact = c(ghg_impact, total_ghg_impact),
-      carbon_cost = c(carbon_cost, total_carbon_cost)
+    employee_commute(
+      daily_commute_no = input$daily_commute_no,
+      project_start = input$project_start,
+      project_lifetime = input$project_lifetime, #default of 4 years
+      # community_type = input$community_type, #decided to remove and assign based on location, or the map once we get it up and running 
+      location = input$location
+      # working_days = input$working_days, #default should be 260 days
+      # average_commute = input$average_commute #default should be based on the mapping the location and what that maps to in CommunityTypeShape
     )
-    
-    results
-    # ---------------------------------------------------
-    
   })
   
-  # Render the table - ADD TO UI
-  output$employee_commute_table <- renderTable({
+  output$employee_commute_table <- renderDataTable({
     if (is.null(input$project_start)) {
       return ()
     }
-    employee_commute_results()
+    datatable(
+      employee_commute_results(), fillContainer = TRUE
+    )
   })
-
+  
+  # EV Outreach Reduction Calculation
+  ev_outreach_results <- reactive({
+    if (is.null(input$no_participants) |
+        is.null(input$ev_outreach_project_start) |
+        is.null(input$ev_outreach_project_lifetime) |
+        is.null(input$conversion_rate) |
+        is.null(input$audience)) {
+      return ()
+    }
+    ev_outreach(
+      no_participants = input$no_participants,
+      project_start = input$ev_outreach_project_start,
+      project_lifetime = input$ev_outreach_project_lifetime, #8 years default for light duty 14 years for heavy duty
+      conversion_rate = input$conversion_rate, #default .04
+      audience = input$audience #LD or HD
+    )
+  })
+  
+  output$ev_outreach_table <- renderDataTable({
+    if (is.null(input$ev_outreach_project_start)) {
+      return ()
+    }
+    datatable(
+      ev_outreach_results(), fillContainer = TRUE
+    )
+  })
+  
+  
+  # EV Outreach Reduction Calculation
+  ev_infrastructure_results <- reactive({
+    if (is.null(input$ev_infrastructure_project_start)) {
+      return ()
+    }
+    ev_infrastructure(
+      ev_type = input$ev_type, #LD or HD
+      no_chargers = input$no_chargers,
+      charger_type = input$charger_type, #newly added - options are level 2 chargers of DCFC chargers
+      charge_power = input$charge_power, #19.2kwh for level 2 and 150 kwh for DCDC chargers 
+      annual_hours_available = input$annual_hours_available,
+      location = input$ev_infrastructure_location, #all locations can be extracted from CommunityTypeShape
+      project_start = input$ev_infrastructure_project_start,
+      project_lifetime = input$ev_infrastructure_project_lifetime #10 year default
+      #ChargerUtilizationRates = input#ChargerUtilizationRates #default should be based on the charger_type in the ChargerUtilizationRates dataset
+    )
+  })
+  
+  output$ev_infrastructure_table <- renderDataTable({
+    if (is.null(input$ev_infrastructure_project_start)) {
+      return ()
+    }
+    datatable(
+      ev_infrastructure_results(), fillContainer = TRUE
+    )
+  })
+  
+  
+  # Shared Mobility
+  # double checking this name?
+  shared_mobility_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    shared_mobility(
+      fleet = input$fleet, #Options are scooter or bicycle, non-ev fleet, and ev fleet
+      no_vehicles = input$no_vehicles,
+      no_trips = input$no_trips,
+      project_lifetime = input$shared_mobility_project_lifetime, # 8 default
+      project_start = input$shared_mobility_project_start,
+      location = input$shared_mobility_location
+      # adjustment_factor = input$adjustment_factor, #default is based on fleet type (.5 for bikes and scooters, .83 for rideshares)
+      # average_occupancy = input$average_occupancy, #default is 1 for bikes and scooters and 1.55 for rideshares
+      # trip_miles = input$trip_miles, # based on fleet assignment and can be found in the TripDistances dataset - bicylce, micromobility for scooters, and Smartphone ridehailing service for rideshares
+      # prct_deadhead_miles = input$prct_deadhead_miles #default zero for bike and scooter and .4 for rideshares
+    )
+  })
+  
+  output$shared_mobility_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    datatable(
+      shared_mobility_results(), fillContainer = TRUE
+    )
+  })
+  
+  # EV Outreach Reduction Calculation
+  transit_expansion_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    transit_expansion(
+      ridership_increase = input$ridership_increase, #no default in Task 4 Memo
+      route_type = input$route_type, #options in AdjustmentFactorsAndTripLengths
+      added_transit = input$added_transit, #no default in Task 4 Memo CHANGE UI NAME TO ADDED TRANSIT VMT
+      location = input$transit_expansion_location, 
+      project_start = input$transit_expansion_project_start,
+      project_lifetime = input$transit_expansion_project_lifetime #20 year default
+      # average_trip_length = input$average_trip_length, #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
+      # adjustment_factor = input$adjustment_factor #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
+      # ADD TEXT TO UI TO EXPLAIN ADJUSTMENT FACTOR
+    )
+  })
+  
+  output$transit_expansion_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    datatable(
+      transit_expansion_results(), fillContainer = TRUE
+    )
+  })
+  
+  foundational.map <- shiny::reactive({
+    leaflet() %>%
+      addTiles( urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
+      addPolygons( data = population
+                   , fillOpacity = 0
+                   # , opacity = 0.2
+                   , opacity = 0
+                   , color = "#000000"
+                   , weight = 2
+                   , layerId = population$GEOID
+      ) %>%
+      addPolygons(
+        data = locations,
+        fillColor = "#0062cc",  
+        fillOpacity = 0.3,  
+        color = "black",       
+        weight = 1,          
+        layerId = locations$CTU_NAME,  
+        label = ~CTU_NAME,  
+        labelOptions = labelOptions(
+          style = list("color" = "black"),
+          textsize = "12px",
+          direction = "auto"
+        )
+      ) %>%
+      fitBounds(
+        lng1 = -94.01256, lat1 = 44.47124,
+        lng2 = -92.73191, lat2 = 45.41455
+      )
+  })
+  
+  output$myMap <- renderLeaflet({
+    
+    foundational.map()
+    
+  }) 
+  
+  shiny::observeEvent( input$myMap_shape_click, {
+    
+    click <- input$myMap_shape_click
+    
+    if( is.null( click$id ) ){
+      req( click$id )
+      
+    } else {
+      print(click)
+      # Create an sf point from the click coordinates
+      clicked_point <- st_sfc(st_point(c(click$lng, click$lat)), crs = 4326)  # Create point geometry in WGS84 (EPSG:4326)
+      
+      # Now, transform the point to a projected CRS like EPSG:3857 for accurate buffering in meters
+      clicked_point_projected <- st_transform(clicked_point, crs = 3857)
+      
+      # Create a buffer (circle) around the point with the given radius in meters
+      buffer_circle <- st_buffer(clicked_point_projected, dist = 16093)  # Buffer in meters
+      
+      # Transform back to WGS84 for visualization/intersection (if needed)
+      buffer_circle_wgs84 <- st_transform(buffer_circle, crs = 4326)
+      
+      # Perform the intersection with your spatial dataset (population)
+      intersections <- st_intersection(st_transform(population, crs = 4326), 
+                                       buffer_circle_wgs84)
+      
+      intersection_calcs <- intersections %>%
+        left_join(population %>%
+                    filter(GEOID %in% intersections$GEOID) %>%
+                    mutate(total_tract_area = st_area(geometry)) %>%
+                    select(GEOID, total_tract_area) %>% 
+                    st_drop_geometry(),
+                  by = "GEOID") %>%
+        mutate(area_in_circle = st_area(.),
+               area_share = area_in_circle / total_tract_area,
+               estimated_pop = estimate * area_share)
+      
+      output$tract_info <- renderText(paste(click$lng, click$lat, sum(intersection_calcs$estimated_pop)))
+      leaflet::leafletProxy( mapId = "myMap" ) %>%
+        clearGroup(group = "circle") %>%
+        addCircles(
+          lng = click$lng,
+          lat = click$lat,
+          radius = 4828,
+          group = "circle"
+        )
+    } 
+  }) 
+  
+  map_selected_location <- reactiveVal()
+  # First observeEvent to capture the map click and store the CTU_NAME
+  observeEvent(input$myMap_shape_click, {
+    click <- input$myMap_shape_click
+    
+    if (!is.null(click)) {
+      clicked_CTU_NAME <- click$id 
+      map_selected_location(clicked_CTU_NAME)
+      # print(paste("Clicked CTU_NAME:", clicked_CTU_NAME))
+    }
+  })
+  
+  observe({
+    CTU_NAME <- map_selected_location()
+    
+    if (!is.null(CTU_NAME)) {
+      output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
+      updateSelectInput(session, "location", selected = CTU_NAME)
+      updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
+      updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
+      updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
+    } else {
+      output$map_tab_label <- renderText("Map")
+    }
+  })
   
 }
