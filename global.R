@@ -1,4 +1,5 @@
 #Loading Packages
+library(scales)
 library(shiny)
 library(bslib)
 library(readxl)
@@ -7,7 +8,6 @@ library(here)
 library(DT)
 library(lubridate)
 library(sf)
-
 library(tidycensus)
 library(tigris)
 library(mapview)
@@ -51,3 +51,37 @@ locations <- st_read(paste0(getwd(),"/data/shp_society_thrive_msp2040_com_des/Th
   st_transform(., crs = 4326)
 
 # location_bounds <- st_bbox(locations) 
+
+met_council_datatable <- function(provided_data) {
+  
+  formatted_data <- provided_data
+  
+  pretty_names <- colnames(formatted_data) %>%
+    str_replace_all("_", " ") %>%  
+    str_to_title() %>%
+    str_replace_all("Vmt", "VMT") %>%
+    str_replace_all("Ghg", "GHG") 
+  colnames(formatted_data) <- pretty_names
+  cols_to_center <- setdiff(pretty_names, "Year")
+  
+  numeric_cols <- colnames(formatted_data)[sapply(formatted_data, class)=="numeric"]
+  formatted_data[numeric_cols] <- round(formatted_data[numeric_cols], digits = 3) 
+  
+  datatable(formatted_data %>%
+              mutate(across(numeric_cols, ~ formatC(.x, big.mark = ",", 
+                                                    format = "f",
+                                                    drop0trailing = TRUE))), 
+            fillContainer = TRUE,
+            rownames = FALSE,
+            options = list(
+              searching = FALSE,  # Disable search
+              paging = FALSE,     # Disable pagination
+              dom = 't',          # Show only the table (no extra controls)
+              ordering = FALSE,    # Disable ordering
+              columnDefs = list(
+                list(targets = which(pretty_names != "Year") - 1,  
+                     className = 'dt-center')))) %>%
+    formatStyle('Year', target = 'row', 
+                fontWeight = styleEqual("Total", c('bold'))) %>%
+    formatStyle(cols_to_center, textAlign = 'center')
+}

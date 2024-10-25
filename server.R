@@ -8,11 +8,6 @@
 #
 
 function(input, output, session) {
-  # output$dt <- renderDataTable({
-  #   datatable(
-  #     mtcars, fillContainer = TRUE
-  #   )
-  # })
   
   # Employee Commute Reduction Calculation
   employee_commute_results <- reactive({
@@ -34,8 +29,8 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    datatable(
-      employee_commute_results(), fillContainer = TRUE
+    met_council_datatable(
+      employee_commute_results()
     )
   })
   
@@ -61,8 +56,8 @@ function(input, output, session) {
     if (is.null(input$ev_outreach_project_start)) {
       return ()
     }
-    datatable(
-      ev_outreach_results(), fillContainer = TRUE
+    met_council_datatable(
+      ev_outreach_results()
     )
   })
   
@@ -89,8 +84,8 @@ function(input, output, session) {
     if (is.null(input$ev_infrastructure_project_start)) {
       return ()
     }
-    datatable(
-      ev_infrastructure_results(), fillContainer = TRUE
+    met_council_datatable(
+      ev_infrastructure_results()
     )
   })
   
@@ -119,8 +114,8 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    datatable(
-      shared_mobility_results(), fillContainer = TRUE
+    met_council_datatable(
+      shared_mobility_results()
     )
   })
   
@@ -146,8 +141,8 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    datatable(
-      transit_expansion_results(), fillContainer = TRUE
+    met_council_datatable(
+      transit_expansion_results()
     )
   })
   
