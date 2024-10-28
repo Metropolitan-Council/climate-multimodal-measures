@@ -1,9 +1,8 @@
-# Do we want to calculate this or have them supply it: 
-# AADT = Average annual daily traffic (two-way) on road parallel or adjacent to facility
-# What proportion of HD/LD vehicles are we displacing? Right now I am just multiplying it by the gasoline EF
-# Assume all light duty now 
-pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length, no_key_destinations, project_start, project_lifetime) {
-
+pedestrian_facilities <- function(average_daily_traffic,
+                                  one_way_facility_length,
+                                  no_key_destinations,
+                                  project_start,
+                                  project_lifetime) {
   annual_use_days <- 214
   average_trip_replaced <- 0.6 #in miles
   
@@ -18,15 +17,18 @@ pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length
   # Use case_when for facility length range
   facility_length_range <- case_when(
     one_way_facility_length == 1 ~ "1",
-    one_way_facility_length > 1 & one_way_facility_length <= 2 ~ "1.01",
+    one_way_facility_length > 1 &
+      one_way_facility_length <= 2 ~ "1.01",
     one_way_facility_length > 2 ~ "2",
     TRUE ~ NA_character_
   )
   
   # Using dplyr to filter and pull the mode_shift_factor_m value
   mode_shift_factor <- ModeShiftFactor %>%
-    filter(average_daily_traffic_vehicle_trips_per_day == traffic_range,
-           one_way_facility_length_miles_low == facility_length_range) %>%
+    filter(
+      average_daily_traffic_vehicle_trips_per_day == traffic_range,
+      one_way_facility_length_miles_low == facility_length_range
+    ) %>%
     pull(mode_shift_factor_m)
   
   key_destination_credit <- CreditForKeyDestinations %>%
@@ -34,7 +36,8 @@ pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length
       case_when(
         no_key_destinations <= 2 ~ number_of_key_destinations == "0 to 2",
         no_key_destinations == 3 ~ number_of_key_destinations == "3",
-        no_key_destinations >= 4 & no_key_destinations <= 6 ~ number_of_key_destinations == "4 to 6",
+        no_key_destinations >= 4 &
+          no_key_destinations <= 6 ~ number_of_key_destinations == "4 to 6",
         no_key_destinations >= 7 ~ number_of_key_destinations == "7 or more"
       )
     ) %>%
@@ -59,10 +62,14 @@ pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == year)
     
-    discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
+    discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year &
+                                                   gas == "CO2")
     
-    ghg_impact_year <-(vmt_displaced_year * (greet_ef_year$gasoline))
-
+    ghg_impact_year <- 
+      ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
+         (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+         (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) / 1000000
+    
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
     
     # Store results for the current year
@@ -77,10 +84,12 @@ pedestrian_facilities <- function(average_daily_traffic, one_way_facility_length
   total_carbon_cost <- sum(carbon_cost)
   
   # Create a data frame with results including totals
-  results <- data.frame(year = c(project_years, "Total"),
-                        vmt_displaced = c(auto_vmt_displaced, total_vmt_displaced),
-                        ghg_impact = c(ghg_impact, total_ghg_impact),
-                        carbon_cost = c(carbon_cost, total_carbon_cost))
+  results <- data.frame(
+    year = c(project_years, "Total"),
+    vmt_displaced = c(auto_vmt_displaced, total_vmt_displaced),
+    ghg_impact = c(ghg_impact, total_ghg_impact),
+    carbon_cost = c(carbon_cost, total_carbon_cost)
+  )
   
   return(results)
 }
