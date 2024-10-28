@@ -1,7 +1,7 @@
 mobility_hubs <-
   function(mobility_mode,
            population_3mile,
-           added_vmt
+           added_vmt,
            project_lifetime,
            project_start,
            location,
