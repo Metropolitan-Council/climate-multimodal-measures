@@ -146,7 +146,7 @@ function(input, output, session) {
     )
   })
   
-  # EV Outreach Reduction Calculation
+ # Corridor Speed Improvement Results
   corridor_speed_improvement_results <- reactive({
     if (is.null(input$project_start)) {
       return ()
@@ -169,6 +169,30 @@ function(input, output, session) {
     }
     met_council_datatable(
       corridor_speed_improvement_results()
+    )
+  })
+  
+  # Intersection Delay Results
+  intersection_delay_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    intersection_delay_reductions(
+      number_peak_hours = input$number_peak_hours,
+      vehicle_per_hour = input$vehicle_per_hour,
+      location = input$location, 
+      project_start = input$project_start,
+      project_lifetime = input$project_lifetime, #Default is 7 I think if this corresponds to traffic management technologies
+      fleet_ratio = input$fleet_ratio #Default is based on the fleet ratio of community type
+    )
+  })
+  
+  output$intersection_delay_reductions_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    met_council_datatable(
+      intersection_delay_results()
     )
   })
   
