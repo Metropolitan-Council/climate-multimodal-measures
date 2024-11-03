@@ -146,6 +146,32 @@ function(input, output, session) {
     )
   })
   
+  # EV Outreach Reduction Calculation
+  corridor_speed_improvement_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    corridor_speed_improvements(
+      corridor_distance = input$corridor_distance, 
+      avg_annual_daily_traffic = input$avg_annual_daily_traffic, 
+      avg_corridor_speed_no_build = input$avg_corridor_speed_no_build,
+      avg_corridor_speed_build = input$avg_corridor_speed_build,
+      location = input$location, 
+      project_start = input$project_start,
+      project_lifetime = input$project_lifetime, #Default is 7 I think if this corresponds to traffic management technologies
+      fleet_ratio = input$fleet_ratio #Default is based on the fleet ratio of community type
+    )
+  })
+  
+  output$corridor_speed_improvements_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    met_council_datatable(
+      corridor_speed_improvement_results()
+    )
+  })
+  
   foundational.map <- shiny::reactive({
     leaflet() %>%
       addTiles( urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
