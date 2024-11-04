@@ -130,9 +130,9 @@ function(input, output, session) {
       added_transit = input$added_transit, #no default in Task 4 Memo CHANGE UI NAME TO ADDED TRANSIT VMT
       location = input$transit_expansion_location, 
       project_start = input$transit_expansion_project_start,
-      project_lifetime = input$transit_expansion_project_lifetime #20 year default
-      # average_trip_length = input$average_trip_length, #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
-      # adjustment_factor = input$adjustment_factor #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
+      project_lifetime = input$transit_expansion_project_lifetime, #20 year default
+      average_trip_length = input$average_trip_length, #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
+      adjustment_factor = input$adjustment_factor #default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
       # ADD TEXT TO UI TO EXPLAIN ADJUSTMENT FACTOR
     )
   })
@@ -193,6 +193,32 @@ function(input, output, session) {
     }
     met_council_datatable(
       intersection_delay_results()
+    )
+  })
+  
+  # Mobility Hub Results
+  mobility_hub_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    mobility_hub(
+      mobility_mode, #Allow for multiple selections options are in TotalVMTReductionPotential DF
+      added_vmt,
+      project_lifetime, #Default is 20 years
+      project_start,
+      location,
+      population_3mile, #Auto populate with 3 mile population based on map selection
+      reduction_potential, #Auto calculate based on mobility modes chosen (add all total vmt redcution from the TotalVMTReductionPotential DF)
+      annual_vmt #Auto populate with VMT per capita based on community type of chosen location
+    )
+  })
+  
+  output$mobility_hub_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    met_council_datatable(
+      mobility_hub_results()
     )
   })
   

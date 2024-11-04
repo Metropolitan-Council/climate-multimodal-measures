@@ -1,19 +1,24 @@
 mobility_hubs <-
   function(mobility_mode,
-           population_3mile,
            added_vmt,
            project_lifetime,
            project_start,
            location,
+           population_3mile = NULL,
            reduction_potential = NULL,
            annual_vmt = NULL) {
+    
     if (is.null(reduction_potential)) {
-      reduction_potential <- TotalVMTReductionPotential %>% filter(mobility_mode == fleet) %>% pull(total_vmt_reduction_potential)
+      reduction_potential <- TotalVMTReductionPotential %>%
+        filter(mobility_mode %in% mobility_modes) %>% # Filter to include all selected modes
+        summarise(total_vmt_reduction_potential = sum(total_vmt_reduction_potential, na.rm = TRUE)) %>%
+        pull(total_vmt_reduction_potential)
     }
     
     if (is.null(annual_vmt)) {
       annual_vmt = 5567
     }
+    
     # Generate years project covers
     project_start <- lubridate::year(project_start)
     project_start <- as.numeric(project_start)
