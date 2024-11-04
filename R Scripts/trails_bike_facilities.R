@@ -1,14 +1,13 @@
 trails_bike_facilities <- function(average_daily_traffic,
                                    facility_length_range,
-                                   key_destinations,
+                                   no_key_destinations_25,
+                                   no_key_destinations_50,
                                    facility_type,
                                    project_start,
                                    project_lifetime,
                                    days_open = NULL,
-                                   mode_shift_factor = NULL,
                                    length_trip_replaced_walking = NULL,
-                                   length_trip_replaced_biking = NULL,
-                                   growth_factor_adjustment = NULL) {
+                                   length_trip_replaced_biking = NULL) {
   if (is.null(days_open)) {
     days_open = 214
   }
@@ -21,15 +20,13 @@ trails_bike_facilities <- function(average_daily_traffic,
     length_trip_replaced_biking = 3.6
   }
   
-  if (is.null(growth_factor_adjustment)) {
-    growth_factor_adjustment <- switch(
+  growth_factor_adjustment <- switch(
       facility_type,
       "on_street" = 1,
       "new_multiuse" = 1.54,
       "conversion" = 0.54,
       1
     )
-  }
   
   traffic_range <- case_when(
     average_daily_traffic <= 12000 ~ "1 to 12,000",
@@ -45,15 +42,13 @@ trails_bike_facilities <- function(average_daily_traffic,
     one_way_facility_length > 2 ~ "2",
     TRUE ~ NA_character_
   )
-  
-  if (is.null(mode_shift_factor)) {
-    mode_shift_factor <- ModeShiftFactor %>%
+
+  mode_shift_factor <- ModeShiftFactor %>%
       filter(
         average_daily_traffic_vehicle_trips_per_day == traffic_range,
         one_way_facility_length_miles_low == facility_length_range
       ) %>%
       pull(mode_shift_factor_m)
-  }
   
   # Generate years project covers based on project start date and length of project
   project_start <- lubridate::year(project_start)

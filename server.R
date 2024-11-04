@@ -228,13 +228,13 @@ function(input, output, session) {
       return ()
     }
     pedestrian_facilities(
-      average_daily_traffic,
-      one_way_facility_length,
-      no_key_destinations_25,
-      no_key_destinations_50,
-      location,
-      project_start,
-      project_lifetime,
+      average_daily_traffic = input$average_daily_traffic,
+      one_way_facility_length = input$one_way_facility_length,
+      no_key_destinations_25 = input$no_key_destinations_25,
+      no_key_destinations_50 = input$no_key_destinations_50,
+      location = input$location,
+      project_start = input$project_start,
+      project_lifetime = input$project_lifetime,
       annual_use_days = input$annual_use_days, # Default is 214
       average_trip_replaced = input$average_trip_replaced # Default based on community type distinction
     )
@@ -246,6 +246,34 @@ function(input, output, session) {
     }
     met_council_datatable(
       pedestrian_facilities_results()
+    )
+  })
+  
+  # Multi-Use Trails and Bicycle Facilities Results
+  trails_bike_facilities_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    trails_bike_facilities(
+      average_daily_traffic = input$average_daily_traffic,
+      facility_length_range = input$facility_length_range,
+      no_key_destinations_25 = input$no_key_destinations_25,
+      no_key_destinations_50 = input$no_key_destinations_50,
+      facility_type = input$facility_type, #options are "on_street", "new_multiuse", or "conversion"
+      project_start = input$project_start,
+      project_lifetime = input$project_lifetime,
+      days_open = input$days_open, # Default is 214
+      length_trip_replaced_walking = input$length_trip_replaced_walking, #Default is .86
+      length_trip_replaced_biking = input$length_trip_replaced_biking, #Default is 3.6
+    )
+  })
+  
+  output$trails_bike_facilities_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    met_council_datatable(
+      trails_bike_facilities_results()
     )
   })
   
