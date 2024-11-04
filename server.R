@@ -202,14 +202,14 @@ function(input, output, session) {
       return ()
     }
     mobility_hub(
-      mobility_mode, #Allow for multiple selections options are in TotalVMTReductionPotential DF
-      added_vmt,
-      project_lifetime, #Default is 20 years
-      project_start,
-      location,
-      population_3mile, #Auto populate with 3 mile population based on map selection
-      reduction_potential, #Auto calculate based on mobility modes chosen (add all total vmt redcution from the TotalVMTReductionPotential DF)
-      annual_vmt #Auto populate with VMT per capita based on community type of chosen location
+      mobility_mode = input$mobility_mode, #Allow for multiple selections options are in TotalVMTReductionPotential DF
+      added_vmt = input$added_vmt,
+      project_lifetime = input$project_lifetime, #Default is 20 years
+      project_start = input$project_start,
+      location = input$location,
+      population_3mile = input$population_3mile, #Auto populate with 3 mile population based on map selection
+      reduction_potential = input$reduction_potential, #Auto calculate based on mobility modes chosen (add all total vmt redcution from the TotalVMTReductionPotential DF)
+      annual_vmt = input$annual_vmt #Auto populate with VMT per capita based on community type of chosen location
     )
   })
   
@@ -219,6 +219,33 @@ function(input, output, session) {
     }
     met_council_datatable(
       mobility_hub_results()
+    )
+  })
+  
+  # Pedestrian Facilities Results
+  pedestrian_facilities_results <- reactive({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    pedestrian_facilities(
+      average_daily_traffic,
+      one_way_facility_length,
+      no_key_destinations_25,
+      no_key_destinations_50,
+      location,
+      project_start,
+      project_lifetime,
+      annual_use_days = input$annual_use_days, # Default is 214
+      average_trip_replaced = input$average_trip_replaced # Default based on community type distinction
+    )
+  })
+  
+  output$pedestrian_facilities_table <- renderDataTable({
+    if (is.null(input$project_start)) {
+      return ()
+    }
+    met_council_datatable(
+      pedestrian_facilities_results()
     )
   })
   

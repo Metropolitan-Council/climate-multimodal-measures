@@ -1,10 +1,16 @@
 pedestrian_facilities <- function(average_daily_traffic,
                                   one_way_facility_length,
-                                  no_key_destinations,
+                                  no_key_destinations_25,
+                                  no_key_destinations_50,
+                                  location,
                                   project_start,
-                                  project_lifetime) {
-  annual_use_days <- 214
-  average_trip_replaced <- 0.6 #in miles
+                                  project_lifetime,
+                                  annual_use_days = NULL,
+                                  average_trip_replaced = NULL) {
+  
+  if (is.null(average_trip_replaced)) {
+    average_trip_replaced = .86
+  }
   
   # Use case_when for traffic range
   traffic_range <- case_when(
@@ -30,6 +36,13 @@ pedestrian_facilities <- function(average_daily_traffic,
       one_way_facility_length_miles_low == facility_length_range
     ) %>%
     pull(mode_shift_factor_m)
+  
+  if(no_key_destinations_25 > no_key_destinations_50){
+    no_key_destinations = no_key_destinations_25
+  }
+  else{
+    no_key_destinations = no_key_destinations_50
+  }
   
   key_destination_credit <- CreditForKeyDestinations %>%
     filter(
@@ -93,5 +106,3 @@ pedestrian_facilities <- function(average_daily_traffic,
   
   return(results)
 }
-
-test <- pedestrian_facilities(12000, 1.05, 5, project_start = "2024-01-01", 5)
