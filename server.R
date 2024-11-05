@@ -19,9 +19,9 @@ function(input, output, session) {
       project_start = input$project_start,
       project_lifetime = input$project_lifetime, #default of 4 years
       # community_type = input$community_type, #decided to remove and assign based on location, or the map once we get it up and running 
-      location = input$location
-      # working_days = input$working_days, #default should be 260 days
-      # average_commute = input$average_commute #default should be based on the mapping the location and what that maps to in CommunityTypeShape
+      location = input$location,
+      working_days = input$working_days, #default should be 260 days
+      average_commute = input$average_commute #default should be based on the mapping the location and what that maps to in CommunityTypeShape
     )
   })
   

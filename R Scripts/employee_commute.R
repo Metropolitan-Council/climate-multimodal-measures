@@ -1,7 +1,6 @@
 employee_commute <- function(daily_commute_no,
                              project_start,
                              project_lifetime,
-                             community_type = NULL, 
                              location,
                              working_days = NULL,
                              average_commute = NULL) {
@@ -31,11 +30,11 @@ employee_commute <- function(daily_commute_no,
       pull(closest_year)
     
     # Choosing community type based on location if community_type is NULL
-    if (is.null(community_type)) {
+    # if (is.null(community_type)) {
       community_type <- CommunityTypeShape %>% 
         filter(CTU_NAME == location) %>% 
         pull(MappedCommunity)
-    }
+    # }
     
     # Finding the average two way commute based on community type 
     if (is.null(average_commute)) {

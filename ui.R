@@ -59,10 +59,13 @@ page_navbar(
                               numericInput("project_lifetime", 
                                            "Project Lifetime (in years)", 
                                            value = 4)
-                              # ,
-                              # numericInput("average_commute", 
-                              #              "Average Commute Distance (in miles)", 
-                              #              value = 10.9)
+                              ,
+                              numericInput("average_commute",
+                                           "Average Commute Distance (in miles)",
+                                           value = 10.9),
+                              numericInput("working_days",
+                                           "Number of Annual Working Days",
+                                           value = 260)
                             )
                           ),
                           card(dataTableOutput("employee_commute_table"))
