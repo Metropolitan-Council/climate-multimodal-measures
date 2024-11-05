@@ -30,7 +30,8 @@ source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
 
 added_functions <- c("employee_commute", "ev_outreach", "ev_infrastructure",
-                     "shared_mobility", "transit_expansion")
+                     "shared_mobility", "transit_expansion", "mobility_hubs",
+                     "pedestrian_facilities", "trails_bike_facilities")
 for(added_function in added_functions) {
   source(paste0(getwd(),"/R Scripts/", added_function, ".R"))
 }

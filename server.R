@@ -201,12 +201,12 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    mobility_hub(
+    mobility_hubs(
       mobility_mode = input$mobility_mode, #Allow for multiple selections options are in TotalVMTReductionPotential DF
       added_vmt = input$added_vmt,
-      project_lifetime = input$project_lifetime, #Default is 20 years
-      project_start = input$project_start,
-      location = input$location,
+      project_lifetime = input$hub_project_lifetime, #Default is 20 years
+      project_start = input$hub_project_start,
+      location = input$hub_location,
       population_3mile = input$population_3mile, #Auto populate with 3 mile population based on map selection
       reduction_potential = input$reduction_potential, #Auto calculate based on mobility modes chosen (add all total vmt redcution from the TotalVMTReductionPotential DF)
       annual_vmt = input$annual_vmt #Auto populate with VMT per capita based on community type of chosen location
@@ -232,9 +232,9 @@ function(input, output, session) {
       one_way_facility_length = input$one_way_facility_length,
       no_key_destinations_25 = input$no_key_destinations_25,
       no_key_destinations_50 = input$no_key_destinations_50,
-      location = input$location,
-      project_start = input$project_start,
-      project_lifetime = input$project_lifetime,
+      location = input$pedestrian_location,
+      project_start = input$pedestrian_project_start,
+      project_lifetime = input$pedestrian_project_lifetime,
       annual_use_days = input$annual_use_days, # Default is 214
       average_trip_replaced = input$average_trip_replaced # Default based on community type distinction
     )
@@ -255,16 +255,16 @@ function(input, output, session) {
       return ()
     }
     trails_bike_facilities(
-      average_daily_traffic = input$average_daily_traffic,
+      average_daily_traffic = input$trails_bike_average_daily_traffic,
       facility_length_range = input$facility_length_range,
-      no_key_destinations_25 = input$no_key_destinations_25,
-      no_key_destinations_50 = input$no_key_destinations_50,
+      no_key_destinations_25 = input$trails_bike_no_key_destinations_25,
+      no_key_destinations_50 = input$trails_bike_no_key_destinations_50,
       facility_type = input$facility_type, #options are "on_street", "new_multiuse", or "conversion"
-      project_start = input$project_start,
-      project_lifetime = input$project_lifetime,
+      project_start = input$trails_bike_project_start,
+      project_lifetime = input$trails_bike_project_lifetime,
       days_open = input$days_open, # Default is 214
       length_trip_replaced_walking = input$length_trip_replaced_walking, #Default is .86
-      length_trip_replaced_biking = input$length_trip_replaced_biking, #Default is 3.6
+      length_trip_replaced_biking = input$length_trip_replaced_biking #Default is 3.6
     )
   })
   
@@ -350,7 +350,10 @@ function(input, output, session) {
                area_share = area_in_circle / total_tract_area,
                estimated_pop = estimate * area_share)
       
-      output$tract_info <- renderText(paste(click$lng, click$lat, sum(intersection_calcs$estimated_pop)))
+      hold_population <- isolate(round(sum(intersection_calcs$estimated_pop)))
+      updateNumericInput(session, "population_3mile", value = as.numeric(hold_population))
+      
+      output$tract_info <- renderText(paste(click$lng, click$lat, hold_population))
       leaflet::leafletProxy( mapId = "myMap" ) %>%
         clearGroup(group = "circle") %>%
         addCircles(
@@ -383,7 +386,9 @@ function(input, output, session) {
       updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
       updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
       updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
-    } else {
+      updateSelectInput(session, "hub_location", selected = CTU_NAME)
+      updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
+      } else {
       output$map_tab_label <- renderText("Map")
     }
   })

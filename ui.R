@@ -200,6 +200,99 @@ page_navbar(
                           ),
                           card(dataTableOutput("transit_expansion_table"))
                         )),
+              nav_panel(title = "Mobility Hub",
+                        page_fillable(
+                          card(
+                            layout_column_wrap(
+                              width = 1/2,
+                              
+                              checkboxGroupInput("mobility_mode",
+                                          "Mobility Mode/s",
+                                          choices = TotalVMTReductionPotential$mobility_mode,
+                                          selected = TotalVMTReductionPotential$mobility_mode[1]),
+                              selectInput("hub_location",
+                                          "Location",
+                                          choices = unique(FleetData$ctu),
+                                          selected = FleetData$ctu[1]),
+                              numericInput("population_3mile",
+                                           "Population Within 3 Miles",
+                                           #  NEED DEFAULT
+                                           value = 0),
+                              dateInput("hub_project_start",
+                                        "Project Start",
+                                        value = "2024-01-01"),
+                              numericInput("hub_project_lifetime",
+                                           "Project Lifetime (in years)",
+                                           value = 20),
+                              numericInput("added_vmt",
+                                           "Added VMT",
+                                           #  NEED DEFAULT
+                                           value = 1),
+                              numericInput("reduction_potential",
+                                           "Reduction Potential",
+                                           value = 1),
+                              numericInput("annual_vmt",
+                                           "Annual VMT",
+                                           value = 1),
+                              
+                            )
+                          ),
+                          card(dataTableOutput("mobility_hub_table"))
+                        )),
+              nav_panel(title = "Pedestrian Facilities",
+                        page_fillable(
+                          card(
+                            layout_column_wrap(
+                              width = 1/2,
+                              selectInput("pedestrian_location",
+                                          "Location",
+                                          choices = unique(FleetData$ctu),
+                                          selected = FleetData$ctu[1]),
+                              dateInput("pedestrian_project_start",
+                                        "Project Start",
+                                        value = "2024-01-01"),
+                              numericInput("pedestrian_project_lifetime",
+                                           "Project Lifetime (in years)",
+                                           #  NEED DEFAULT
+                                           value = 20),
+                              numericInput("average_daily_traffic", "Average Daily Traffic", value = 1),
+                              numericInput("one_way_facility_length", "One-Way Facility Length", value = 1),
+                              numericInput("no_key_destinations_25", "Key Destinations (25)", value = 1),
+                              numericInput("no_key_destinations_50", "Key Destinations (50)", value = 1),
+                              numericInput("annual_use_days", "Annual Use Days", value = 214),
+                              numericInput("average_trip_replaced", "Average Trip Replaced", value = 1)
+                            )
+                          ),
+                          card(dataTableOutput("pedestrian_facilities_table"))
+                        )),
+              nav_panel(title = "Multi-Use Trails and Bicycle Facilities",
+                        page_fillable(
+                          card(
+                            layout_column_wrap(
+                              width = 1/2,
+                              selectInput("facility_type",
+                                          "Facility Type",
+                                          choices = c("On Street", "New Multiuse",
+                                                      "Conversion"),
+                                          selected = "On Street"),
+                              dateInput("trails_bike_project_start",
+                                        "Project Start",
+                                        value = "2024-01-01"),
+                              numericInput("trails_bike_project_lifetime",
+                                           "Project Lifetime (in years)",
+                                           #  NEED DEFAULT
+                                           value = 20),
+                              numericInput("trails_bike_average_daily_traffic", "Average Daily Traffic", value = 1),
+                              numericInput("facility_length_range", "Facility Length Range", value = 1),
+                              numericInput("trails_bike_no_key_destinations_25", "Key Destinations (25)", value = 1),
+                              numericInput("trails_bike_no_key_destinations_50", "Key Destinations (50)", value = 1),
+                              numericInput("days_open", "Days Open", value = 214),
+                              numericInput("length_trip_replaced_walking", "Average Walking Trip Replaced", value = .86),
+                              numericInput("length_trip_replaced_biking", "Average Biking Trip Replaced", value = 3.6)
+                            )
+                          ),
+                          card(dataTableOutput("trails_bike_facilities_table"))
+                        )),
               # nav_panel(title = "Three", p("Third tab content"))
               widths = c(2, 10)
             )),

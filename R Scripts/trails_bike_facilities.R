@@ -8,6 +8,7 @@ trails_bike_facilities <- function(average_daily_traffic,
                                    days_open = NULL,
                                    length_trip_replaced_walking = NULL,
                                    length_trip_replaced_biking = NULL) {
+  
   if (is.null(days_open)) {
     days_open = 214
   }
@@ -22,9 +23,9 @@ trails_bike_facilities <- function(average_daily_traffic,
   
   growth_factor_adjustment <- switch(
       facility_type,
-      "on_street" = 1,
-      "new_multiuse" = 1.54,
-      "conversion" = 0.54,
+      "On Street" = 1,
+      "New Multiuse" = 1.54,
+      "Conversion" = 0.54,
       1
     )
   
@@ -35,13 +36,13 @@ trails_bike_facilities <- function(average_daily_traffic,
     TRUE ~ NA_character_
   )
   
-  facility_length_range <- case_when(
-    one_way_facility_length == 1 ~ "1",
-    one_way_facility_length > 1 &
-      one_way_facility_length <= 2 ~ "1.01",
-    one_way_facility_length > 2 ~ "2",
-    TRUE ~ NA_character_
-  )
+  # facility_length_range <- case_when(
+  #   one_way_facility_length == 1 ~ "1",
+  #   one_way_facility_length > 1 &
+  #     one_way_facility_length <= 2 ~ "1.01",
+  #   one_way_facility_length > 2 ~ "2",
+  #   TRUE ~ NA_character_
+  # )
 
   mode_shift_factor <- ModeShiftFactor %>%
       filter(
@@ -66,7 +67,10 @@ trails_bike_facilities <- function(average_daily_traffic,
     year <- project_years[i]
     
     # Calculate VMT displaced for the current year
-    vmt_displaced_year <- annual_use_days * average_daily_traffic * (mode_shift_factor + key_destination_credit) * (
+    vmt_displaced_year <- days_open * average_daily_traffic * 
+      # what is this one?
+      # (mode_shift_factor + key_destination_credit) * 
+      (
       length_trip_replaced_walking + growth_factor_adjustment * length_trip_replaced_biking
     )
     
@@ -75,6 +79,24 @@ trails_bike_facilities <- function(average_daily_traffic,
     
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year &
                                                    gas == "CO2")
+    
+    # # again guessing this is what you wanted here
+    {
+      current_year <- project_years[i]
+      
+      # Filter to CTU provided
+      # FleetData <- FleetData %>% filter(ctu == location)
+      
+      FleetData <- FleetData %>% mutate(year = as.numeric(year))
+      
+      # # Determine the closest year
+      closest_year <- FleetData %>%
+        summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
+        pull(closest_year)
+      
+      # # Filter the data set to get the fleet proportions from the closest year
+      fleet_proportion <- FleetData %>%
+        filter(year == closest_year)}
     
     ghg_impact_year <- 
       ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +

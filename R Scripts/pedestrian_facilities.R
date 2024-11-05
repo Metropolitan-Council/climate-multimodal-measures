@@ -78,6 +78,24 @@ pedestrian_facilities <- function(average_daily_traffic,
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year &
                                                    gas == "CO2")
     
+    # # guessing this is what you wanted here
+    {
+      current_year <- project_years[i]
+      
+      # Filter to CTU provided
+      FleetData <- FleetData %>% filter(ctu == location)
+      
+      FleetData <- FleetData %>% mutate(year = as.numeric(year))
+      
+      # # Determine the closest year
+      closest_year <- FleetData %>%
+        summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
+        pull(closest_year)
+      
+      # # Filter the data set to get the fleet proportions from the closest year
+      fleet_proportion <- FleetData %>%
+        filter(year == closest_year)}
+    
     ghg_impact_year <- 
       ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
          (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
