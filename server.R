@@ -259,6 +259,7 @@ function(input, output, session) {
       facility_length_range = input$facility_length_range,
       no_key_destinations_25 = input$trails_bike_no_key_destinations_25,
       no_key_destinations_50 = input$trails_bike_no_key_destinations_50,
+      location = input$trails_bike_location,
       facility_type = input$facility_type, #options are "on_street", "new_multiuse", or "conversion"
       project_start = input$trails_bike_project_start,
       project_lifetime = input$trails_bike_project_lifetime,

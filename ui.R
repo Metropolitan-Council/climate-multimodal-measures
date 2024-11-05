@@ -270,6 +270,10 @@ page_navbar(
                           card(
                             layout_column_wrap(
                               width = 1/2,
+                              selectInput("trails_bike_location",
+                                          "Location",
+                                          choices = unique(FleetData$ctu),
+                                          selected = FleetData$ctu[1]),
                               selectInput("facility_type",
                                           "Facility Type",
                                           choices = c("On Street", "New Multiuse",
