@@ -260,7 +260,7 @@ page_navbar(
                               numericInput("no_key_destinations_25", "Key Destinations (25)", value = 1),
                               numericInput("no_key_destinations_50", "Key Destinations (50)", value = 1),
                               numericInput("annual_use_days", "Annual Use Days", value = 214),
-                              numericInput("average_trip_replaced", "Average Trip Replaced", value = 1)
+                              numericInput("average_trip_replaced", "Average Trip Replaced", value = .86)
                             )
                           ),
                           card(dataTableOutput("pedestrian_facilities_table"))
