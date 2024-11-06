@@ -7,6 +7,10 @@ ev_infrastructure <- function(ev_type,
                               project_start,
                               project_lifetime,
                               utilization_rate = NULL) {
+  
+  community_type <- CommunityTypeShape %>% 
+    filter(CTU_NAME == location) %>% 
+    pull(MappedCommunity)
 
   
   if (is.null(utilization_rate)) {
@@ -28,9 +32,6 @@ ev_infrastructure <- function(ev_type,
     average_energy_efficiency <- FuelEfficiency %>% filter(`Vehicle Type` == "Heavy-Duty") %>%
       pull(`Fuel Efficiency (Wh/mi)`)
   }
-  
-  print(paste("utilization_rate: ", utilization_rate))
-  print(paste("average_energy_efficiency: ", average_energy_efficiency))
   
   # Generate years project covers based on project start date and length of project
   project_start <- lubridate::year(project_start)
@@ -69,21 +70,21 @@ ev_infrastructure <- function(ev_type,
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
     
+    diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
+    gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
+    
     if (ev_type == "Light-Duty") {
-      carbon_intensity <- greet_ef_year %>%
-        pull(gasoline)
+      carbon_intensity <- gasoline_ef_year
     }
     
     if (ev_type == "Heavy-Duty") {
-      carbon_intensity <- greet_ef_year %>%
-        pull(diesel)
+      carbon_intensity <- diesel_ef_year
     }
     
     carbon_intensity_grid <- greet_ef_year %>%
       pull(electricity)
-    
-    print(paste("carbon_intensity: ", carbon_intensity))
-    print(paste("carbon_intensity_grid: ", carbon_intensity_grid))
     
     ghg_impact_year <- vmt_displaced_year * (carbon_intensity - carbon_intensity_grid) / 1000000
     
