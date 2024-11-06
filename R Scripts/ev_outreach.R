@@ -1,6 +1,15 @@
-ev_outreach <- function(no_participants, conversion_rate, audience, project_start, project_lifetime) {
+ev_outreach <- function(no_participants,
+                        conversion_rate,
+                        location,
+                        audience,
+                        project_start,
+                        project_lifetime) {
   
-  average_annual_accrual <- 5567
+  community_type <- CommunityTypeShape %>% 
+    filter(CTU_NAME == location) %>% 
+    pull(MappedCommunity)
+  
+  average_annual_accrual <- PerVehicleVMT %>% filter(MappedCommunity == community_type) %>% pull(PerVehicleVMT)
   
   # Generate years project covers
   project_start <- lubridate::year(project_start)
@@ -13,22 +22,27 @@ ev_outreach <- function(no_participants, conversion_rate, audience, project_star
   carbon_cost <- numeric(length(project_years))
   
   for (i in seq_along(project_years)) {
-    year <- project_years[i]
+    current_year <- project_years[i]
     
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- no_participants * conversion_rate * average_annual_accrual
     
     # Filter GHG emission factor (EF) for the current year
-    greet_ef_year <- GREETCarbonIntensity %>% filter(Year == year)
+    greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
+  
+    discount_rate <- SocialCostCarbon %>% filter(`emission.year` == current_year &
+                                            gas == "CO2")
     
-    discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
+    diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
+    gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
     
     if (audience == "Light Duty") {
-      ghg_impact_year <-(vmt_displaced_year * (greet_ef_year$gasoline - greet_ef_year$electricity)) / 1000000
+      ghg_impact_year <- (vmt_displaced_year * (gasoline_ef_year - greet_ef_year$electricity)) / 1000000
     }
     
     if (audience == "Heavy Duty") {
-      ghg_impact_year <-(vmt_displaced_year * (greet_ef_year$diesel - greet_ef_year$electricity)) / 1000000
+      ghg_impact_year <- (vmt_displaced_year * (diesel_ef_year - greet_ef_year$electricity)) / 1000000
     }
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
@@ -45,19 +59,21 @@ ev_outreach <- function(no_participants, conversion_rate, audience, project_star
   total_carbon_cost <- sum(carbon_cost)
   
   # Create a data frame with results including totals
-  results <- data.frame(year = c(project_years, "Total"),
-                        vmt_displaced = c(auto_vmt_displaced, total_vmt_displaced),
-                        ghg_impact = c(ghg_impact, total_ghg_impact),
-                        carbon_cost = c(carbon_cost, total_carbon_cost))
+  results <- data.frame(
+    year = c(project_years, "Total"),
+    vmt_displaced = c(auto_vmt_displaced, total_vmt_displaced),
+    ghg_impact = c(ghg_impact, total_ghg_impact),
+    carbon_cost = c(carbon_cost, total_carbon_cost)
+  )
   
   return(results)
 }
-# 
+
 # test<- ev_outreach(
 #   no_participants = 4000,
 #   conversion_rate = .04,
 #   audience = "Light Duty",
 #   project_start = "2024-01-01",
+#   location = "Andover",
 #   project_lifetime = 5
 # )
-
