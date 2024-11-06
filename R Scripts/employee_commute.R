@@ -51,6 +51,10 @@ employee_commute <- function(daily_commute_no,
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
     
+    diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
+    gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
     # Filter Discount Rate for the current year
     discount_rate <- SocialCostCarbon %>% 
       filter(`emission.year` == current_year & gas == "CO2")
@@ -71,8 +75,8 @@ employee_commute <- function(daily_commute_no,
     
     # Calculate GHG impact for the current year
     ghg_impact_year <- 
-      ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-         (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+      ((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
+         (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
          (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) / 1000000
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
@@ -100,8 +104,8 @@ employee_commute <- function(daily_commute_no,
 }
 
 
-# test <- employee_commute(daily_commute_no = 200,
-#                          project_start = "2024-01-01",
-#                          project_lifetime = 10,
-#                          location = "Andover",
-#                          working_days = 250)
+test <- employee_commute(daily_commute_no = 200,
+                         project_start = "2024-01-01",
+                         project_lifetime = 10,
+                         location = "Andover",
+                         working_days = 250)
