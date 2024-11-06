@@ -29,6 +29,7 @@ CommunityTypeShape <- st_read(paste0(here::here(),"/data/shp_society_thrive_msp2
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/EFs_by_community_type.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
+source(paste0(getwd(), "/data/vmt_per_vehicle.R"))
 
 added_functions <- c("employee_commute", "ev_outreach", "ev_infrastructure",
                      "shared_mobility", "transit_expansion", "mobility_hubs",

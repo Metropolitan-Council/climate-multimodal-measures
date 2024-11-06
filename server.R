@@ -49,6 +49,7 @@ function(input, output, session) {
       project_lifetime = input$ev_outreach_project_lifetime, #8 years default for light duty 14 years for heavy duty
       conversion_rate = input$conversion_rate, #default .04
       audience = input$audience #LD or HD
+      # location = input$location
     )
   })
   
