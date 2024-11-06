@@ -27,6 +27,7 @@ for (sheet in backgroundDataNames) {
 FleetData <- read_xlsx(paste0(here::here(),"/data/FleetData.xlsx"))
 CommunityTypeShape <- st_read(paste0(here::here(),"/data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
 source(paste0(getwd(), "/data/community_type_mapping.R"))
+source(paste0(getwd(), "/data/EFs_by_community_type.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
 
 added_functions <- c("employee_commute", "ev_outreach", "ev_infrastructure",
