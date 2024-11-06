@@ -126,7 +126,7 @@ page_navbar(
                               numericInput("annual_hours_available", 
                                            "Annual Hours Available",
                                            #  NEED DEFAULT
-                                           value = 0),
+                                           value = 8760),
                               dateInput("ev_infrastructure_project_start", 
                                         "Project Start", 
                                         value = "2024-01-01"),
