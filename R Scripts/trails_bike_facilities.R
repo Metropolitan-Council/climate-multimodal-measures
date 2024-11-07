@@ -9,6 +9,10 @@ trails_bike_facilities <- function(average_daily_traffic,
                                    days_open = NULL,
                                    length_trip_replaced_walking = NULL,
                                    length_trip_replaced_biking = NULL) {
+  community_type <- CommunityTypeShape %>% 
+    filter(CTU_NAME == location) %>% 
+    pull(MappedCommunity)
+  
   if (is.null(days_open)) {
     days_open = 214
   }
@@ -87,8 +91,8 @@ trails_bike_facilities <- function(average_daily_traffic,
     discount_rate <- SocialCostCarbon %>% 
       filter(`emission.year` == current_year & gas == "CO2")
     
-    # Filter to CTU provided
-    FleetData <- FleetData %>% filter(ctu == location)
+    # Filter to Community Stype provided
+    FleetData <- FleetData %>% filter(MappedCommunity == community_type)
     
     FleetData <- FleetData %>% mutate(year = as.numeric(year))
       
@@ -101,12 +105,16 @@ trails_bike_facilities <- function(average_daily_traffic,
     fleet_proportion <- FleetData %>%
         filter(year == closest_year)
     
+    diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
+    gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
     ghg_impact_year <-
       ((
-        vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline
+        vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline
       ) +
         (
-          vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel
+          vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel
         ) +
         (
           vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity

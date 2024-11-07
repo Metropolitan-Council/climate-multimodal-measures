@@ -8,6 +8,10 @@ transit_expansion <-
            average_trip_length = NULL,
            adjustment_factor = NULL) {
     
+    community_type <- CommunityTypeShape %>% 
+      filter(CTU_NAME == location) %>% 
+      pull(MappedCommunity)
+    
     # Select average trip length by route type if it is NULL
     if (is.null(average_trip_length)) {
       average_trip_length <- AdjustmentFactorsAndTripLengths %>%
@@ -58,8 +62,8 @@ transit_expansion <-
         SocialCostCarbon %>% filter(`emission.year` == current_year &
                                       gas == "CO2")
       
-      # Filter to CTU provided
-      FleetData <- FleetData %>% filter(ctu == location)
+      # Filter to mapped community provided
+      FleetData <- FleetData %>% filter(MappedCommunity == community_type)
       
       FleetData <- FleetData %>% mutate(year = as.numeric(year))
       
@@ -72,12 +76,22 @@ transit_expansion <-
       fleet_proportion <- FleetData %>%
         filter(year == closest_year)
       
+      diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+      
+      gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+      
+      if(fuel_type == "diesel"){
+        added_transit_fuel_ef = diesel_ef_year
+      } else(
+        added_transit_fuel_ef = greet_ef_year[[fuel_type]]
+      )
+      
       # Calculate GHG impact for the current year
       ghg_impact_year <- 
-        (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-        (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+        (((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
+        (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
         (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
-        (added_transit * (greet_ef_year[[fuel_type]]))) / 1000000
+        (added_transit * added_transit_fuel_ef)) / 1000000
       
       # Filter Discount Rate for the current year
       discount_rate <- SocialCostCarbon %>% 
@@ -108,9 +122,9 @@ transit_expansion <-
   }
 
 
-# test <- transit_expansion(ridership_increase = 10000,
-#                           route_type = "Commuter Rail Electric",
-#                           added_transit = 35000,
-#                           location = "Andover",
-#                           project_start = "2027-01-01",
-#                           project_lifetime = 1)
+test <- transit_expansion(ridership_increase = 10000,
+                          route_type = "Commuter Rail Electric",
+                          added_transit = 35000,
+                          location = "Andover",
+                          project_start = "2027-01-01",
+                          project_lifetime = 1)
