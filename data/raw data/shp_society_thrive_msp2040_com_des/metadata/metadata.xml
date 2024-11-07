@@ -1,0 +1,86 @@
+<metadata><idinfo><citation><citeinfo><title>ThriveMSP 2040 Community Designations</title><origin>Metropolitan Council</origin><pubinfo><publish>Metropolitan Council</publish></pubinfo><pubdate>20240712</pubdate><onlink>https://gisdata.mn.gov/dataset/us-mn-state-metc-society-thrive-msp2040-com-des</onlink></citeinfo></citation><descript><abstract>The ThriveMSP 2040 Community Designations was adopted on May 28, 2014. This dataset reflects the agreed upon community designation between a community and the Metropolitan Council and is intended to supplement ThriveMSP 2040 - the planning guide for the 7-county Twin Cities metropolitan area of Minneapolis and Saint Paul, Minnesota.
+
+Community designations definitions and strategies for the designations are available in the ThriveMSP 2040 document. For questions about how decisions were made regarding individual communities' designations, please contact the Metropolitan Council Regional Policy and Research staff, Dan Marckel, 651-602-1548.
+
+See Currentness Reference and Lineage in Data Quality Section of this metadata for more information.</abstract><purpose>This dataset was created to allow the depictions of ThriveMSP 2040 Community Designations.</purpose><supplinf>Twin Cities 7 County Metropolitan Area.  This includes the counties of Anoka, Carver, Dakota, Hennepin, Ramsey, Scott and Washington in Minnesota.</supplinf></descript><timeperd><timeinfo><sngdate><caldate>20240712</caldate></sngdate></timeinfo><current>Planning areas were first defined to analyze land use and development trends and socio-economic characteristics to assist in preparing the Council's 1975 Metropolitan Development Framework. They have subsequently been used for a wide range of general analysis purposes. These areas were defined to reflect stages of development of metropolitan area communities. A major factor in their determination has been the proportion of land developed. As such, these areas have been periodically adjusted to reflect the continued outward growth of the region. The Metropolitan Council originally approval the 2040 community designations on May 28, 2014. As communities adopted their 2040 Comprehensive Plans, changes to community designations will be made to reflect municipal boundaries and Metropolitan Urban Service Areas (MUSA) in their plans. Data is current as of October 20, 2023.</current></timeperd><status><progress>Complete</progress><update>As needed</update></status><spdom><bounding><westbc>-94.012</westbc><eastbc>-92.732</eastbc><northbc>45.415</northbc><southbc>44.471</southbc></bounding></spdom><keywords><place><placekey>Twin Cities, Anoka County, Carver County, Dakota County, Hennepin County, Ramsey County, Scott County, Washington County</placekey></place><theme><themekey>Planning and development, ThriveMSP 2040, community designation, growth strategy</themekey><themekt>None</themekt></theme></keywords><accconst>None. This dataset is public domain under the Minnesota Government Data Practices Act (Minnesota Statutes Chapter 13). If the dataset is not available from the Online Linkage in Section 6, please contact the Distribution Contact Person.</accconst><useconst>None. This dataset is public domain under the Minnesota Government Data Practices Act (Minnesota Statutes Chapter 13).</useconst><browse><browsed>No sample map available</browsed></browse><crossref><citeinfo><title>Planned land use maps or datasets may be available individually from each community.
+
+Parcel data is available for each county.  See https://gisdata.mn.gov/dataset/us-mn-state-metrogis-plan-regonal-parcels-2016 for details.
+
+Existing land use datasets for various years are also available:
+Year 2010:  https://gisdata.mn.gov/dataset/us-mn-state-metc-plan-generl-lnduse2010
+Year 2005:  https://gisdata.mn.gov/dataset/us-mn-state-metc-plan-generl-lnduse2005
+Year 2000:  https://gisdata.mn.gov/dataset/us-mn-state-metc-plan-generl-lnduse2000
+Previous years:  https://gisdata.mn.gov/dataset/us-mn-state-metc-plan-generl-lnduse-historical</title></citeinfo></crossref><native>Oracle Version 10g, Release 2</native><ptcontac><cntinfo><cntperp><cntorg>Metropolitan Council</cntorg><cntper>Paul Hanson</cntper></cntperp><cntpos>GIS Coordinator - Community Development</cntpos><cntaddr><addrtype>mailing and physical</addrtype><address>390 Robert Street North</address><city>St. Paul</city><state>Minnesota</state><postal>55101-1805</postal></cntaddr><cntvoice>651-602-1642</cntvoice><cntfax>651-602-1674</cntfax><cntemail>paul.hanson@metc.state.mn.us</cntemail></cntinfo></ptcontac></idinfo><dataqual><attracc><attraccr>Each community's planned land use is subject to review by the Metropolitan Council per the Comprehensive Land Planning Act of 1995 (Minn. Stat 473.864, Subd 2 and 473.175, Subd 1). The accuracy of a community's locally adopted planned land use or land use plan is based on the information that has been submitted to the Metropolitan Council. Any locally adopted land use designation that is not submitted to the Council for review either through their comprehensive plan or subsequent plan amendments may not be incorporated into the Regional Planned Land Use dataset. 
+
+Regional classifications are 'best fit' interpretations of locally adopted designations into the MetroGIS endorsed Regional Coding Scheme. Any error in interpretation is solely the responsibility of the Metropolitan Council. 
+
+Valid code checks have been conducted on the regional classification codes. No known code attribute errors exist. Locally adopted land use designations and therefore corresponding regional classifications are subject to change through comprehensive plan amendments.</attraccr></attracc><logic>The dataset is topologically 'clean'.</logic><complete>Entire seven county geographic area is covered.</complete><lineage><procstep><procdesc>This dataset reflects the 2040 Planning Areas as agreed upon between the community and the Metropolitan Council derived from the 2040 Comprehensive Plan Updates.
+
+Sources data used to define the 2040 Regional Development Framework Planning Areas  includes:
+- 2020 Municipal Boundaries
+- 2020 County parcel data
+- Communities Planned Land Use data from their Comprehensive Plan Update
+- Metropolitan Urban Service Area (MUSA)
+
+The dataset also contains a planning area category for four communities within the 7-county Twni Cities metropolitan area not under the Metropolitan Council planning jurisdiction (Hanover, New Prague, Northfield, and Rockford)
+
+With a growing need to have current geographic information, the 2040 Regional Development Framework Planning Areas dataset will be updated on a quarterly basis to reflect changes in municipal or Metropolitan Urban Service Area (MUSA) boundaries.</procdesc></procstep><srcinfo><srcscale /></srcinfo></lineage></dataqual><spdoinfo><indspref /><direct /><mgmg3obj /><mgmg3til /></spdoinfo><eainfo><overview><eaover>PLU_POLYGON feature class attribution 
+
+
+OBJECTID: Unique polygon identifier 
+
+SHAPE: ArcGIS feature type 
+
+
+COCTU_ID: 11 digitunique identifier for each city, township or unorganized 
+territory based on 3-digit FIPS county code and the federal Geographic Names
+ Information System (GNIS)
+
+
+CO_CODE: 3 digit FIPS code for the county in which the polygon resides; 
+
+
+CTU_ID: The Geographic Names Information System (GNIS) official federal unique identifier 
+for each city, township or unorganized territory ( 9 digit Long Integer) 
+
+
+CTU_NAME: Minor Civil Division name; e.g. Dahlgren Twp., 	Polygon Attributes:
+
+COCTU_DESC: Description of the COCTU; e.g. Linwood Township,
+Blaine (Anoka Co. part)
+
+COCTU_ID: 8 digit code (concatenation of CO_CODE and CTU_CODE
+attributes defined in the Counties and Cities &amp; Townships,
+Twin Cities Metropolitan Area GIS layer available at
+https://gisdata.mn.gov/dataset/us-mn-state-metc-bdry-metro-counties-and-ctus
+
+CTU_ID: The Geographic Names Information System (GNIS) official
+federal unique identifier for each city, township or
+unorganized territory.
+
+CTU_NAME: Name of the city, township or unorganized territory,
+e.g. Linwood Twp., Blaine
+
+COMDES2040: A two digit numeric code for the community designation
+
+COMDESNAME: The name of the community designation in ThiveMSP 2040
+(Includes distinction of the "Core
+Cities" of Minneapolis and Saint Paul although ThriveMSP 2040
+does not distinguish these communities from other Urban
+Center communities)
+
+URB_RURAL: Urban vs. Rural service area designation
+
+COMDES2040 : COMDESNAME : URB_RURAL
+
+21 : Urban Center - Core City : Urban Service Area
+23 : Urban Center : Urban Service Area
+24 : Urban : Urban Service Area
+25 : Surburban : Urban Service Area
+35 : Suburban Edge : Urban Service Area
+36 : Emerging Suburban Edge : Urban Service Area
+41 : Rural Center : Rural Service Area
+51 : Diversified Rural : Rural Service Area
+52 : Rural Residential : Rural Service Area
+53 : Agricultural : Rural Service Area
+60 : Non-Council Area : Non-Council Area</eaover><eadetcit>Definitions and Strategies for 2040 Community Designationa are available in the ThriveMSP 2040 document.</eadetcit></overview></eainfo><distinfo><resdesc>ThriveMSP_2040_CommuityDesignations</resdesc><distliab>NOTICE:  The Geographic Information System (GIS) Data to which this notice is attached are made available pursuant to the Minnesota Government Data Practices Act (Minnesota Statutes Chapter 13).  THE GIS DATA ARE PROVIDED TO YOU AS IS AND WITHOUT ANY WARRANTY AS TO THEIR PERFORMANCE, MERCHANTABILITY, OR FITNESS FOR ANY PARTICULAR PURPOSE.  The GIS Data were developed by the Metropolitan Council for its own internal business purposes.  The Metropolitan Council does not represent or warrant that the GIS Data or the data documentation are error-free, complete, current, or accurate.  You are responsible for any consequences resulting from your use of the GIS Data or your reliance on the GIS Data.  You should consult the data documentation for this particular GIS Data to determine the limitations of the GIS Data and the precision with which the GIS Data may depict distance, direction, location, or other geographic features.  If you transmit or provide the GIS Data (or any portion of it) to another user, it is recommended that the GIS Data include a copy of this disclaimer and this metadata.</distliab><stdorder><digform><digtinfo><formname>csv file</formname><formvern /><transize /></digtinfo></digform><ordering>See Online Linkage Below</ordering></stdorder><distrib><cntinfo><cntperp><cntorg>Metropolitan Council</cntorg><cntper>GIS Contact</cntper></cntperp><cntaddr><addrtype>mailing and physical</addrtype><address>390 Robert Street North</address><city>St. Paul</city><state>MN</state><postal>55101-1805</postal></cntaddr><cntemail>gis-contact@metc.state.mn.us</cntemail></cntinfo></distrib></distinfo><metainfo><metd>20240712</metd><metstdn>Minnesota Geographic Metadata Guidelines</metstdn><metstdv>1.2</metstdv><metextns><onlink>http://www.mngeo.state.mn.us/committee/standards/mgmg/metadata.htm</onlink></metextns><metc><cntinfo><cntperp><cntorg>Metropolitan Council</cntorg><cntper>Paul E. Hanson</cntper></cntperp><cntpos>GIS Coordinator - Community Development</cntpos><cntaddr><addrtype>mailing and physical</addrtype><address>390 Robert Street North</address><city>St. Paul</city><state>Minnesota</state><postal>55101-1805</postal></cntaddr><cntvoice>651-602-1642</cntvoice><cntfax>651-602-1674</cntfax><cntemail>paul.hanson@metc.state.mn.us</cntemail></cntinfo></metc></metainfo><Esri><ModDate>20101213</ModDate><ModTime>10385800</ModTime><CreaDate>20140710</CreaDate><CreaTime>10301200</CreaTime><SyncOnce>TRUE</SyncOnce><DataProperties><itemProps><itemLocation><linkage Sync="TRUE">file://\\rafs2a\gis\devel\data_devel\comp_plans\plu\Data\Processing\PlannedLandUse (1)</linkage><protocol Sync="TRUE">Local Area Network</protocol></itemLocation></itemProps><copyHistory><copy date="20140710" dest="\\rafs2a\gis\devel\data_devel\comp_plans\plu\Data\Processing\PlannedLandUse (1)" source="L:\Metadata\Layers\PlannedLandUse" time="10301200" /></copyHistory></DataProperties></Esri><mdDateSt Sync="TRUE">20101213</mdDateSt><spref><horizsys><planar><gridsys><gridsysn>Universal Transverse Mercator</gridsysn><utm><utmzone>15</utmzone></utm></gridsys><planci><plandu>meters</plandu></planci></planar><geodetic><horizdn>NAD83</horizdn><ellips>GRS80</ellips></geodetic></horizsys></spref></metadata>
