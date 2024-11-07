@@ -5,6 +5,10 @@ employee_commute <- function(daily_commute_no,
                              working_days = NULL,
                              average_commute = NULL) {
   
+  community_type <- CommunityTypeShape %>% 
+    filter(CTU_NAME == location) %>% 
+    pull(MappedCommunity)
+  
   if (is.null(working_days)) {
     working_days <- 260  # Assuming 260 working days per year
   }
@@ -28,13 +32,6 @@ employee_commute <- function(daily_commute_no,
     closest_year_vmt <- VMTByCommunityType %>%
       summarise(closest_year = cd_year[which.min(abs(cd_year - current_year))]) %>%
       pull(closest_year)
-    
-    # Choosing community type based on location if community_type is NULL
-    # if (is.null(community_type)) {
-      community_type <- CommunityTypeShape %>% 
-        filter(CTU_NAME == location) %>% 
-        pull(MappedCommunity)
-    # }
     
     # Finding the average two way commute based on community type 
     if (is.null(average_commute)) {
@@ -60,7 +57,7 @@ employee_commute <- function(daily_commute_no,
       filter(`emission.year` == current_year & gas == "CO2")
     
     # Filter to CTU provided
-    FleetData <- FleetData %>% filter(ctu == location)
+    FleetData <- FleetData %>% filter(MappedCommunity == community_type)
     
     FleetData <- FleetData %>% mutate(year = as.numeric(year))
     
@@ -102,10 +99,3 @@ employee_commute <- function(daily_commute_no,
   
   return(results)
 }
-
-
-test <- employee_commute(daily_commute_no = 200,
-                         project_start = "2024-01-01",
-                         project_lifetime = 10,
-                         location = "Andover",
-                         working_days = 250)
