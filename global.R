@@ -16,7 +16,7 @@ library(rmapshaper)
 options(tigris_use_cache = TRUE)
 
 #Reading in our background data
-backgroundDataPath <- paste0(here::here(),"/data/MetCouncilTables.xlsx")
+backgroundDataPath <- paste0(here::here(),"/data/raw data/MetCouncilTables.xlsx")
 
 backgroundDataNames <- excel_sheets(backgroundDataPath)
 
@@ -24,8 +24,8 @@ for (sheet in backgroundDataNames) {
   assign(sheet, read_excel(backgroundDataPath, sheet = sheet), envir = .GlobalEnv)
 }
 
-FleetData <- read_xlsx(paste0(here::here(),"/data/FleetData.xlsx"))
-CommunityType <- st_read(paste0(here::here(),"/data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
+FleetData <- read_xlsx(paste0(here::here(),"/data/raw data/FleetData.xlsx"))
+CommunityType <- st_read(paste0(here::here(),"/data/raw data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/EFs_by_community_type.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))

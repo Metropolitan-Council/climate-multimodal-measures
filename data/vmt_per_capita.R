@@ -1,3 +1,8 @@
+AnnualVMTCommunityType <- AnnualVMT %>%
+  left_join(CommunityTypeShape) %>%
+  group_by(year, MappedCommunity) %>%
+  summarise(vmt = sum(vmt))
+
 population <- get_acs(
   geography = "tract",
   table = "B01003",

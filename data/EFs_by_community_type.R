@@ -20,7 +20,7 @@ DieselEFsCommunityType <- FleetDataCommunityType %>%
 
 
 GasolineEFsCommunityType <- FleetDataCommunityType %>% 
-  filter(stock %in% c("SIStock", "HEVStock", "PHEVStock")) %>% 
+  filter(stock %in% c("SIStock", "HEVStock")) %>% 
   group_by(MappedCommunity, year) %>% 
   summarise(
     total_vmt_gasoline = sum(vmt, na.rm = TRUE), 
