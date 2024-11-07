@@ -8,8 +8,12 @@ pedestrian_facilities <- function(average_daily_traffic,
                                   annual_use_days = NULL,
                                   average_trip_replaced = NULL) {
   
+  community_type <- CommunityTypeShape %>%
+    filter(CTU_NAME == location) %>%
+    pull(MappedCommunity)
+  
   if (is.null(average_trip_replaced)) {
-    average_trip_replaced = .86
+    average_trip_replaced = TripDistances %>% filter(mode_type == "Walk") %>% pull(distance_avg)
   }
   
   # Use case_when for traffic range
@@ -37,7 +41,7 @@ pedestrian_facilities <- function(average_daily_traffic,
     ) %>%
     pull(mode_shift_factor_m)
   
-  if(no_key_destinations_25 > no_key_destinations_50){
+  if (no_key_destinations_25 > no_key_destinations_50) {
     no_key_destinations = no_key_destinations_25
   }
   else{
@@ -78,28 +82,37 @@ pedestrian_facilities <- function(average_daily_traffic,
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year &
                                                    gas == "CO2")
     
-    # # guessing this is what you wanted here
-    {
-      current_year <- project_years[i]
-      
-      # Filter to CTU provided
-      FleetData <- FleetData %>% filter(ctu == location)
-      
-      FleetData <- FleetData %>% mutate(year = as.numeric(year))
-      
-      # # Determine the closest year
-      closest_year <- FleetData %>%
-        summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
-        pull(closest_year)
-      
-      # # Filter the data set to get the fleet proportions from the closest year
-      fleet_proportion <- FleetData %>%
-        filter(year == closest_year)}
+    current_year <- project_years[i]
     
-    ghg_impact_year <- 
-      ((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-         (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
-         (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) / 1000000
+    # Filter to community type provided
+    FleetData <- FleetData %>% filter(MappedCommunity == community_type)
+    
+    FleetData <- FleetData %>% mutate(year = as.numeric(year))
+    
+    # # Determine the closest year
+    closest_year <- FleetData %>%
+      summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
+      pull(closest_year)
+    
+    # # Filter the data set to get the fleet proportions from the closest year
+    fleet_proportion <- FleetData %>%
+      filter(year == closest_year)
+    
+    diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
+    gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    
+    ghg_impact_year <-
+      ((
+        vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline
+      ) +
+        (
+          vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel
+        ) +
+        (
+          vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity
+        )
+      ) / 1000000
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
     
