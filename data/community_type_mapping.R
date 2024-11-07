@@ -1,5 +1,5 @@
 # Assuming community_type_shape is your data frame
-CommunityTypeShape <- CommunityTypeShape %>%
+CommunityTypeShape <- CommunityType %>%
   mutate(MappedCommunity = case_when(
     COMDESNAME %in% c("Urban", "Urban Center") ~ "Urban",
     COMDESNAME == "Suburban" ~ "Suburban",
