@@ -10,6 +10,10 @@ shared_mobility <-
            trip_miles = NULL,
            prct_deadhead_miles = NULL) {
     
+    community_type <- CommunityTypeShape %>% 
+      filter(CTU_NAME == location) %>% 
+      pull(MappedCommunity)
+    
     # Assign Bike fleet
     if (fleet == "Bike") {
       if (is.null(trip_miles)) {
@@ -93,8 +97,8 @@ shared_mobility <-
       # Calculate GHG impact
       greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
       
-      # Filter to CTU provided
-      FleetData <- FleetData %>% filter(ctu == location)
+      # Filter to Community Type provided
+      FleetData <- FleetData %>% filter(MappedCommunity == community_type)
       
       FleetData <- FleetData %>% mutate(year = as.numeric(year))
       
@@ -107,30 +111,34 @@ shared_mobility <-
       fleet_proportion <- FleetData %>%
         filter(year == closest_year)
       
+      diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+      
+      gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+      
       if (fleet == "Non-EV Rideshares") {
-        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-                              (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+        ghg_impact_year <- (((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
+                              (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
                               (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
           (new_service_vmt * greet_ef_year$gasoline)) / 1000000
       }
       
       
       if (fleet == "EV Rideshares") {
-        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-                              (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+        ghg_impact_year <- (((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
+                               (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
                               (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
           (new_service_vmt * greet_ef_year$electricity)) / 1000000
       }
       
       if (fleet == "Bike") {
-        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-                              (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+        ghg_impact_year <- (((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
+                               (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
                               (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity))) / 1000000
       }
       
       if (fleet == "Scooter") {
-        ghg_impact_year <- (((vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline) +
-                              (vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel) +
+        ghg_impact_year <- (((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
+                               (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
                               (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity))) / 1000000
       }
       
