@@ -8,6 +8,10 @@ mobility_hubs <-
            reduction_potential = NULL,
            annual_vmt = NULL) {
     
+    community_type <- CommunityTypeShape %>% 
+      filter(CTU_NAME == location) %>% 
+      pull(MappedCommunity)
+    
     if (is.null(reduction_potential)) {
       reduction_potential <- TotalVMTReductionPotential %>%
         filter(mobility_mode %in% mobility_modes) %>% # Filter to include all selected modes
@@ -16,7 +20,7 @@ mobility_hubs <-
     }
     
     if (is.null(annual_vmt)) {
-      annual_vmt = 5567
+      annual_vmt = VMTPerCapitaByCommunityType %>% filter(MappedCommunity == community_type) %>% pull(VMTperCapita)
     }
     
     # Generate years project covers
@@ -39,8 +43,8 @@ mobility_hubs <-
       # Calculate GHG impact
       greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
       
-      # Filter to CTU provided
-      FleetData <- FleetData %>% filter(ctu == location)
+      # Filter to Mapped Community provided
+      FleetData <- FleetData %>% filter(MappedCommunity == community_type)
       
       FleetData <- FleetData %>% mutate(year = as.numeric(year))
       
@@ -53,11 +57,15 @@ mobility_hubs <-
       fleet_proportion <- FleetData %>%
         filter(year == closest_year)
       
+      diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+      
+      gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+      
       ghg_impact_year <- (((
-        vmt_displaced_year * greet_ef_year$gasoline * fleet_proportion$gasoline
+        vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline
       ) +
         (
-          vmt_displaced_year * greet_ef_year$diesel * fleet_proportion$diesel
+          vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel
         ) +
         (
           vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity
