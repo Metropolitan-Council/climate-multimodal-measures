@@ -1,10 +1,14 @@
 intersection_delay <-
   function(number_peak_hours,
            vehicle_per_hour,
+           peak_hour_delay_noBuild,
+           peak_hour_delay_build,
            location,
            project_start,
-           project_lifetime,
-           fleet_ratio = NULL){
+           project_lifetime){
+    
+    k2 = 0.37
+    total_peak_hours_reduced = vehicle_per_hour * number_peak_hours * (peak_hour_delay_noBuild - peak_hour_delay_build)
     
     # Generate years project covers
     project_start <- lubridate::year(project_start)
@@ -17,25 +21,24 @@ intersection_delay <-
     carbon_cost <- numeric(length(project_years))
     
     for (i in seq_along(project_years)) {
-      year <- project_years[i]
+      current_year <- project_years[i]
       
-      # Calculate VMT displaced for the current year
-      fuel_consumption_reduced <- 
-        
-        # Filter GHG emission factor (EF) for the current year
-        greet_ef_year <- GREETCarbonIntensity %>% filter(Year == year)
+      # Calculate VMT displaced for the current year and store in the i-th position
+      fuel_consumption_reduced[i] <- k2 * total_peak_hours_reduced
       
-      discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year &
-                                                     gas == "CO2")
-      ghg_impact_year <- 
-        
-        social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
+      ghg_impact_year <- fuel_consumption_reduced[i] * 9.915
+      
+      discount_rate <-
+        SocialCostCarbon %>% filter(`emission.year` == current_year &
+                                      gas == "CO2")
+      
+      social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
       
       # Store results for the current year
-      auto_vmt_displaced[i] <- vmt_displaced_year
       ghg_impact[i] <- ghg_impact_year
       carbon_cost[i] <- social_cost_carbon
     }
+    
     
     # Calculate total vmt_displaced and ghg_impact
     total_fuel_consumption_reduced <- sum(fuel_consumption_reduced)
@@ -52,3 +55,11 @@ intersection_delay <-
     
     return(results)
   }
+
+test <- intersection_delay(number_peak_hours = 5,
+                           vehicle_per_hour = 600,
+                           peak_hour_delay_noBuild = 1,
+                           peak_hour_delay_build = .5,
+                           location = "Afton",
+                           project_start = "2024-01-01",
+                           project_lifetime = 7)
