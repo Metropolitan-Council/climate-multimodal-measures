@@ -45,4 +45,3 @@ VMTPerCapitaByCommunityType <- census_tracts_with_community %>%
   summarise(estimate = sum(estimate)) %>%
   left_join(AnnualVMTCommunityType) %>%
   mutate(VMTperCapita = vmt / estimate)
-
