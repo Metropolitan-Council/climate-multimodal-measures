@@ -48,7 +48,7 @@ ev_infrastructure <- function(ev_type,
     current_year <- project_years[i]
     
     # Filter to CTU provided
-    FleetData <- FleetData %>% filter(ctu == location)
+    FleetData <- FleetData %>% filter(MappedCommunity == community_type)
     
     FleetData <- FleetData %>% mutate(year = as.numeric(year))
     
