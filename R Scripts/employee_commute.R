@@ -36,7 +36,7 @@ employee_commute <- function(daily_commute_no,
     # Finding the average two way commute based on community type 
     if (is.null(average_commute)) {
       average_two_way_commute <- VMTByCommunityType %>% 
-        filter(cd_year == closest_year_vmt, CD == community_type, survey_year == 2021)
+        filter(CD == community_type)
       
       # Making average commute a one way commute 
       average_commute <- average_two_way_commute$vmt/2
