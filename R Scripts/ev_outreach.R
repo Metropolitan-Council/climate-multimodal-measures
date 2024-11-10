@@ -69,11 +69,11 @@ ev_outreach <- function(no_participants,
   return(results)
 }
 
-test<- ev_outreach(
-  no_participants = 4000,
-  conversion_rate = .04,
-  audience = "Light Duty",
-  project_start = "2024-01-01",
-  location = "Andover",
-  project_lifetime = 5
-)
+# test<- ev_outreach(
+#   no_participants = 4000,
+#   conversion_rate = .04,
+#   audience = "Light Duty",
+#   project_start = "2024-01-01",
+#   location = "Andover",
+#   project_lifetime = 5
+# )
