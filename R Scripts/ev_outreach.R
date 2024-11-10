@@ -33,7 +33,7 @@ ev_outreach <- function(no_participants,
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == current_year &
                                             gas == "CO2")
     
-    diesel_ef_year <- DieselEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
+    diesel_ef_year <- DieselCommercialCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
     
     gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
     
@@ -69,11 +69,11 @@ ev_outreach <- function(no_participants,
   return(results)
 }
 
-# test<- ev_outreach(
-#   no_participants = 4000,
-#   conversion_rate = .04,
-#   audience = "Light Duty",
-#   project_start = "2024-01-01",
-#   location = "Andover",
-#   project_lifetime = 5
-# )
+test<- ev_outreach(
+  no_participants = 4000,
+  conversion_rate = .04,
+  audience = "Light Duty",
+  project_start = "2024-01-01",
+  location = "Andover",
+  project_lifetime = 5
+)
