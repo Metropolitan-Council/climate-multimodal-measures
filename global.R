@@ -25,7 +25,8 @@ for (sheet in backgroundDataNames) {
 }
 
 FleetData <- read_xlsx(paste0(here::here(),"/data/raw data/FleetData.xlsx"))
-CommunityType <- st_read(paste0(here::here(),"/data/raw data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
+CommunityDesignation <- st_read(paste0(here::here(),"/data/raw data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
+CommunityType <- CommunityDesignation
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/EFs_by_community_type.R"))
 source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
@@ -51,7 +52,7 @@ population <- get_acs(
 population <- ms_simplify(population, keep = 0.05,
                           keep_shapes = TRUE)
 
-locations <- st_read(paste0(getwd(),"/data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp")) %>%
+locations <- CommunityDesignation %>%
   st_transform(., crs = 4326)
 
 # location_bounds <- st_bbox(locations) 
