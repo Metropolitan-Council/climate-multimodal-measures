@@ -48,8 +48,8 @@ function(input, output, session) {
       project_start = input$ev_outreach_project_start,
       project_lifetime = input$ev_outreach_project_lifetime, #8 years default for light duty 14 years for heavy duty
       conversion_rate = input$conversion_rate, #default .04
-      audience = input$audience #LD or HD
-      # location = input$location
+      audience = input$audience, #LD or HD
+      location = input$ev_outreach_location
     )
   })
   
@@ -157,10 +157,9 @@ function(input, output, session) {
       avg_annual_daily_traffic = input$avg_annual_daily_traffic, 
       avg_corridor_speed_no_build = input$avg_corridor_speed_no_build,
       avg_corridor_speed_build = input$avg_corridor_speed_build,
-      location = input$location, 
-      project_start = input$project_start,
-      project_lifetime = input$project_lifetime, #Default is 7 I think if this corresponds to traffic management technologies
-      fleet_ratio = input$fleet_ratio #Default is based on the fleet ratio of community type
+      location = input$corridor_speed_location, 
+      project_start = input$corridor_speed_project_start,
+      project_lifetime = input$corridor_speed_project_lifetime #Default is 7 I think if this corresponds to traffic management technologies
     )
   })
   
@@ -181,10 +180,11 @@ function(input, output, session) {
     intersection_delay_reductions(
       number_peak_hours = input$number_peak_hours,
       vehicle_per_hour = input$vehicle_per_hour,
-      location = input$location, 
-      project_start = input$project_start,
-      project_lifetime = input$project_lifetime, #Default is 7 I think if this corresponds to traffic management technologies
-      fleet_ratio = input$fleet_ratio #Default is based on the fleet ratio of community type
+      peak_hour_delay_noBuild = input$peak_hour_delay_noBuild,
+      peak_hour_delay_build = input$peak_hour_delay_build,
+      location = input$intersection_delay_location, 
+      project_start = input$intersection_delay_project_start,
+      project_lifetime = input$intersection_delay_project_lifetime #Default is 7 I think if this corresponds to traffic management technologies
     )
   })
   
@@ -355,7 +355,7 @@ function(input, output, session) {
       hold_population <- isolate(round(sum(intersection_calcs$estimated_pop)))
       updateNumericInput(session, "population_3mile", value = as.numeric(hold_population))
       
-      output$tract_info <- renderText(paste(click$lng, click$lat, hold_population))
+      # output$tract_info <- renderText(paste(click$lng, click$lat, hold_population))
       leaflet::leafletProxy( mapId = "myMap" ) %>%
         clearGroup(group = "circle") %>%
         addCircles(
@@ -390,6 +390,9 @@ function(input, output, session) {
       updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
       updateSelectInput(session, "hub_location", selected = CTU_NAME)
       updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
+      updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
+      updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
+      updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
       } else {
       output$map_tab_label <- renderText("Map")
     }

@@ -1,4 +1,4 @@
-intersection_delay <-
+intersection_delay_reductions <-
   function(number_peak_hours,
            vehicle_per_hour,
            peak_hour_delay_noBuild,

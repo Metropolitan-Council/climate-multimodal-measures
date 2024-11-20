@@ -35,7 +35,8 @@ source(paste0(getwd(), "/data/vmt_per_capita.R"))
 
 added_functions <- c("employee_commute", "ev_outreach", "ev_infrastructure",
                      "shared_mobility", "transit_expansion", "mobility_hubs",
-                     "pedestrian_facilities", "trails_bike_facilities")
+                     "pedestrian_facilities", "trails_bike_facilities",
+                     "corridor_speed_improvement", "intersection_delay_reductions")
 for(added_function in added_functions) {
   source(paste0(getwd(),"/R Scripts/", added_function, ".R"))
 }
