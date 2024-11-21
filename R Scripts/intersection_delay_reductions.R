@@ -56,10 +56,3 @@ intersection_delay_reductions <-
     return(results)
   }
 
-test <- intersection_delay(number_peak_hours = 5,
-                           vehicle_per_hour = 600,
-                           peak_hour_delay_noBuild = 1,
-                           peak_hour_delay_build = .5,
-                           location = "Afton",
-                           project_start = "2024-01-01",
-                           project_lifetime = 7)
