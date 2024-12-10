@@ -36,17 +36,17 @@ page_navbar(
                         )),
               nav_panel(title = "Electric Vehicles", 
                         navset_card_tab(
-                          nav_panel(title = "EV Outreach Reduction", 
+                          nav_panel(title = "EV Education and Outreach", 
                                     page_fillable(
                                       card(
                                         layout_column_wrap(
                                           width = 1/2,
                                           numericInput("no_participants", 
-                                                       "Number of Participants",
+                                                       "Expected Number of participants",
                                                        #  NEED DEFAULT
                                                        value = 0),
                                           selectInput("ev_outreach_location",
-                                                      "EV Outreach Location",
+                                                      "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
                                                       selected = CommunityType$CTU_NAME[1]),
                                           dateInput("ev_outreach_project_start", 
@@ -54,12 +54,10 @@ page_navbar(
                                                     value = "2024-01-01"),
                                           numericInput("ev_outreach_project_lifetime", 
                                                        "Project Lifetime (in years)",
-                                                       #  NEED DEFAULT
-                                                       value = 1),
+                                                       value = 14),
                                           numericInput("conversion_rate", 
                                                        "Conversion Rate",
-                                                       #  NEED DEFAULT
-                                                       value = 0),
+                                                       value = .04),
                                           radioButtons("audience", 
                                                        "Audience",
                                                        choices = c("Light Duty", "Heavy Duty"),
@@ -68,27 +66,26 @@ page_navbar(
                                       ),
                                       card(dataTableOutput("ev_outreach_table"))
                                     )),
-                          nav_panel(title = "EV Infrastructure",
+                          nav_panel(title = "Public Infrastructure Installation",
                                     page_fillable(
                                       card(
                                         layout_column_wrap(
                                           width = 1/2,
                                           radioButtons("ev_type", 
-                                                       "EV Type",
+                                                       "Type of Vehicle Serviced",
                                                        choices = c("Light-Duty", "Heavy-Duty"),
                                                        selected = "Light-Duty"),
                                           radioButtons("charger_type", 
-                                                       "Charger Type",
+                                                       "Type of Charger Installed",
                                                        choices = c("DCFC", "Level 2"),
                                                        selected = "DCFC"),
                                           selectInput("ev_infrastructure_location",
-                                                      "EV Infrastructure Location",
+                                                      "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
                                                       selected = CommunityType$CTU_NAME[1]),
                                           numericInput("no_chargers", 
                                                        "Number of Chargers",
-                                                       #  NEED DEFAULT
-                                                       value = 0),
+                                                       value = 10),
                                           numericInput("charge_power", 
                                                        "Charge Power",
                                                        #  NEED DEFAULT
@@ -102,8 +99,7 @@ page_navbar(
                                                     value = "2024-01-01"),
                                           numericInput("ev_infrastructure_project_lifetime", 
                                                        "Project Lifetime (in years)",
-                                                       #  NEED DEFAULT
-                                                       value = 1)
+                                                       value = 10)
                                         )
                                       ),
                                       card(dataTableOutput("ev_infrastructure_table"))
@@ -111,7 +107,7 @@ page_navbar(
               nav_panel(title = "Facilities/Hubs", 
                         navset_card_tab(
                           nav_panel(
-                            title = "Mobility Hub",
+                            title = "Mobility Hubs",
                             page_fillable(
                               card(
                                 layout_column_wrap(
@@ -126,7 +122,7 @@ page_navbar(
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
                                   numericInput("population_3mile",
-                                               "Population Within 3 Miles",
+                                               "population within the service area",
                                                #  NEED DEFAULT
                                                value = 0),
                                   dateInput("hub_project_start",
@@ -140,10 +136,10 @@ page_navbar(
                                                #  NEED DEFAULT
                                                value = 1),
                                   numericInput("reduction_potential",
-                                               "Reduction Potential",
+                                               "Total VMT Reduction Potential",
                                                value = 1),
                                   numericInput("annual_vmt",
-                                               "Annual VMT",
+                                               "Annual VMT per capita",
                                                value = 1),
                                   
                                 )
@@ -167,12 +163,12 @@ page_navbar(
                                                "Project Lifetime (in years)",
                                                #  NEED DEFAULT
                                                value = 20),
-                                  numericInput("average_daily_traffic", "Average Daily Traffic", value = 1),
-                                  numericInput("one_way_facility_length", "One-Way Facility Length", value = 1),
-                                  numericInput("no_key_destinations_25", "Key Destinations (25)", value = 1),
-                                  numericInput("no_key_destinations_50", "Key Destinations (50)", value = 1),
-                                  numericInput("annual_use_days", "Annual Use Days", value = 214),
-                                  numericInput("average_trip_replaced", "Average Trip Replaced", value = .86)
+                                  numericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
+                                  numericInput("one_way_facility_length", "Facility Length", value = 1),
+                                  numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
+                                  numericInput("no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
+                                  numericInput("annual_use_days", "Facility Annual Days of Use", value = 214),
+                                  numericInput("average_trip_replaced", "Average Length of Auto Trip Replaced (Mile)", value = .86)
                                 )
                               ),
                               card(dataTableOutput("pedestrian_facilities_table"))
@@ -199,11 +195,11 @@ page_navbar(
                                                "Project Lifetime (in years)",
                                                #  NEED DEFAULT
                                                value = 20),
-                                  numericInput("trails_bike_average_daily_traffic", "Average Daily Traffic", value = 1),
-                                  numericInput("facility_length_range", "Facility Length Range", value = 1),
-                                  numericInput("trails_bike_no_key_destinations_25", "Key Destinations (25)", value = 1),
-                                  numericInput("trails_bike_no_key_destinations_50", "Key Destinations (50)", value = 1),
-                                  numericInput("days_open", "Days Open", value = 214),
+                                  numericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
+                                  numericInput("facility_length_range", "Facility Length", value = 1),
+                                  numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
+                                  numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
+                                  numericInput("days_open", "Facility Annual Days of Use", value = 214),
                                   numericInput("length_trip_replaced_walking", "Average Walking Trip Replaced", value = .86),
                                   numericInput("length_trip_replaced_biking", "Average Biking Trip Replaced", value = 3.6)
                                 )
@@ -214,7 +210,7 @@ page_navbar(
               nav_panel(title = "Behavioral Changes", 
                         navset_card_tab(
                           nav_panel(
-                            title = "Employee Commute Reduction",
+                            title = "Employee Commute",
                             page_fillable(
                               card(
                                 layout_column_wrap(
@@ -239,23 +235,23 @@ page_navbar(
                                                value = 4)
                                   ,
                                   numericInput("average_commute",
-                                               "Average Commute Distance (in miles)",
+                                               "Average One-way Commute Trip Distance (Mile)",
                                                value = 10.9),
                                   numericInput("working_days",
-                                               "Number of Annual Working Days",
+                                               "Annual Number of Working Days",
                                                value = 260)
                                 )
                               ),
                               card(dataTableOutput("employee_commute_table"))
                             )),
                           nav_panel(
-                            title = "Shared Mobility",
+                            title = "Share Mobility Programs",
                             page_fillable(
                               card(
                                 layout_column_wrap(
                                   width = 1/2,
                                   selectInput("fleet",
-                                              "Fleet Type",
+                                              "Mobility Type",
                                               choices = c("Bike", "Scooter", "Non-EV Rideshares", "EV Rideshares"),
                                               selected = "Bike"),
                                   selectInput("shared_mobility_location",
@@ -272,10 +268,9 @@ page_navbar(
                                             value = "2024-01-01"),
                                   numericInput("shared_mobility_project_lifetime", 
                                                "Project Lifetime (in years)", 
-                                               #  NEED DEFAULT
-                                               value = 1),
+                                               value = 20),
                                   numericInput("no_vehicles", 
-                                               "Number of Vehicles", 
+                                               "Number of Daily Vehicle or Equipment Dispatched", 
                                                #  NEED DEFAULT
                                                value = 1)
                                 )
@@ -288,7 +283,7 @@ page_navbar(
                             layout_column_wrap(
                               width = 1/2,
                               selectInput("route_type",
-                                          "Route Type",
+                                          "Transit Service Type",
                                           choices = AdjustmentFactorsAndTripLengths$route_type,
                                           selected = AdjustmentFactorsAndTripLengths$route_type[1]),
                               selectInput("transit_expansion_location",
@@ -307,7 +302,7 @@ page_navbar(
                                            #  NEED DEFAULT
                                            value = 20),
                               numericInput("added_transit", 
-                                           "Added Transit", 
+                                           "Increase in Annual Transit VMT (Mile)", 
                                            #  NEED DEFAULT, NONEIN MEMO
                                            value = 1)
                             )
@@ -317,7 +312,7 @@ page_navbar(
               nav_panel(title = "General Infrastructure Improvements", 
                         navset_card_tab(
                           nav_panel(
-                            title = "Intersection Delay Reduction",
+                            title = "Intersection Delay",
                             page_fillable(
                               card(
                                 layout_column_wrap(
@@ -337,15 +332,15 @@ page_navbar(
                                                "Project Lifetime (in years)", 
                                                value = 7),
                                   numericInput("vehicle_per_hour",
-                                               "Vehicles per Hour",
+                                               "Intersection Vehicle Per Hour",
                                                #  NEED DEFAULT, NONEIN MEMO
                                                value = 1),
                                   numericInput("peak_hour_delay_noBuild",
-                                               "Peak Hour Delay (No Build)",
+                                               "Peak Hour Delay Per Vehicle under No-Build Condition (Hour)",
                                                #  NEED DEFAULT
                                                value = 1),
                                   numericInput("peak_hour_delay_build",
-                                               "Peak Hour Delay (Build)",
+                                               "Peak Hour Delay Per Vehicle under Build Condition (Hour)",
                                                #  NEED DEFAULT
                                                value = 1)
                                 )
@@ -354,7 +349,7 @@ page_navbar(
                             )
                           ),
                           nav_panel(
-                            title = "Intersection Delay Reduction",
+                            title = "Corridor Speed",
                             page_fillable(
                               card(
                                 
@@ -365,7 +360,7 @@ page_navbar(
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
                                   numericInput("corridor_distance",
-                                               "Corridor Distance",
+                                               "Corridor Distance (Mile)",
                                                #  NEED DEFAULT
                                                value = 1),
                                   dateInput("corridor_speed_project_start",
@@ -375,15 +370,15 @@ page_navbar(
                                                "Project Lifetime (in years)",
                                                value = 7),
                                   numericInput("avg_annual_daily_traffic",
-                                               "Average Annual Daily Traffic",
+                                               "Annual average daily traffic under the no-build condition",
                                                #  NEED DEFAULT, NONEIN MEMO
                                                value = 1),
                                   numericInput("avg_corridor_speed_no_build",
-                                               "Average Corridor Speed (No Build)",
+                                               "Average Corridor Speed under the No-Build Condition (mph)",
                                                #  NEED DEFAULT
                                                value = 1),
                                   numericInput("avg_corridor_speed_build",
-                                               "Average Corridor Speed (Build)",
+                                               "Average Corridor Speed under the Build Condition (mph)",
                                                #  NEED DEFAULT
                                                value = 1)
                                 )
