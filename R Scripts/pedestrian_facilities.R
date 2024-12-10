@@ -12,6 +12,10 @@ pedestrian_facilities <- function(average_daily_traffic,
     filter(CTU_NAME == location) %>%
     pull(MappedCommunity)
   
+  if(is.null(annual_use_days)){
+    annual_use_days = 214
+  }
+  
   if (is.null(average_trip_replaced)) {
     average_trip_replaced = TripDistances %>% filter(mode_type == "Walk") %>% pull(distance_avg)
   }
@@ -72,6 +76,12 @@ pedestrian_facilities <- function(average_daily_traffic,
   
   for (i in seq_along(project_years)) {
     year <- project_years[i]
+    
+    print(annual_use_days)
+    print(average_daily_traffic)
+    print(mode_shift_factor)
+    print(key_destination_credit)
+    print(average_trip_replaced)
     
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- annual_use_days * average_daily_traffic * (mode_shift_factor + key_destination_credit) * average_trip_replaced
