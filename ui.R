@@ -106,7 +106,6 @@ page_navbar(
                         navset_card_tab(
                           nav_panel(
                             title = "Mobility Hubs",
-                            title = "Mobility Hubs",
                             page_fillable(
                               card(
                                 layout_column_wrap(
@@ -136,12 +135,10 @@ page_navbar(
                                                value = 1),
                                   numericInput("reduction_potential",
                                                "Total VMT Reduction Potential",
-                                               "Total VMT Reduction Potential",
                                                value = 1),
                                   numericInput("annual_vmt",
                                                "Annual VMT per capita",
-                                               "Annual VMT per capita",
-                                               value = 1),
+                                               value = 1)
                                   
                                 )
                               ),
@@ -163,12 +160,6 @@ page_navbar(
                                   numericInput("pedestrian_project_lifetime",
                                                "Project Lifetime (in years)",
                                                value = 20),
-                                  numericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
-                                  numericInput("one_way_facility_length", "Facility Length", value = 1),
-                                  numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
-                                  numericInput("no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
-                                  numericInput("annual_use_days", "Facility Annual Days of Use", value = 214),
-                                  numericInput("average_trip_replaced", "Average Length of Auto Trip Replaced (Mile)", value = .86)
                                   numericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
                                   numericInput("one_way_facility_length", "Facility Length", value = 1),
                                   numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
@@ -200,11 +191,6 @@ page_navbar(
                                   numericInput("trails_bike_project_lifetime",
                                                "Project Lifetime (in years)",
                                                value = 20),
-                                  numericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
-                                  numericInput("facility_length_range", "Facility Length", value = 1),
-                                  numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
-                                  numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
-                                  numericInput("days_open", "Facility Annual Days of Use", value = 214),
                                   numericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
                                   numericInput("facility_length_range", "Facility Length", value = 1),
                                   numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
@@ -246,10 +232,8 @@ page_navbar(
                                   ,
                                   numericInput("average_commute",
                                                "Average One-way Commute Trip Distance (Mile)",
-                                               "Average One-way Commute Trip Distance (Mile)",
                                                value = 10.9),
                                   numericInput("working_days",
-                                               "Annual Number of Working Days",
                                                "Annual Number of Working Days",
                                                value = 260)
                                 )
@@ -263,7 +247,6 @@ page_navbar(
                                 layout_column_wrap(
                                   width = 1/2,
                                   selectInput("fleet",
-                                              "Mobility Type",
                                               "Mobility Type",
                                               choices = c("Bike", "Scooter", "Non-EV Rideshares", "EV Rideshares"),
                                               selected = "Bike"),
@@ -282,9 +265,7 @@ page_navbar(
                                   numericInput("shared_mobility_project_lifetime", 
                                                "Project Lifetime (in years)", 
                                                value = 20),
-                                               value = 20),
                                   numericInput("no_vehicles", 
-                                               "Number of Daily Vehicle or Equipment Dispatched", 
                                                "Number of Daily Vehicle or Equipment Dispatched", 
                                                #  NEED DEFAULT
                                                value = 1)
@@ -298,7 +279,6 @@ page_navbar(
                             layout_column_wrap(
                                           width = 1/2,
                               selectInput("route_type",
-                                          "Transit Service Type",
                                           "Transit Service Type",
                                           choices = AdjustmentFactorsAndTripLengths$route_type,
                                           selected = AdjustmentFactorsAndTripLengths$route_type[1]),
@@ -318,7 +298,6 @@ page_navbar(
                                            value = 14), 
                               numericInput("added_transit", 
                                            "Increase in Annual Transit VMT (Mile)", 
-                                           "Increase in Annual Transit VMT (Mile)", 
                                            #  NEED DEFAULT, NONEIN MEMO
                                            value = 1)
                             )
@@ -328,7 +307,6 @@ page_navbar(
               nav_panel(title = "General Infrastructure Improvements",
                         navset_card_tab(
                           nav_panel(
-                            title = "Intersection Delay",
                             title = "Intersection Delay",
                             page_fillable(
                               card(
@@ -354,11 +332,9 @@ page_navbar(
                                                value = 1),
                                   numericInput("peak_hour_delay_noBuild",
                                                "Peak Hour Delay Per Vehicle under No-Build Condition (Hour)",
-                                               "Peak Hour Delay Per Vehicle under No-Build Condition (Hour)",
                                                #  NEED DEFAULT
                                                value = 1),
                                   numericInput("peak_hour_delay_build",
-                                               "Peak Hour Delay Per Vehicle under Build Condition (Hour)",
                                                "Peak Hour Delay Per Vehicle under Build Condition (Hour)",
                                                #  NEED DEFAULT
                                                value = 1)
@@ -368,7 +344,6 @@ page_navbar(
                             )
                           ),
                           nav_panel(
-                            title = "Corridor Speed",
                             title = "Corridor Speed",
                             page_fillable(
                               card(
@@ -381,7 +356,6 @@ page_navbar(
                                               selected = CommunityType$CTU_NAME[1]),
                                   numericInput("corridor_distance",
                                                "Corridor Distance (Mile)",
-                                               "Corridor Distance (Mile)",
                                                #  NEED DEFAULT
                                                value = 1),
                                   dateInput("corridor_speed_project_start",
@@ -392,7 +366,6 @@ page_navbar(
                                                value = 7),
                                   numericInput("avg_annual_daily_traffic",
                                                "Annual average daily traffic under the no-build condition",
-                                               "Annual average daily traffic under the no-build condition",
                                                #  NEED DEFAULT, NONEIN MEMO
                                                value = 1),
                                    numericInput("avg_corridor_speed_no_build",
@@ -400,7 +373,6 @@ page_navbar(
                                                #  NEED DEFAULT
                                                value = 1),
                                   numericInput("avg_corridor_speed_build",
-                                               "Average Corridor Speed under the Build Condition (mph)",
                                                "Average Corridor Speed under the Build Condition (mph)",
                                                #  NEED DEFAULT
                                                value = 1)
