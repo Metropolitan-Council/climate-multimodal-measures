@@ -36,74 +36,71 @@ page_navbar(
                         )),
               nav_panel(title = "Electric Vehicles", 
                         navset_card_tab(
-                          nav_panel(title = "EV Outreach Reduction", 
+                          nav_panel(title = "EV Education and Outreach", 
                                     page_fillable(
                                       card(
                                         layout_column_wrap(
                                           width = 1/2,
                                           numericInput("no_participants", 
-                                                       "Number of Participants",
-                                                       #  NEED DEFAULT
-                                                       value = 0),
+                                                       "Expected Number of Participants",
+                                                       value = 4000),
                                           selectInput("ev_outreach_location",
-                                                      "EV Outreach Location",
+                                                      "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
                                                       selected = CommunityType$CTU_NAME[1]),
                                           dateInput("ev_outreach_project_start", 
-                                                    "Project Start", 
+                                                    "Year", 
                                                     value = "2024-01-01"),
                                           numericInput("ev_outreach_project_lifetime", 
                                                        "Project Lifetime (in years)",
-                                                       #  NEED DEFAULT
-                                                       value = 1),
+                                                       value = 14),
                                           numericInput("conversion_rate", 
                                                        "Conversion Rate",
                                                        #  NEED DEFAULT
-                                                       value = 0),
+                                                       value = 0.04),
                                           radioButtons("audience", 
-                                                       "Audience",
+                                                       "Target Audience",
                                                        choices = c("Light Duty", "Heavy Duty"),
                                                        selected = "Light Duty")
                                         )
                                       ),
                                       card(dataTableOutput("ev_outreach_table"))
                                     )),
-                          nav_panel(title = "EV Infrastructure",
+                          nav_panel(title = "Public Infrastructure Installation",
                                     page_fillable(
                                       card(
                                         layout_column_wrap(
                                           width = 1/2,
                                           radioButtons("ev_type", 
-                                                       "EV Type",
+                                                       "Type of Vehicle Serviced",
                                                        choices = c("Light-Duty", "Heavy-Duty"),
                                                        selected = "Light-Duty"),
                                           radioButtons("charger_type", 
-                                                       "Charger Type",
+                                                       "Type of Charger Installed",
                                                        choices = c("DCFC", "Level 2"),
                                                        selected = "DCFC"),
                                           selectInput("ev_infrastructure_location",
-                                                      "EV Infrastructure Location",
+                                                      "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
                                                       selected = CommunityType$CTU_NAME[1]),
                                           numericInput("no_chargers", 
                                                        "Number of Chargers",
-                                                       #  NEED DEFAULT
-                                                       value = 0),
+                                                       value = 10),
                                           numericInput("charge_power", 
-                                                       "Charge Power",
-                                                       #  NEED DEFAULT
-                                                       value = 0),
+                                                       "Charger Power Level (kW)",
+                                                       #  NEED TO BE SET BASED ON charger_type
+                                                       value = 150),
                                           numericInput("annual_hours_available", 
                                                        "Annual Hours Available",
                                                        #  NEED DEFAULT
                                                        value = 8760),
                                           dateInput("ev_infrastructure_project_start", 
-                                                    "Project Start", 
+                                                    "Year", 
                                                     value = "2024-01-01"),
                                           numericInput("ev_infrastructure_project_lifetime", 
                                                        "Project Lifetime (in years)",
                                                        #  NEED DEFAULT
-                                                       value = 1)
+                                                       value = 10)
                                         )
                                       ),
                                       card(dataTableOutput("ev_infrastructure_table"))
