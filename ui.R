@@ -97,7 +97,13 @@ page_navbar(
                                                     value = "2024-01-01"),
                                           numericInput("ev_infrastructure_project_lifetime", 
                                                        "Project Lifetime (in years)",
-                                                       value = 10)
+                                                       value = 10),
+                                          numericInput("utilization_rate",
+                                          "Utilization",
+                                          value = .6),
+                                          numericInput("average_energy_efficiency",
+                                                       "Vehicle Energy Efficiency (kWh/mile)",
+                                                       value = 1)
                                         )
                                       ),
                                       card(dataTableOutput("ev_infrastructure_table"))

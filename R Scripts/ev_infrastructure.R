@@ -6,31 +6,34 @@ ev_infrastructure <- function(ev_type,
                               location,
                               project_start,
                               project_lifetime,
-                              utilization_rate = NULL) {
+                              utilization_rate = NULL,
+                              average_energy_efficiency = NULL) {
   
-  community_type <- CommunityTypeShape %>% 
-    filter(CTU_NAME == location) %>% 
+  community_type <- CommunityTypeShape %>%
+    filter(CTU_NAME == location) %>%
     pull(MappedCommunity)
-
+  
   
   if (is.null(utilization_rate)) {
-    if (charger_type == "DCFC"){
+    if (charger_type == "DCFC") {
       utilization_rate <- ChargerUtilizationRates$DC_fast
     }
     
-    if (charger_type == "Level 2"){
+    if (charger_type == "Level 2") {
       utilization_rate <- ChargerUtilizationRates$level_2
     }
   }
   
-  if (ev_type == "Light-Duty") {
-    average_energy_efficiency <- FuelEfficiency %>% filter(`Vehicle Type` == "Light-Duty") %>%
-      pull(`Fuel Efficiency (Wh/mi)`)
-  }
-  
-  if (ev_type == "Heavy-Duty") {
-    average_energy_efficiency <- FuelEfficiency %>% filter(`Vehicle Type` == "Heavy-Duty") %>%
-      pull(`Fuel Efficiency (Wh/mi)`)
+  if (is.null(average_energy_efficiency)) {
+    if (ev_type == "Light-Duty") {
+      average_energy_efficiency <- FuelEfficiency %>% filter(`Vehicle Type` == "Light-Duty") %>%
+        pull(`Fuel Efficiency (Wh/mi)`)
+    }
+    
+    if (ev_type == "Heavy-Duty") {
+      average_energy_efficiency <- FuelEfficiency %>% filter(`Vehicle Type` == "Heavy-Duty") %>%
+        pull(`Fuel Efficiency (Wh/mi)`)
+    }
   }
   
   # Generate years project covers based on project start date and length of project
@@ -65,7 +68,7 @@ ev_infrastructure <- function(ev_type,
     
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / average_energy_efficiency * (percentage_ICE / 100)
-
+    
     
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)
@@ -89,7 +92,7 @@ ev_infrastructure <- function(ev_type,
     ghg_impact_year <- vmt_displaced_year * (carbon_intensity - carbon_intensity_grid) / 1000000
     
     # Filter Discount Rate for the current year
-    discount_rate <- SocialCostCarbon %>% 
+    discount_rate <- SocialCostCarbon %>%
       filter(`emission.year` == current_year & gas == "CO2")
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`

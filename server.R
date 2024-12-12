@@ -80,8 +80,9 @@ function(input, output, session) {
       location = input$ev_infrastructure_location,
       #all locations can be extracted from CommunityTypeShape
       project_start = input$ev_infrastructure_project_start,
-      project_lifetime = input$ev_infrastructure_project_lifetime #10 year default
-      #ChargerUtilizationRates = input#ChargerUtilizationRates #default should be based on the charger_type in the ChargerUtilizationRates dataset
+      project_lifetime = input$ev_infrastructure_project_lifetime, #10 year default
+      utilization_rate = input$utilization_rate,#default should be based on the charger_type in the ChargerUtilizationRates dataset
+      average_energy_efficiency = input$average_energy_efficiency
     )
   })
   
