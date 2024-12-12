@@ -18,7 +18,7 @@
 # )
 
 # test <- dataTableOutput("dt")
-
+tags$script(HTML('$(document).ready(function(){ $("[data-toggle=\'tooltip\']").tooltip(); });'))
 page_navbar(
   title = "Metropolitan Council",
   bg = "#0062cc",
@@ -255,8 +255,7 @@ page_navbar(
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
                                   numericInput("no_trips", 
-                                               #  confirm title of input
-                                               "Number of Daily One-Way Commute Trips Reduced", 
+                                               "Number of Annual Trips per Vehicle/Equipment", 
                                                #  NEED DEFAULT
                                                value = 1000),
                                   dateInput("shared_mobility_project_start", 
@@ -267,8 +266,20 @@ page_navbar(
                                                value = 20),
                                   numericInput("no_vehicles", 
                                                "Number of Daily Vehicle or Equipment Dispatched", 
-                                               #  NEED DEFAULT
-                                               value = 1)
+                                               value = 1),
+                                  numericInput("trip_miles", 
+                                               "Average Length of Vehicle Trip Displaced (Mile)", 
+                                               value = 20),
+                                  numericInput("shared_mobility_adjustment_factor", 
+                                               "Vehicle Dependency Adjustment Factor", 
+                                               value = 1),
+                                  numericInput("average_occupancy", 
+                                               "Average Occupancy per Vehicle", 
+                                               value = 20),
+                                  numericInput("prct_deadhead_miles", 
+                                               "Percent of Deadhead Miles", 
+                                               value = .83),
+                                  
                                 )
                               ),
                               card(dataTableOutput("shared_mobility_table"))
@@ -299,7 +310,13 @@ page_navbar(
                               numericInput("added_transit", 
                                            "Increase in Annual Transit VMT (Mile)", 
                                            #  NEED DEFAULT, NONEIN MEMO
-                                           value = 1)
+                                           value = 1),
+                              numericInput("average_trip_length", 
+                                           "Average Auto Trip Replaced (Mile)", 
+                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]), 
+                              numericInput("transit_expansion_adjustment_factor", 
+                                           "Transit Dependency Adjustment Factor", 
+                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]),
                             )
                           ),
                           card(dataTableOutput("transit_expansion_table"))

@@ -1,0 +1,10 @@
+name: transportation-emissions
+title:
+username: metcouncilicf
+account: metcouncilicf
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13501300
+bundleId: 9450041
+url: https://metcouncilicf.shinyapps.io/transportation-emissions/
+version: 1

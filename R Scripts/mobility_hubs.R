@@ -14,7 +14,7 @@ mobility_hubs <-
     
     if (is.null(reduction_potential)) {
       reduction_potential <- TotalVMTReductionPotential %>%
-        filter(mobility_mode %in% mobility_modes) %>% # Filter to include all selected modes
+        filter(mobility_mode %in% mobility_mode) %>% # Filter to include all selected modes
         summarise(total_vmt_reduction_potential = sum(total_vmt_reduction_potential, na.rm = TRUE)) %>%
         pull(total_vmt_reduction_potential)
     }
@@ -102,3 +102,11 @@ mobility_hubs <-
     
     return(results)
   }
+
+# test <- mobility_hubs(mobility_mode = "Bike Share",
+#                       added_vmt = 1200,
+#                       project_lifetime = 5,
+#                       project_start = "2027-01-01",
+#                       location = "Andover", 
+#                       population_3mile = 5000)
+
