@@ -121,8 +121,8 @@ page_navbar(
                                               selected = CommunityType$CTU_NAME[1]),
                                   numericInput("population_3mile",
                                                "Population within the service area",
-                                               #  NEED DEFAULT
-                                               value = 0),
+                                               #  Default=rural area
+                                               value = 14137),
                                   dateInput("hub_project_start",
                                             "Year",
                                             value = "2024-01-01"),
@@ -130,15 +130,19 @@ page_navbar(
                                                "Project Lifetime (in years)",
                                                value = 20),
                                   numericInput("added_vmt",
-                                               "Added VMT",
+                                               "Increase in Annual Transit VMT (Mile)",
                                                #  NEED DEFAULT
-                                               value = 1),
+                                               value = 0),
                                   numericInput("reduction_potential",
                                                "Total VMT Reduction Potential",
-                                               value = 1),
+                                               # VALUE SHOULD CHANGE BASED ON MODE SELECTIONS
+                                               # DEFAULT (Pedestrian Facility)
+                                               value = .058),
                                   numericInput("annual_vmt",
                                                "Annual VMT per capita",
-                                               value = 1)
+                                               # VALUE SHOULD CHANGE BASED ON LOCATION
+                                               # DEFAULT (Lindwood Twp.)
+                                               value = 10655)
                                   
                                 )
                               ),
@@ -160,7 +164,7 @@ page_navbar(
                                   numericInput("pedestrian_project_lifetime",
                                                "Project Lifetime (in years)",
                                                value = 20),
-                                  numericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
+                                  numericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000),
                                   numericInput("one_way_facility_length", "Facility Length", value = 1),
                                   numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
@@ -191,7 +195,7 @@ page_navbar(
                                   numericInput("trails_bike_project_lifetime",
                                                "Project Lifetime (in years)",
                                                value = 20),
-                                  numericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 1),
+                                  numericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000),
                                   numericInput("facility_length_range", "Facility Length", value = 1),
                                   numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
@@ -224,7 +228,7 @@ page_navbar(
                                                "Number of Daily One-Way Commute Trips Reduced", 
                                                value = 1000),
                                   dateInput("project_start", 
-                                            "Project Start", 
+                                            "Year", 
                                             value = "2024-01-01"),
                                   numericInput("project_lifetime", 
                                                "Project Lifetime (in years)", 
@@ -260,11 +264,11 @@ page_navbar(
                                                #  NEED DEFAULT
                                                value = 1000),
                                   dateInput("shared_mobility_project_start", 
-                                            "Project Start", 
+                                            "Year", 
                                             value = "2024-01-01"),
                                   numericInput("shared_mobility_project_lifetime", 
                                                "Project Lifetime (in years)", 
-                                               value = 20),
+                                               value = 8),
                                   numericInput("no_vehicles", 
                                                "Number of Daily Vehicle or Equipment Dispatched", 
                                                #  NEED DEFAULT
@@ -288,8 +292,8 @@ page_navbar(
                                           selected = CommunityType$CTU_NAME[1]),
                               numericInput("ridership_increase", 
                                            "Ridership Increase", 
-                                           #  NEED DEFAULT
-                                           value = 1),
+                                           #  Default from sample project: MetroTransit Micro G Line Exp
+                                           value = 32976),
                               dateInput("transit_expansion_project_start", 
                                         "Year", 
                                         value = "2024-01-01"),
@@ -298,8 +302,8 @@ page_navbar(
                                            value = 14), 
                               numericInput("added_transit", 
                                            "Increase in Annual Transit VMT (Mile)", 
-                                           #  NEED DEFAULT, NONEIN MEMO
-                                           value = 1)
+                                           #  Default from sample project: MetroTransit Micro G Line Exp
+                                           value = 1566)
                             )
                           ),
                           card(dataTableOutput("transit_expansion_table"))
@@ -333,7 +337,7 @@ page_navbar(
                                   numericInput("peak_hour_delay_noBuild",
                                                "Peak Hour Delay Per Vehicle under No-Build Condition (Hour)",
                                                #  NEED DEFAULT
-                                               value = 1),
+                                               value = 2),
                                   numericInput("peak_hour_delay_build",
                                                "Peak Hour Delay Per Vehicle under Build Condition (Hour)",
                                                #  NEED DEFAULT
@@ -375,7 +379,7 @@ page_navbar(
                                   numericInput("avg_corridor_speed_build",
                                                "Average Corridor Speed under the Build Condition (mph)",
                                                #  NEED DEFAULT
-                                               value = 1)
+                                               value = 1.2)
                                 )
                               ),
                               card(dataTableOutput("corridor_speed_improvements_table"))
