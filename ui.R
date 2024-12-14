@@ -18,7 +18,7 @@
 # )
 
 # test <- dataTableOutput("dt")
-
+tags$script(HTML('$(document).ready(function(){ $("[data-toggle=\'tooltip\']").tooltip(); });'))
 page_navbar(
   title = "Metropolitan Council",
   bg = "#0062cc",
@@ -97,7 +97,13 @@ page_navbar(
                                                     value = "2024-01-01"),
                                           numericInput("ev_infrastructure_project_lifetime", 
                                                        "Project Lifetime (in years)",
-                                                       value = 10)
+                                                       value = 10),
+                                          numericInput("utilization_rate",
+                                          "Utilization",
+                                          value = .6),
+                                          numericInput("average_energy_efficiency",
+                                                       "Vehicle Energy Efficiency (kWh/mile)",
+                                                       value = 1)
                                         )
                                       ),
                                       card(dataTableOutput("ev_infrastructure_table"))
@@ -259,8 +265,7 @@ page_navbar(
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
                                   numericInput("no_trips", 
-                                               #  confirm title of input
-                                               "Number of Daily One-Way Commute Trips Reduced", 
+                                               "Number of Annual Trips per Vehicle/Equipment", 
                                                #  NEED DEFAULT
                                                value = 1000),
                                   dateInput("shared_mobility_project_start", 
@@ -271,8 +276,20 @@ page_navbar(
                                                value = 8),
                                   numericInput("no_vehicles", 
                                                "Number of Daily Vehicle or Equipment Dispatched", 
-                                               #  NEED DEFAULT
-                                               value = 1)
+                                               value = 1),
+                                  numericInput("trip_miles", 
+                                               "Average Length of Vehicle Trip Displaced (Mile)", 
+                                               value = 20),
+                                  numericInput("shared_mobility_adjustment_factor", 
+                                               "Vehicle Dependency Adjustment Factor", 
+                                               value = 1),
+                                  numericInput("average_occupancy", 
+                                               "Average Occupancy per Vehicle", 
+                                               value = 20),
+                                  numericInput("prct_deadhead_miles", 
+                                               "Percent of Deadhead Miles", 
+                                               value = .83),
+                                  
                                 )
                               ),
                               card(dataTableOutput("shared_mobility_table"))
@@ -303,11 +320,19 @@ page_navbar(
                               numericInput("added_transit", 
                                            "Increase in Annual Transit VMT (Mile)", 
                                            #  Default from sample project: MetroTransit Micro G Line Exp
-                                           value = 1566)
+                                           value = 1566),
+                                           #  NEED DEFAULT, NONEIN MEMO
+                                           value = 1),
+                              numericInput("average_trip_length", 
+                                           "Average Auto Trip Replaced (Mile)", 
+                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]), 
+                              numericInput("transit_expansion_adjustment_factor", 
+                                           "Transit Dependency Adjustment Factor", 
+                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]),
                             )
                           ),
                           card(dataTableOutput("transit_expansion_table"))
-                        )),
+                        ),
               nav_panel(title = "General Infrastructure Improvements",
                         navset_card_tab(
                           nav_panel(

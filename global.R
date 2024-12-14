@@ -13,6 +13,7 @@ library(tigris)
 library(mapview)
 library(leaflet)
 library(rmapshaper)
+library(shinyBS)
 options(tigris_use_cache = TRUE)
 
 #Reading in our background data
