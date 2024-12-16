@@ -276,8 +276,6 @@ function(input, output, session) {
       project_lifetime = input$trails_bike_project_lifetime,
       days_open = input$days_open,
       # Default is 214
-      length_trip_replaced_walking = input$length_trip_replaced_walking,
-      #Default is .86
       length_trip_replaced_biking = input$length_trip_replaced_biking #Default is 3.6
     )
   })

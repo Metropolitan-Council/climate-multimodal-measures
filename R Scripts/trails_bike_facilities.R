@@ -7,7 +7,6 @@ trails_bike_facilities <- function(average_daily_traffic,
                                    project_start,
                                    project_lifetime,
                                    days_open = NULL,
-                                   length_trip_replaced_walking = NULL,
                                    length_trip_replaced_biking = NULL) {
   community_type <- CommunityTypeShape %>% 
     filter(CTU_NAME == location) %>% 
@@ -15,10 +14,6 @@ trails_bike_facilities <- function(average_daily_traffic,
   
   if (is.null(days_open)) {
     days_open = 214
-  }
-  
-  if (is.null(length_trip_replaced_walking)) {
-    length_trip_replaced_walking = 0.86
   }
   
   if (is.null(length_trip_replaced_biking)) {
@@ -80,9 +75,7 @@ trails_bike_facilities <- function(average_daily_traffic,
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- days_open * average_daily_traffic *
       (mode_shift_factor + key_destination_credit) *
-      (
-        length_trip_replaced_walking + growth_factor_adjustment * length_trip_replaced_biking
-      )
+      (growth_factor_adjustment * length_trip_replaced_biking)
     
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == current_year)

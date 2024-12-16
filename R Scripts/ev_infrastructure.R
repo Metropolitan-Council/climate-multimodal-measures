@@ -83,8 +83,6 @@ ev_infrastructure <- function(ev_type,
     # Convert percentage to a fraction for calculations
     current_percentage_ICE_fraction <- current_percentage_ICE / 100
     
-    print(current_percentage_ICE_fraction)
-    
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / 
       average_energy_efficiency * current_percentage_ICE_fraction

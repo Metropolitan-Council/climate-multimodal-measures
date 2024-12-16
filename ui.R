@@ -215,8 +215,7 @@ page_navbar(
                                   numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
                                   numericInput("days_open", "Facility Annual Days of Use", value = 214),
-                                  numericInput("length_trip_replaced_walking", "Average Walking Trip Replaced", value = .86),
-                                  numericInput("length_trip_replaced_biking", "Average Biking Trip Replaced", value = 3.6)
+                                  numericInput("length_trip_replaced_biking", "Average Length of Auto Trip Replaced", value = 3.6)
                                 )
                               ),
                               card(dataTableOutput("trails_bike_facilities_table"))
