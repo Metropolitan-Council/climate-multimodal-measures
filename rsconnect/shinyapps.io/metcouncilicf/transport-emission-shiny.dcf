@@ -5,8 +5,6 @@ account: metcouncilicf
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 13100062
-bundleId: 9256766
+bundleId: 9511239
 url: https://metcouncilicf.shinyapps.io/transport-emission-shiny/
 version: 1
-asMultiple: FALSE
-asStatic: FALSE

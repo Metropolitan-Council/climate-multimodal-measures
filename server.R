@@ -451,7 +451,7 @@ function(input, output, session) {
 
 
   observe({
-    req(input$ev_infrastructure_location, input$ev_infrastructure_project_start)  # Ensure inputs are not NULL
+    req(input$ev_infrastructure_location, input$ev_infrastructure_project_start, input$charger_type)
     
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
@@ -496,6 +496,16 @@ function(input, output, session) {
     
     # Update the numeric input for average_energy_efficiency
     updateNumericInput(session, "average_energy_efficiency", value = average_energy_efficiency)
+    
+    # Dynamically update charge_power based on the selected charger_type
+    charge_power <- if (input$charger_type == "DCFC") {
+      150  # Default power for DCFC
+    } else {
+      19.2  # Default power for Level 2 chargers
+    }
+    
+    # Update the numeric input for charge_power
+    updateNumericInput(session, "charge_power", value = charge_power)
   })
 
 
