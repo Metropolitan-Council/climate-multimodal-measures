@@ -61,7 +61,9 @@ page_navbar(
                                                        "Target Audience",
                                                        choices = c("Light Duty", "Heavy Duty"),
                                                        selected = "Light Duty")
-                                        )
+                                        ), 
+                                        textOutput("selected_community_type_EVOutreach"),
+                                        textOutput("average_annual_accrual")
                                       ),
                                       card(dataTableOutput("ev_outreach_table"))
                                     )),
@@ -82,7 +84,6 @@ page_navbar(
                                                       "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
                                                       selected = CommunityType$CTU_NAME[1]),
-                                          textOutput("selected_community_type"),
                                           numericInput("no_chargers", 
                                                        "Number of Chargers",
                                                        value = 10),
@@ -113,8 +114,9 @@ page_navbar(
                                             max = 1,
                                             step = 0.01
                                           )
-                                        )
+                                        ), textOutput("selected_community_type_EVInfrastructure")
                                       ),
+                              
                                       card(dataTableOutput("ev_infrastructure_table"))
                                     )))),
               nav_panel(title = "Facilities/Hubs", 
@@ -157,7 +159,8 @@ page_navbar(
                                                "Annual VMT per capita",
                                                # VALUE SHOULD CHANGE BASED ON LOCATION
                                                # DEFAULT (Lindwood Twp.)
-                                               value = 10655)
+                                               value = 10655),
+                                  textOutput("selected_community_type_mobilityHub")
                                   
                                 )
                               ),
@@ -184,7 +187,10 @@ page_navbar(
                                   numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
                                   numericInput("annual_use_days", "Facility Annual Days of Use", value = 214),
-                                  numericInput("average_trip_replaced", "Average Length of Auto Trip Replaced (Mile)", value = .86)
+                                  numericInput("average_trip_replaced", "Average Length of Auto Trip Replaced (Mile)", value = .86), 
+                                  textOutput("selected_community_type_pedestrianFacility"),
+                                  textOutput("mode_shift_factor_pedestrianFacility"),
+                                  textOutput("credit_key_destinations_pedestrianFacility")
                                 )
                               ),
                               card(dataTableOutput("pedestrian_facilities_table"))
@@ -215,7 +221,8 @@ page_navbar(
                                   numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
                                   numericInput("days_open", "Facility Annual Days of Use", value = 214),
-                                  numericInput("length_trip_replaced_biking", "Average Length of Auto Trip Replaced (Mile)", value = 3.6)
+                                  numericInput("length_trip_replaced_biking", "Average Length of Auto Trip Replaced (Mile)", value = 3.6),
+                                  textOutput("selected_community_type_trailsBikes")
                                 )
                               ),
                               card(dataTableOutput("trails_bike_facilities_table"))
@@ -253,7 +260,8 @@ page_navbar(
                                                value = 10.9),
                                   numericInput("working_days",
                                                "Annual Number of Working Days",
-                                               value = 260)
+                                               value = 260),
+                                  textOutput("selected_community_type_employeeCommute")
                                 )
                               ),
                               card(dataTableOutput("employee_commute_table"))
@@ -297,6 +305,7 @@ page_navbar(
                                   numericInput("prct_deadhead_miles", 
                                                "Percent of Deadhead Miles", 
                                                value = .83),
+                                  textOutput("selected_community_type_sharedMobility")
                                   
                                 )
                               ),
@@ -337,6 +346,7 @@ page_navbar(
                               numericInput("transit_expansion_adjustment_factor", 
                                            "Transit Dependency Adjustment Factor", 
                                            value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]),
+                            textOutput("selected_community_type"),
                             )
                           ),
                           card(dataTableOutput("transit_expansion_table"))
@@ -374,7 +384,8 @@ page_navbar(
                                   numericInput("peak_hour_delay_build",
                                                "Peak Hour Delay Per Vehicle under Build Condition (Hour)",
                                                #  NEED DEFAULT
-                                               value = 1)
+                                               value = 1),
+                                 textOutput("selected_community_type_intersectionDelay")
                                 )
                               ),
                               card(dataTableOutput("intersection_delay_reductions_table"))
@@ -412,7 +423,9 @@ page_navbar(
                                   numericInput("avg_corridor_speed_build",
                                                "Average Corridor Speed under the Build Condition (mph)",
                                                #  NEED DEFAULT
-                                               value = 1.2)
+                                               value = 1.2),
+                                  textOutput("selected_community_type_corridorSpeed"),
+                                  textOutput("induced_demand_elasticity")
                                 )
                               ),
                               card(dataTableOutput("corridor_speed_improvements_table"))

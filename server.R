@@ -457,7 +457,7 @@ function(input, output, session) {
       pull(MappedCommunity)
     
     # Update the text output for the community type
-    output$selected_community_type <- renderText({
+    output$selected_community_type_EVInfrastructure <- renderText({
       paste("Selected Community Type:", community_type)
     })
     
@@ -506,5 +506,216 @@ function(input, output, session) {
     updateNumericInput(session, "charge_power", value = charge_power)
   })
 
-
+  observeEvent(input$transit_expansion_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$transit_expansion_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+  })
+  
+  observeEvent(input$shared_mobility_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$shared_mobility_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_sharedMobility <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+  })
+  
+  
+  observeEvent({
+    input$pedestrian_location
+    input$average_daily_traffic
+    input$one_way_facility_length
+    input$no_key_destinations_25
+    input$no_key_destinations_50
+  }, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$pedestrian_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_pedestrianFacility <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+    
+    # Determine traffic and facility length ranges for mode shift factor calculation
+    average_daily_traffic <- input$average_daily_traffic
+    one_way_facility_length <- input$one_way_facility_length
+    
+    # Use case_when for traffic range
+    traffic_range <- case_when(
+      average_daily_traffic <= 12000 ~ "1 to 12,000",
+      average_daily_traffic <= 24000 ~ "12,001 to 24,000",
+      average_daily_traffic <= 30000 ~ "24,001 to 30,000",
+      TRUE ~ NA_character_
+    )
+    
+    # Use case_when for facility length range
+    facility_length_range <- case_when(
+      one_way_facility_length == 1 ~ "1",
+      one_way_facility_length > 1 &
+        one_way_facility_length <= 2 ~ "1.01",
+      one_way_facility_length > 2 ~ "2",
+      TRUE ~ NA_character_
+    )
+    
+    # Calculate mode shift factor
+    mode_shift_factor <- ModeShiftFactor %>%
+      filter(
+        average_daily_traffic_vehicle_trips_per_day == traffic_range,
+        one_way_facility_length_miles_low == facility_length_range
+      ) %>%
+      pull(mode_shift_factor_m)
+    
+    # Determine the number of key destinations
+    if (input$no_key_destinations_25 > input$no_key_destinations_50) {
+      no_key_destinations <- input$no_key_destinations_25
+    } else {
+      no_key_destinations <- input$no_key_destinations_50
+    }
+    
+    # Calculate key destination credit
+    key_destination_credit <- CreditForKeyDestinations %>%
+      filter(
+        case_when(
+          no_key_destinations <= 2 ~ number_of_key_destinations == "0 to 2",
+          no_key_destinations == 3 ~ number_of_key_destinations == "3",
+          no_key_destinations >= 4 & no_key_destinations <= 6 ~ number_of_key_destinations == "4 to 6",
+          no_key_destinations >= 7 ~ number_of_key_destinations == "7 or more"
+        )
+      ) %>%
+      pull(credit_within_1_2_mile_of_facility_c)
+    
+    # Update the text output for mode shift factor
+    output$mode_shift_factor_pedestrianFacility <- renderText({
+      paste("Mode Shift Factor:", ifelse(length(mode_shift_factor) > 0, mode_shift_factor, "Not Found"))
+    })
+    
+    # Update the text output for key destination credit
+    output$credit_key_destinations_pedestrianFacility <- renderText({
+      paste("Key Destination Credit:", ifelse(length(key_destination_credit) > 0, key_destination_credit, "Not Found"))
+    })
+  })
+  
+  
+  observeEvent(input$ev_outreach_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$ev_outreach_location) %>%
+      pull(MappedCommunity)
+    
+    average_annual_accrual <- round(PerVehicleVMT %>% filter(MappedCommunity == community_type) %>% pull(PerVehicleVMT),2)
+    
+    # Update the text output for the community type
+    output$selected_community_type_EVOutreach <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+    
+    # Update the text output for the community type
+    output$average_annual_accrual <- renderText({
+      paste("Average Annual Accrual:", average_annual_accrual)
+    })
+  })
+  
+  observeEvent(input$hub_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$hub_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_mobilityHub <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+  })
+  
+  observeEvent(input$trails_bike_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$trails_bike_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_trailsBikes <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+  })
+  
+  observeEvent(input$location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_employeeCommute <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+  })
+  
+  observeEvent(input$intersection_delay_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$intersection_delay_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_intersectionDelay <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+  })
+  
+  observeEvent({
+    input$corridor_speed_location
+    input$avg_corridor_speed_no_build
+    input$avg_corridor_speed_build
+  }, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$corridor_speed_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_corridorSpeed <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+    
+    # Calculate k1 values for build and no-build scenarios
+    k1_speed_build <- 0.000019137 * input$avg_corridor_speed_build^2 - 0.0020660 * input$avg_corridor_speed_build + 0.088916
+    k1_speed_no_build <- 0.000019137 * input$avg_corridor_speed_no_build^2 - 0.0020660 * input$avg_corridor_speed_no_build + 0.088916
+    
+    # Calculate speed improvement percentage
+    speed_improvement_prct <- ((input$avg_corridor_speed_build - input$avg_corridor_speed_no_build) / input$avg_corridor_speed_no_build) * 100
+    
+    # Determine induced demand elasticity based on speed improvement percentage
+    if (speed_improvement_prct <= 5) {
+      induced_demand_elasticity <- 0
+    } else if (speed_improvement_prct > 5 & speed_improvement_prct <= 20) {
+      induced_demand_elasticity <- 2 * speed_improvement_prct - 0.1
+    } else if (speed_improvement_prct > 20) {
+      induced_demand_elasticity <- 0.3
+    }
+    
+    # Update the text output for induced demand elasticity
+    output$induced_demand_elasticity <- renderText({
+      paste("Induced Demand Elasticity:", round(induced_demand_elasticity, 2))
+    })
+  })
+  
+  
+  
 }
+
+
+  
+  
