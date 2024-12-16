@@ -82,6 +82,7 @@ page_navbar(
                                                       "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
                                                       selected = CommunityType$CTU_NAME[1]),
+                                          textOutput("selected_community_type"),
                                           numericInput("no_chargers", 
                                                        "Number of Chargers",
                                                        value = 10),
@@ -103,7 +104,15 @@ page_navbar(
                                           value = .6),
                                           numericInput("average_energy_efficiency",
                                                        "Vehicle Energy Efficiency (kWh/mile)",
-                                                       value = 1)
+                                                       value = 1),
+                                          numericInput(
+                                            "percentage_ICE",
+                                            "Fraction of EV in Regional Fleet",
+                                            value = NULL,
+                                            min = 0,
+                                            max = 1,
+                                            step = 0.01
+                                          )
                                         )
                                       ),
                                       card(dataTableOutput("ev_infrastructure_table"))

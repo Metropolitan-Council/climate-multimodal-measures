@@ -80,9 +80,12 @@ function(input, output, session) {
       location = input$ev_infrastructure_location,
       #all locations can be extracted from CommunityTypeShape
       project_start = input$ev_infrastructure_project_start,
-      project_lifetime = input$ev_infrastructure_project_lifetime, #10 year default
-      utilization_rate = input$utilization_rate,#default should be based on the charger_type in the ChargerUtilizationRates dataset
-      average_energy_efficiency = input$average_energy_efficiency
+      project_lifetime = input$ev_infrastructure_project_lifetime,
+      #10 year default
+      utilization_rate = input$utilization_rate,
+      #default should be based on the charger_type in the ChargerUtilizationRates dataset
+      average_energy_efficiency = input$average_energy_efficiency,
+      percentage_ICE = input$percentage_ICE
     )
   })
   
@@ -445,7 +448,46 @@ function(input, output, session) {
       updateNumericInput(session, "trip_miles", value = 5.87)
     }
   })
+
+
+  observe({
+    req(input$ev_infrastructure_location, input$ev_infrastructure_project_start)  # Ensure inputs are not NULL
+    
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$ev_infrastructure_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+    
+    # Ensure current_year is defined based on the selected project start year
+    current_year <- as.numeric(format(input$ev_infrastructure_project_start, "%Y"))
+    
+    # Filter FleetData based on the selected community type
+    filtered_FleetData <- FleetData %>%
+      filter(MappedCommunity == community_type) %>%
+      mutate(year = as.numeric(year))
+    
+    # Determine the closest year
+    closest_year <- filtered_FleetData %>%
+      summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
+      pull(closest_year)
+    
+    # Filter the dataset to get the fleet proportions from the closest year
+    fleet_proportion <- filtered_FleetData %>%
+      filter(year == closest_year)
+    
+    # Calculate percentage_ICE and round to 2 decimals
+    percentage_ICE <- round(fleet_proportion$electricity, 2)
+    
+    # Update the numeric input for percentage_ICE
+    updateNumericInput(session, "percentage_ICE", value = percentage_ICE)
+  })
   
+  
+  
+
 }
-
-
