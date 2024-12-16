@@ -485,9 +485,18 @@ function(input, output, session) {
     
     # Update the numeric input for percentage_ICE
     updateNumericInput(session, "percentage_ICE", value = percentage_ICE)
+    
+    # Dynamically update average_energy_efficiency based on the selected ev_type
+    average_energy_efficiency <- FuelEfficiency %>%
+      filter(`Vehicle Type` == input$ev_type) %>%
+      pull(`Fuel Efficiency (Wh/mi)`)
+    
+    # Convert Wh/mi to kWh/mi by dividing by 1000
+    average_energy_efficiency <- round(average_energy_efficiency / 1000, 2)
+    
+    # Update the numeric input for average_energy_efficiency
+    updateNumericInput(session, "average_energy_efficiency", value = average_energy_efficiency)
   })
-  
-  
-  
+
 
 }
