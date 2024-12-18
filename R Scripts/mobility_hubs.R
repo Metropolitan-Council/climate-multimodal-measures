@@ -19,6 +19,8 @@ mobility_hubs <-
         pull(total_vmt_reduction_potential)
     }
     
+    print(reduction_potential)
+    
     if (is.null(annual_vmt)) {
       annual_vmt = VMTPerCapitaByCommunityType %>% filter(MappedCommunity == community_type) %>% pull(VMTperCapita)
     }

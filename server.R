@@ -627,17 +627,25 @@ function(input, output, session) {
     })
   })
   
-  observeEvent(input$hub_location, {
+  observeEvent(list(input$hub_location, input$mobility_mode), {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$hub_location) %>%
       pull(MappedCommunity)
     
-    # Update the text output for the community type
-    output$selected_community_type_mobilityHub <- renderText({
-      paste("Selected Community Type:", community_type)
-    })
+    # Calculate the reduction potential based on all selected mobility modes
+    reduction_potential <- TotalVMTReductionPotential %>%
+      filter(mobility_mode %in% input$mobility_mode) %>%
+      summarise(total_vmt_reduction_potential = sum(total_vmt_reduction_potential, na.rm = TRUE)) %>%
+      pull(total_vmt_reduction_potential)
+    
+    # Update the numeric input directly with the new value
+    updateNumericInput(session, 
+                       "reduction_potential",
+                       value = reduction_potential)
   })
+  
+  
   
   observeEvent({
     input$pedestrian_location
