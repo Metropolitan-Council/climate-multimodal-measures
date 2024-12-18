@@ -126,7 +126,7 @@ page_navbar(
                             page_fillable(
                               card(
                                 layout_column_wrap(
-                                  width = 1/2,
+                                  width = 1/3,
                                   
                                   checkboxGroupInput("mobility_mode",
                                                      "Mobility Mode/s",
@@ -205,10 +205,10 @@ page_navbar(
                                               "Location",
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
-                                  selectInput("facility_type",
+                                  selectInput("trails_bike_facility_type",
                                               "Facility Type",
                                               choices = c("On Street", "New Multiuse",
-                                                          "Conversion"),
+                                                          "trails_bike_Conversion"),
                                               selected = "On Street"),
                                   dateInput("trails_bike_project_start",
                                             "Year",
@@ -217,12 +217,14 @@ page_navbar(
                                                "Project Lifetime (in years)",
                                                value = 20),
                                   numericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000),
-                                  numericInput("facility_length_range", "Facility Length", value = 1),
+                                  numericInput("trails_bike_facility_length_range", "Facility Length", value = 1),
                                   numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
-                                  numericInput("days_open", "Facility Annual Days of Use", value = 214),
+                                  numericInput("trails_bike_days_open", "Facility Annual Days of Use", value = 214),
                                   numericInput("length_trip_replaced_biking", "Average Length of Auto Trip Replaced (Mile)", value = 3.6),
-                                  textOutput("selected_community_type_trailsBikes")
+                                  textOutput("selected_community_type_trailsBikes"),
+                                  textOutput("mode_shift_factor_trailsBike"),
+                                  textOutput("credit_key_destinations_trailsBike")
                                 )
                               ),
                               card(dataTableOutput("trails_bike_facilities_table"))
@@ -339,7 +341,7 @@ page_navbar(
                                            #  Default from sample project: MetroTransit Micro G Line Exp
                                            value = 1566),
                                            #  NEED DEFAULT, NONEIN MEMO
-                                           value = 1),
+                                           # value = 1),
                               numericInput("average_trip_length", 
                                            "Average Auto Trip Replaced (Mile)", 
                                            value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]), 
@@ -350,6 +352,7 @@ page_navbar(
                             )
                           ),
                           card(dataTableOutput("transit_expansion_table"))
+                        )
                         ),
               nav_panel(title = "General Infrastructure Improvements",
                         navset_card_tab(

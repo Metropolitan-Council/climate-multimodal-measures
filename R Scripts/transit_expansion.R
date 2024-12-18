@@ -89,9 +89,9 @@ transit_expansion <-
       # Calculate GHG impact for the current year
       ghg_impact_year <- 
         (((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
-        (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
-        (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
-        (added_transit * added_transit_fuel_ef)) / 1000000
+            (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
+            (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
+           (added_transit * added_transit_fuel_ef)) / 1000000
       
       # Filter Discount Rate for the current year
       discount_rate <- SocialCostCarbon %>% 
@@ -110,21 +110,13 @@ transit_expansion <-
     total_ghg_impact <- sum(ghg_impact)
     total_carbon_cost <- sum(carbon_cost)
     
-    # Create a data frame with results including totals
     results <- data.frame(
       year = c(project_years, "Total"),
-      vmt_displaced = c(vmt_displaced, total_vmt_displaced),
-      ghg_impact = c(ghg_impact, total_ghg_impact),
-      carbon_cost = c(carbon_cost, total_carbon_cost)
+      "VMT (Miles)" = round(c(vmt_displaced, total_vmt_displaced), 0),
+      "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 0),
+      "Carbon Cost ($)"  = round(c(carbon_cost, total_carbon_cost), 0),
+      check.names = FALSE
     )
     
     return(results)
   }
-
-
-test <- transit_expansion(ridership_increase = 10000,
-                          route_type = "Commuter Rail Electric",
-                          added_transit = 35000,
-                          location = "Andover",
-                          project_start = "2027-01-01",
-                          project_lifetime = 1)

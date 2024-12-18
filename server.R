@@ -266,15 +266,15 @@ function(input, output, session) {
     }
     trails_bike_facilities(
       average_daily_traffic = input$trails_bike_average_daily_traffic,
-      facility_length_range = input$facility_length_range,
+      facility_length_range = input$trails_bike_facility_length_range,
       no_key_destinations_25 = input$trails_bike_no_key_destinations_25,
       no_key_destinations_50 = input$trails_bike_no_key_destinations_50,
       location = input$trails_bike_location,
-      facility_type = input$facility_type,
+      facility_type = input$trails_bike_facility_type,
       #options are "on_street", "new_multiuse", or "conversion"
       project_start = input$trails_bike_project_start,
       project_lifetime = input$trails_bike_project_lifetime,
-      days_open = input$days_open,
+      days_open = input$trails_bike_days_open,
       # Default is 214
       length_trip_replaced_biking = input$length_trip_replaced_biking #Default is 3.6
     )
@@ -532,6 +532,114 @@ function(input, output, session) {
   
   
   observeEvent({
+    input$trails_bike_location
+    input$trails_bike_average_daily_traffic
+    input$trails_bike_one_way_facility_length
+    input$trails_bike_no_key_destinations_25
+    input$trails_bike_no_key_destinations_50
+  }, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$trails_bike_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_trailsBikes <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+    
+    # Determine traffic and facility length ranges for mode shift factor calculation
+    average_daily_traffic <- input$trails_bike_average_daily_traffic
+    one_way_facility_length <- input$trails_bike_facility_length_range
+    
+    # Use case_when for traffic range
+    traffic_range <- case_when(
+      average_daily_traffic <= 12000 ~ "1 to 12,000",
+      average_daily_traffic <= 24000 ~ "12,001 to 24,000",
+      average_daily_traffic <= 30000 ~ "24,001 to 30,000",
+      TRUE ~ NA_character_
+    )
+    
+    # Use case_when for facility length range
+    facility_length_range <- case_when(
+      one_way_facility_length == 1 ~ "1",
+      one_way_facility_length > 1 &
+        one_way_facility_length <= 2 ~ "1.01",
+      one_way_facility_length > 2 ~ "2",
+      TRUE ~ NA_character_
+    )
+    
+    # Calculate mode shift factor
+    mode_shift_factor <- ModeShiftFactor %>%
+      filter(
+        average_daily_traffic_vehicle_trips_per_day == traffic_range,
+        one_way_facility_length_miles_low == facility_length_range
+      ) %>%
+      pull(mode_shift_factor_m)
+    
+    # Determine the number of key destinations
+    if (input$trails_bike_no_key_destinations_25 > input$trails_bike_no_key_destinations_50) {
+      no_key_destinations <- input$trails_bike_no_key_destinations_25
+    } else {
+      no_key_destinations <- input$trails_bike_no_key_destinations_50
+    }
+    
+    # Calculate key destination credit
+    key_destination_credit <- CreditForKeyDestinations %>%
+      filter(
+        case_when(
+          no_key_destinations <= 2 ~ number_of_key_destinations == "0 to 2",
+          no_key_destinations == 3 ~ number_of_key_destinations == "3",
+          no_key_destinations >= 4 & no_key_destinations <= 6 ~ number_of_key_destinations == "4 to 6",
+          no_key_destinations >= 7 ~ number_of_key_destinations == "7 or more"
+        )
+      ) %>%
+      pull(credit_within_1_2_mile_of_facility_c)
+    
+    # Update the text output for mode shift factor
+    output$mode_shift_factor_trailsBike <- renderText({
+      paste("Mode Shift Factor:", ifelse(length(mode_shift_factor) > 0, mode_shift_factor, "Not Found"))
+    })
+    
+    # Update the text output for key destination credit
+    output$credit_key_destinations_trailsBike <- renderText({
+      paste("Key Destination Credit:", ifelse(length(key_destination_credit) > 0, key_destination_credit, "Not Found"))
+    })
+  })
+  
+  
+  observeEvent(input$ev_outreach_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$ev_outreach_location) %>%
+      pull(MappedCommunity)
+    
+    average_annual_accrual <- round(PerVehicleVMT %>% filter(MappedCommunity == community_type) %>% pull(PerVehicleVMT), 0)
+    
+    # Update the text output for the community type
+    output$selected_community_type_EVOutreach <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+    
+    # Update the text output for the community type
+    output$average_annual_accrual <- renderText({
+      paste("Average Annual Accrual:", average_annual_accrual)
+    })
+  })
+  
+  observeEvent(input$hub_location, {
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$hub_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_mobilityHub <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+  })
+  
+  observeEvent({
     input$pedestrian_location
     input$average_daily_traffic
     input$one_way_facility_length
@@ -604,50 +712,6 @@ function(input, output, session) {
     # Update the text output for key destination credit
     output$credit_key_destinations_pedestrianFacility <- renderText({
       paste("Key Destination Credit:", ifelse(length(key_destination_credit) > 0, key_destination_credit, "Not Found"))
-    })
-  })
-  
-  
-  observeEvent(input$ev_outreach_location, {
-    # Get the selected community type
-    community_type <- CommunityTypeShape %>%
-      filter(CTU_NAME == input$ev_outreach_location) %>%
-      pull(MappedCommunity)
-    
-    average_annual_accrual <- round(PerVehicleVMT %>% filter(MappedCommunity == community_type) %>% pull(PerVehicleVMT),2)
-    
-    # Update the text output for the community type
-    output$selected_community_type_EVOutreach <- renderText({
-      paste("Selected Community Type:", community_type)
-    })
-    
-    # Update the text output for the community type
-    output$average_annual_accrual <- renderText({
-      paste("Average Annual Accrual:", average_annual_accrual)
-    })
-  })
-  
-  observeEvent(input$hub_location, {
-    # Get the selected community type
-    community_type <- CommunityTypeShape %>%
-      filter(CTU_NAME == input$hub_location) %>%
-      pull(MappedCommunity)
-    
-    # Update the text output for the community type
-    output$selected_community_type_mobilityHub <- renderText({
-      paste("Selected Community Type:", community_type)
-    })
-  })
-  
-  observeEvent(input$trails_bike_location, {
-    # Get the selected community type
-    community_type <- CommunityTypeShape %>%
-      filter(CTU_NAME == input$trails_bike_location) %>%
-      pull(MappedCommunity)
-    
-    # Update the text output for the community type
-    output$selected_community_type_trailsBikes <- renderText({
-      paste("Selected Community Type:", community_type)
     })
   })
   

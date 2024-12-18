@@ -83,6 +83,8 @@ ev_infrastructure <- function(ev_type,
     # Convert percentage to a fraction for calculations
     current_percentage_ICE_fraction <- current_percentage_ICE / 100
     
+    print(current_percentage_ICE_fraction)
+    
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / 
       average_energy_efficiency * current_percentage_ICE_fraction
@@ -120,9 +122,10 @@ ev_infrastructure <- function(ev_type,
   # Create a results data frame
   results <- data.frame(
     year = c(project_years, "Total"),
-    vmt_displaced = round(c(vmt_displaced, total_vmt_displaced), 2),
-    ghg_impact = round(c(ghg_impact, total_ghg_impact), 2),
-    carbon_cost = round(c(carbon_cost, total_carbon_cost), 2)
+    "VMT (Miles)" = round(c(vmt_displaced, total_vmt_displaced), 0),
+    "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 0),
+    "Carbon Cost ($)" = round(c(carbon_cost, total_carbon_cost), 0),
+    check.names = FALSE
   )
   
   return(results)
