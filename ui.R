@@ -208,7 +208,7 @@ page_navbar(
                                   selectInput("trails_bike_facility_type",
                                               "Facility Type",
                                               choices = c("On Street", "New Multiuse",
-                                                          "trails_bike_Conversion"),
+                                                          "Conversion"),
                                               selected = "On Street"),
                                   dateInput("trails_bike_project_start",
                                             "Year",

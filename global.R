@@ -72,7 +72,7 @@ met_council_datatable <- function(provided_data) {
   cols_to_center <- setdiff(pretty_names, "Year")
   
   numeric_cols <- colnames(formatted_data)[sapply(formatted_data, class)=="numeric"]
-  formatted_data[numeric_cols] <- round(formatted_data[numeric_cols], digits = 3) 
+  formatted_data[numeric_cols] <- round(formatted_data[numeric_cols], digits = 4) 
   
   datatable(formatted_data %>%
               mutate(across(numeric_cols, ~ formatC(.x, big.mark = ",", 

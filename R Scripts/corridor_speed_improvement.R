@@ -9,13 +9,16 @@ corridor_speed_improvements <- function(corridor_distance,
   k1_speed_build <- 0.000019137 * avg_corridor_speed_build^2 - 0.0020660 * avg_corridor_speed_build + 0.088916
   K1_speed_no_build <- 0.000019137 * avg_corridor_speed_no_build^2 - 0.0020660 * avg_corridor_speed_no_build + 0.088916
   
-  speed_improvement_prct <- ((avg_corridor_speed_build - avg_corridor_speed_no_build) / avg_corridor_speed_no_build) * 100
+  print(k1_speed_build)
+  print(K1_speed_no_build)
   
-  if (speed_improvement_prct <= 5) {
+  speed_improvement_prct <- ((avg_corridor_speed_build - avg_corridor_speed_no_build) / avg_corridor_speed_no_build)
+  
+  if (speed_improvement_prct <= .05) {
     induced_demand_elasticity <- 0
-  } else if (speed_improvement_prct > 5 & speed_improvement_prct <= 20) {
+  } else if (speed_improvement_prct > .05 & speed_improvement_prct <= .2) {
     induced_demand_elasticity <- 2 * speed_improvement_prct - 0.1
-  } else if (speed_improvement_prct > 20) {
+  } else if (speed_improvement_prct > .2) {
     induced_demand_elasticity <- 0.3
   }
   
@@ -33,17 +36,17 @@ corridor_speed_improvements <- function(corridor_distance,
     year <- project_years[i]
     
     # Calculate VMT displaced for the current year and store it in the i-th position
-    fuel_consumption_reduced[i] <- corridor_distance * avg_annual_daily_traffic * (K1_speed_no_build - k1_speed_build)
+    fuel_consumption_reduced <- corridor_distance * avg_annual_daily_traffic * (K1_speed_no_build - k1_speed_build)
     
     # Calculate induced demand and store it in the i-th position
-    induced_demand[i] <- corridor_distance * avg_corridor_speed_no_build * k1_speed_build * induced_demand_elasticity
+    induced_demand <- corridor_distance * avg_corridor_speed_build * k1_speed_build * induced_demand_elasticity
     
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == year)
     discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
     
     # Calculate GHG impact for the current year
-    ghg_impact_year <- (fuel_consumption_reduced[i] - induced_demand[i]) * 9.915
+    ghg_impact_year <- (fuel_consumption_reduced - induced_demand) * 9.915
     
     # Calculate social cost of carbon
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
@@ -62,12 +65,20 @@ corridor_speed_improvements <- function(corridor_distance,
   # Create a data frame with results including totals
   results <- data.frame(
     year = c(project_years, "Total"),
-    "Fuel Consumption Reduced (gallons)" = round(c(fuel_consumption_reduced, total_fuel_consumption_reduced),0),
-    "Induced Demand" = round(c(induced_demand, total_induced_demand),0),
-    "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact),0),
+    "Fuel Consumption Reduced (gallons)" = c(fuel_consumption_reduced, total_fuel_consumption_reduced),
+    "Induced Demand" = round(c(induced_demand, total_induced_demand),4),
+    "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact),1),
     "Carbon Cost ($)" = round(c(carbon_cost, total_carbon_cost),0),
     check.names = FALSE
   )
   
   return(results)
 }
+
+test <- corridor_speed_improvements(corridor_distance = 1,
+                                        avg_annual_daily_traffic = 1,
+                                        avg_corridor_speed_no_build = 1,
+                                        avg_corridor_speed_build = 1.2,
+                                        location = "Linwood Twp.",
+                                        project_start = "2024-01-01",
+                                        project_lifetime = 1)

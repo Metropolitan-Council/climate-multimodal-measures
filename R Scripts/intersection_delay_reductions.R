@@ -49,7 +49,7 @@ intersection_delay_reductions <-
     results <- data.frame(
       year = c(project_years, "Total"),
       "Fuel Consumption Reduced (gallons)" = round(c(fuel_consumption_reduced, total_fuel_consumption_reduced),0),
-      "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact),0),
+      "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact),1),
       "Carbon Cost ($)" = round(c(carbon_cost, total_carbon_cost),0),
       check.names = FALSE
     )

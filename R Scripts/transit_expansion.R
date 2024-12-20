@@ -87,11 +87,17 @@ transit_expansion <-
       )
       
       # Calculate GHG impact for the current year
-      ghg_impact_year <- 
-        (((vmt_displaced_year * gasoline_ef_year * fleet_proportion$gasoline) +
-            (vmt_displaced_year * diesel_ef_year * fleet_proportion$diesel) +
-            (vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity)) - 
-           (added_transit * added_transit_fuel_ef)) / 1000000
+      ghg_impact_year <- (
+        (
+          vmt_displaced_year * (
+            gasoline_ef_year * fleet_proportion$gasoline +
+              diesel_ef_year * fleet_proportion$diesel +
+              greet_ef_year$electricity * fleet_proportion$electricity
+          )
+        ) - (
+          added_transit * added_transit_fuel_ef
+        )
+      ) / 1000000
       
       # Filter Discount Rate for the current year
       discount_rate <- SocialCostCarbon %>% 
@@ -113,10 +119,19 @@ transit_expansion <-
     results <- data.frame(
       year = c(project_years, "Total"),
       "VMT (Miles)" = round(c(vmt_displaced, total_vmt_displaced), 0),
-      "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 0),
+      "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
       "Carbon Cost ($)"  = round(c(carbon_cost, total_carbon_cost), 0),
-      check.names = FALSE
-    )
+      check.names = FALSE)
+    
     
     return(results)
   }
+
+test <- transit_expansion(ridership_increase = 32976,
+           route_type = "Bus Rapid Transit",
+           added_transit = 1566,
+           location = "Linwood Twp.",
+           project_start = "2024-01-01",
+           project_lifetime = 1,
+           average_trip_length = 13.2,
+           adjustment_factor = 0.62)

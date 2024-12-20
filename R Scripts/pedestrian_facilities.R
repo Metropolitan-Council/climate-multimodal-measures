@@ -144,7 +144,7 @@ pedestrian_facilities <- function(average_daily_traffic,
   results <- data.frame(
     year = c(project_years, "Total"),
     "VMT (Miles)" = round(c(auto_vmt_displaced, total_vmt_displaced), 0),
-    "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 0),
+    "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
     "Carbon Cost ($)" = round(c(carbon_cost, total_carbon_cost), 0),
     check.names = FALSE
   )
