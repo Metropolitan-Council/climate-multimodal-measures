@@ -45,24 +45,32 @@ pedestrian_facilities <- function(average_daily_traffic,
     ) %>%
     pull(mode_shift_factor_m)
   
-  if (no_key_destinations_25 > no_key_destinations_50) {
-    no_key_destinations = no_key_destinations_25
-  }
-  else{
-    no_key_destinations = no_key_destinations_50
-  }
+  # Determine the category for the number of key destinations
+  destination_category_25 <- case_when(
+    no_key_destinations_25 <= 2 ~ "0 to 2",
+    no_key_destinations_25 == 3 ~ "3",
+    no_key_destinations_25 >= 4 & no_key_destinations_25 <= 6 ~ "4 to 6",
+    no_key_destinations_25 >= 7 ~ "7 or more"
+  )
   
-  key_destination_credit <- CreditForKeyDestinations %>%
-    filter(
-      case_when(
-        no_key_destinations <= 2 ~ number_of_key_destinations == "0 to 2",
-        no_key_destinations == 3 ~ number_of_key_destinations == "3",
-        no_key_destinations >= 4 &
-          no_key_destinations <= 6 ~ number_of_key_destinations == "4 to 6",
-        no_key_destinations >= 7 ~ number_of_key_destinations == "7 or more"
-      )
-    ) %>%
+  destination_category_50 <- case_when(
+    no_key_destinations_50 <= 2 ~ "0 to 2",
+    no_key_destinations_50 == 3 ~ "3",
+    no_key_destinations_50 >= 4 & no_key_destinations_50 <= 6 ~ "4 to 6",
+    no_key_destinations_50 >= 7 ~ "7 or more"
+  )
+  
+  # Filter the CreditForKeyDestinations dataframe to get the relevant rows
+  credit_25 <- CreditForKeyDestinations %>%
+    filter(number_of_key_destinations == destination_category_25) %>%
+    pull(credit_within_1_4_mile_of_facility_c)
+  
+  credit_50 <- CreditForKeyDestinations %>%
+    filter(number_of_key_destinations == destination_category_50) %>%
     pull(credit_within_1_2_mile_of_facility_c)
+  
+  # Compare and assign the larger credit value
+  key_destination_credit <- max(credit_25, credit_50, na.rm = TRUE)
   
   # Generate years project covers
   project_start <- lubridate::year(project_start)
@@ -77,14 +85,9 @@ pedestrian_facilities <- function(average_daily_traffic,
   for (i in seq_along(project_years)) {
     year <- project_years[i]
     
-    print(annual_use_days)
-    print(average_daily_traffic)
-    print(mode_shift_factor)
-    print(key_destination_credit)
-    print(average_trip_replaced)
-    
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- annual_use_days * average_daily_traffic * (mode_shift_factor + key_destination_credit) * average_trip_replaced
+    
     
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>% filter(Year == year)
@@ -149,3 +152,12 @@ pedestrian_facilities <- function(average_daily_traffic,
   return(results)
 }
 
+# test<- pedestrian_facilities(average_daily_traffic = 6000,
+# one_way_facility_length = 1.5,
+# no_key_destinations_25 = 1,
+# no_key_destinations_50 = 4,
+# location = "Andover",
+# project_start = "2024-01-01",
+# project_lifetime = 1,
+# annual_use_days = NULL,
+# average_trip_replaced = NULL)
