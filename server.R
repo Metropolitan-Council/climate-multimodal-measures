@@ -55,13 +55,46 @@ function(input, output, session) {
     )
   })
   
+  # output$ev_outreach_table <- renderDataTable({
+  #   if (is.null(input$ev_outreach_project_start)) {
+  #     return ()
+  #   }
+  #   met_council_datatable(ev_outreach_results())
+  # })
+  # 
+  
+  # output$ev_outreach_table <- renderDataTable({
+  #   if (is.null(input$ev_outreach_project_start)) {
+  #     return()
+  #   }
+  # 
+  #   # Render table with HTML enabled
+  #   DT::datatable(
+  #     ev_outreach_results(),
+  #     escape = FALSE,  # Enables rendering HTML
+  #     options = list(
+  #       dom = 't',      # Table layout without search box
+  #       scrollX = TRUE  # Allows horizontal scrolling
+  #     )
+  #   )
+  # })
+  
   output$ev_outreach_table <- renderDataTable({
     if (is.null(input$ev_outreach_project_start)) {
-      return ()
+      return()
     }
-    met_council_datatable(ev_outreach_results())
+    
+    # Render table with HTML enabled, and disable sorting
+    DT::datatable(
+      ev_outreach_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
-  
   
   # EV Outreach Reduction Calculation
   ev_infrastructure_results <- reactive({

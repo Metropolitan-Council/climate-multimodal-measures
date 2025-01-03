@@ -12,9 +12,14 @@ ev_outreach <- function(no_participants,
   average_annual_accrual <- PerVehicleVMT %>% filter(MappedCommunity == community_type) %>% pull(PerVehicleVMT)
   
   # Generate years project covers
-  project_start <- lubridate::year(project_start)
-  project_start <- as.numeric(project_start)
-  project_years <- seq(project_start, project_start + project_lifetime - 1)
+  # project_start <- lubridate::year(project_start)
+  # project_start <- as.numeric(project_start)
+  # project_years <- seq(project_start, project_start + project_lifetime - 1)
+  
+
+  project_start <- as.numeric(project_start)  # Ensure numeric year
+  project_years <- seq(project_start, project_start + project_lifetime - 1)  # Create year range
+  
   
   # Initialize vectors to store results
   auto_vmt_displaced <- numeric(length(project_years))
@@ -58,12 +63,23 @@ ev_outreach <- function(no_participants,
   total_ghg_impact <- sum(ghg_impact)
   total_carbon_cost <- sum(carbon_cost)
   
-  # Create a data frame with results including totals
+  # # Create a data frame with results including totals
+  # results <- data.frame(
+  #   year = c(project_years, "Total"),
+  #   "VMT (Miles)" = round(c(auto_vmt_displaced, total_vmt_displaced), 0),
+  #   "GHG Reduction (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
+  #   "Carbon Cost Reduction ($)" = round(c(carbon_cost, total_carbon_cost), 0),
+  #   check.names = FALSE
+  # )
+  
   results <- data.frame(
     year = c(project_years, "Total"),
     "VMT (Miles)" = round(c(auto_vmt_displaced, total_vmt_displaced), 0),
-    "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
-    "Carbon Cost ($)" = round(c(carbon_cost, total_carbon_cost), 0),
+    "GHG Reduction (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
+    # Add a tooltip next to 'Carbon Cost Reduction ($)'
+    "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
+   title='Place holder text to explain Social Cost of Carbon'></i>" = 
+      round(c(carbon_cost, total_carbon_cost), 0),
     check.names = FALSE
   )
   
@@ -72,11 +88,11 @@ ev_outreach <- function(no_participants,
 
 
 
-# test<- ev_outreach(
-#   no_participants = 4000,
-#   conversion_rate = .04,
-#   audience = "Light Duty",
-#   project_start = "2024-01-01",
-#   location = "Andover",
-#   project_lifetime = 5
-# )
+test<- ev_outreach(
+  no_participants = 4000,
+  conversion_rate = .04,
+  audience = "Light Duty",
+  project_start = 2024,
+  location = "Andover",
+  project_lifetime = 5
+)

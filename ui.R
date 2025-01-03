@@ -19,10 +19,33 @@
 
 # test <- dataTableOutput("dt")
 tags$script(HTML('$(document).ready(function(){ $("[data-toggle=\'tooltip\']").tooltip(); });'))
+tags$head(
+  tags$link(rel = "stylesheet", href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"),
+  tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js")
+)
+
 page_navbar(
   title = "Metropolitan Council",
   bg = "#0062cc",
   underline = TRUE,
+  
+   # Add dependencies for Bootstrap 5 and FontAwesome
+  tags$head(
+    # Include FontAwesome for icons
+    tags$link(rel = "stylesheet", href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"),
+    # Include Bootstrap 5 JS for tooltip functionality
+    tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"),
+    # Initialize tooltips
+    tags$script(HTML('
+      $(document).ready(function() {
+        const tooltipTriggerList = document.querySelectorAll(\'[data-bs-toggle="tooltip"]\');
+        tooltipTriggerList.forEach(tooltipTriggerEl => {
+          new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+      });
+    '))
+  ),
+  
   # nav_panel(title = "Introduction", p("Overview of app")),
   nav_panel(title = "Calculations", 
             navset_pill_list(
@@ -48,15 +71,26 @@ page_navbar(
                                                       "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
                                                       selected = CommunityType$CTU_NAME[1]),
-                                          dateInput("ev_outreach_project_start", 
-                                                    "Year", 
-                                                    value = "2024-01-01"),
+                                          selectInput("ev_outreach_project_start", 
+                                                      "Year", 
+                                                      choices = seq(2024, 2050, 1), # List years from 2000 to 2050
+                                                      selected = 2024),
                                           numericInput("ev_outreach_project_lifetime", 
                                                        "Project Lifetime (in years)",
                                                        value = 14),
-                                          numericInput("conversion_rate", 
-                                                       "Conversion Rate",
-                                                       value = 0.04),
+                                          div(
+                                            style = "display: flex; align-items: center;",
+                                            numericInput("conversion_rate", 
+                                                         "Conversion Rate", 
+                                                         value = 0.04),
+                                            tags$i(
+                                              class = "fas fa-question-circle",
+                                              style = "margin-left: 5px; cursor: pointer;",
+                                              `data-bs-toggle` = "tooltip", 
+                                              `data-bs-placement` = "right",
+                                              title = "Fraction of participants who go on to purchase an EV"
+                                            )
+                                          ),
                                           radioButtons("audience", 
                                                        "Target Audience",
                                                        choices = c("Light Duty", "Heavy Duty"),
