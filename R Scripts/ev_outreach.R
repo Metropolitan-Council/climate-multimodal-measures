@@ -63,36 +63,14 @@ ev_outreach <- function(no_participants,
   total_ghg_impact <- sum(ghg_impact)
   total_carbon_cost <- sum(carbon_cost)
   
-  # # Create a data frame with results including totals
-  # results <- data.frame(
-  #   year = c(project_years, "Total"),
-  #   "VMT (Miles)" = round(c(auto_vmt_displaced, total_vmt_displaced), 0),
-  #   "GHG Reduction (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
-  #   "Carbon Cost Reduction ($)" = round(c(carbon_cost, total_carbon_cost), 0),
-  #   check.names = FALSE
-  # )
-  
   results <- data.frame(
     year = c(project_years, "Total"),
-    "VMT (Miles)" = round(c(auto_vmt_displaced, total_vmt_displaced), 0),
-    "GHG Reduction (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
-    # Add a tooltip next to 'Carbon Cost Reduction ($)'
+    "VMT (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
+    "GHG Reduction (kt CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
     "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
-      round(c(carbon_cost, total_carbon_cost), 0),
+      format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
     check.names = FALSE
   )
-  
   return(results)
 }
-
-
-
-test<- ev_outreach(
-  no_participants = 4000,
-  conversion_rate = .04,
-  audience = "Light Duty",
-  project_start = 2024,
-  location = "Andover",
-  project_lifetime = 5
-)

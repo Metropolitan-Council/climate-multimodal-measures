@@ -64,9 +64,9 @@ page_navbar(
                                       card(
                                         layout_column_wrap(
                                           width = 1/2,
-                                          numericInput("no_participants", 
+                                          shinyWidgets::autonumericInput("no_participants", 
                                                        "Expected Number of Participants",
-                                                       value = 4000),
+                                                       value = 4000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                           selectInput("ev_outreach_location",
                                                       "Location",
                                                       choices = unique(CommunityType$CTU_NAME),
@@ -125,9 +125,9 @@ page_navbar(
                                                        "Charger Power Level (kW)",
                                                        #  NEED TO BE SET BASED ON charger_type {L2=19.2, DCFC=150}
                                                        value = 150),
-                                          numericInput("annual_hours_available", 
+                                          shinyWidgets::autonumericInput("annual_hours_available", 
                                                        "Annual Hours Available",
-                                                       value = 8760),
+                                                       value = 8760, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                           dateInput("ev_infrastructure_project_start", 
                                                     "Year", 
                                                     value = "2024-01-01"),
@@ -170,10 +170,10 @@ page_navbar(
                                               "Location",
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
-                                  numericInput("population_3mile",
+                                  shinyWidgets::autonumericInput("population_3mile",
                                                "Population within the service area",
                                                #  Default=rural area
-                                               value = 14137),
+                                               value = 14137, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                   dateInput("hub_project_start",
                                             "Year",
                                             value = "2024-01-01"),
@@ -189,11 +189,11 @@ page_navbar(
                                                # VALUE SHOULD CHANGE BASED ON MODE SELECTIONS
                                                # DEFAULT (Pedestrian Facility)
                                                value = .058),
-                                  numericInput("annual_vmt",
+                                  shinyWidgets::autonumericInput("annual_vmt",
                                                "Annual VMT per capita",
                                                # VALUE SHOULD CHANGE BASED ON LOCATION
                                                # DEFAULT (Lindwood Twp.)
-                                               value = 10655),
+                                               value = 10655, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                   textOutput("selected_community_type_mobilityHub")
                                   
                                 )
@@ -216,7 +216,7 @@ page_navbar(
                                   numericInput("pedestrian_project_lifetime",
                                                "Project Lifetime (in years)",
                                                value = 20),
-                                  numericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000),
+                                  shinyWidgets::autonumericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                   numericInput("one_way_facility_length", "Facility Length", value = 1),
                                   numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
@@ -250,7 +250,7 @@ page_navbar(
                                   numericInput("trails_bike_project_lifetime",
                                                "Project Lifetime (in years)",
                                                value = 20),
-                                  numericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000),
+                                  shinyWidgets::autonumericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                   numericInput("trails_bike_facility_length_range", "Facility Length", value = 1),
                                   numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
                                   numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
@@ -264,7 +264,7 @@ page_navbar(
                               card(dataTableOutput("trails_bike_facilities_table"))
                             )
                           ))),
-              nav_panel(title = "Behavioral Changes", 
+              nav_panel(title = "Travel Demand Management", 
                         navset_card_tab(
                           nav_panel(
                             title = "Employee Commute",
@@ -281,9 +281,9 @@ page_navbar(
                                               "Location",
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
-                                  numericInput("daily_commute_no", 
+                                  shinyWidgets::autonumericInput("daily_commute_no", 
                                                "Number of Daily One-Way Commute Trips Reduced", 
-                                               value = 1000),
+                                               value = 1000 , decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                   dateInput("project_start", 
                                             "Year", 
                                             value = "2024-01-01"),
@@ -316,10 +316,10 @@ page_navbar(
                                               "Shared Mobility Location",
                                               choices = unique(CommunityType$CTU_NAME),
                                               selected = CommunityType$CTU_NAME[1]),
-                                  numericInput("no_trips", 
+                                  shinyWidgets::autonumericInput("no_trips", 
                                                "Number of Annual Trips per Vehicle/Equipment", 
                                                #  NEED DEFAULT
-                                               value = 1000),
+                                               value = 1000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                                   dateInput("shared_mobility_project_start", 
                                             "Year", 
                                             value = "2024-01-01"),
@@ -360,20 +360,20 @@ page_navbar(
                                           "Location",
                                           choices = unique(CommunityType$CTU_NAME),
                                           selected = CommunityType$CTU_NAME[1]),
-                              numericInput("ridership_increase", 
+                              shinyWidgets::autonumericInput("ridership_increase", 
                                            "Ridership Increase", 
                                            #  Default from sample project: MetroTransit Micro G Line Exp
-                                           value = 32976),
+                                           value = 32976, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
                               dateInput("transit_expansion_project_start", 
                                         "Year", 
                                         value = "2024-01-01"),
                               numericInput("transit_expansion_project_lifetime", 
                                            "Project Lifetime (in years)", 
                                            value = 14), 
-                              numericInput("added_transit", 
+                              shinyWidgets::autonumericInput("added_transit", 
                                            "Increase in Annual Transit VMT (Mile)", 
                                            #  Default from sample project: MetroTransit Micro G Line Exp
-                                           value = 1566),
+                                           value = 1566, decimalPlaces = 0, align = 'left'),
                                            #  NEED DEFAULT, NONEIN MEMO
                                            # value = 1),
                               numericInput("average_trip_length", 
@@ -388,7 +388,7 @@ page_navbar(
                           card(dataTableOutput("transit_expansion_table"))
                         )
                         ),
-              nav_panel(title = "General Infrastructure Improvements",
+              nav_panel(title = "Roadways",
                         navset_card_tab(
                           nav_panel(
                             title = "Intersection Delay",
@@ -409,7 +409,7 @@ page_navbar(
                                             value = "2024-01-01"),
                                   numericInput("intersection_delay_project_lifetime", 
                                                "Project Lifetime (in years)", 
-                                               value = 7),
+                                               value = 20),
                                  numericInput("vehicle_per_hour",
                                                "Intersection Vehicle Per Hour",
                                                #  NEED DEFAULT, NONEIN MEMO
@@ -448,7 +448,7 @@ page_navbar(
                                             value = "2024-01-01"),
                                    numericInput("corridor_speed_project_lifetime",
                                                "Project Lifetime (in years)",
-                                               value = 7),
+                                               value = 20),
                                   numericInput("avg_annual_daily_traffic",
                                                "Annual average daily traffic under the no-build condition",
                                                #  NEED DEFAULT, NONEIN MEMO
