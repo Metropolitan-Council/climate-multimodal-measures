@@ -66,7 +66,7 @@ ev_outreach <- function(no_participants,
   results <- data.frame(
     year = c(project_years, "Total"),
     "VMT (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
-    "GHG Reduction (kt CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
+    "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
     "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
       format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),

@@ -118,20 +118,14 @@ transit_expansion <-
     
     results <- data.frame(
       year = c(project_years, "Total"),
-      "VMT (Miles)" = round(c(vmt_displaced, total_vmt_displaced), 0),
-      "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact), 1),
-      "Carbon Cost ($)"  = round(c(carbon_cost, total_carbon_cost), 0),
-      check.names = FALSE)
+      "VMT (Miles)" = format(round(c(vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
+      "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
+      "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
+   title='Place holder text to explain Social Cost of Carbon'></i>" = 
+        format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
+      check.names = FALSE
+    )
     
     
     return(results)
   }
-
-test <- transit_expansion(ridership_increase = 32976,
-           route_type = "Bus Rapid Transit",
-           added_transit = 1566,
-           location = "Linwood Twp.",
-           project_start = "2024-01-01",
-           project_lifetime = 1,
-           average_trip_length = 13.2,
-           adjustment_factor = 0.62)

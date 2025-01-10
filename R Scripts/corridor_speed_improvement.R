@@ -67,7 +67,7 @@ corridor_speed_improvements <- function(corridor_distance,
     year = c(project_years, "Total"),
     "Fuel Consumption Reduced (gallons)" = c(fuel_consumption_reduced, total_fuel_consumption_reduced),
     "Induced Demand" = round(c(induced_demand, total_induced_demand),4),
-    "GHG Impact (kt CO₂)" = round(c(ghg_impact, total_ghg_impact),1),
+    "GHG Impact (MT CO₂)" = round(c(ghg_impact, total_ghg_impact),1),
     "Carbon Cost ($)" = round(c(carbon_cost, total_carbon_cost),0),
     check.names = FALSE
   )

@@ -29,8 +29,17 @@ function(input, output, session) {
   output$employee_commute_table <- renderDataTable({
     if (is.null(input$project_start)) {
       return ()
-    }
-    met_council_datatable(employee_commute_results())
+    } 
+    # Render table with HTML enabled, and disable sorting
+    DT::datatable(
+      employee_commute_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
   
   # EV Outreach Reduction Calculation
@@ -112,7 +121,6 @@ function(input, output, session) {
         ordering = FALSE # Disable sorting buttons on headers
       )
     )
-    # met_council_datatable(ev_infrastructure_results())
   })
   
   
@@ -145,7 +153,15 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    met_council_datatable(shared_mobility_results())
+    DT::datatable(
+      shared_mobility_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
   
   # EV Outreach Reduction Calculation
@@ -175,7 +191,15 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    met_council_datatable(transit_expansion_results())
+    DT::datatable(
+      transit_expansion_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
   
   # Corridor Speed Improvement Results
@@ -221,7 +245,15 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    met_council_datatable(intersection_delay_results())
+    DT::datatable(
+      intersection_delay_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
   
   # Mobility Hub Results
@@ -249,7 +281,16 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    met_council_datatable(mobility_hub_results())
+    # Render table with HTML enabled, and disable sorting
+    DT::datatable(
+      mobility_hub_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
   
   # Pedestrian Facilities Results
@@ -275,7 +316,16 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    met_council_datatable(pedestrian_facilities_results())
+    # Render table with HTML enabled, and disable sorting
+    DT::datatable(
+      pedestrian_facilities_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
   
   # Multi-Use Trails and Bicycle Facilities Results
@@ -303,7 +353,15 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return ()
     }
-    met_council_datatable(trails_bike_facilities_results())
+    DT::datatable(
+      trails_bike_facilities_results(),
+      escape = FALSE,  # Enables rendering HTML
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
   })
   
   foundational.map <- shiny::reactive({
