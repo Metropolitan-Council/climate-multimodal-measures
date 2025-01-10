@@ -35,24 +35,31 @@ corridor_speed_improvements <- function(corridor_distance,
   for (i in seq_along(project_years)) {
     year <- project_years[i]
     
-    # Calculate VMT displaced for the current year and store it in the i-th position
-    fuel_consumption_reduced <- corridor_distance * avg_annual_daily_traffic * (K1_speed_no_build - k1_speed_build)
+    # Calculate VMT displaced for the current year
+    fuel_consumption_reduced[i] <- corridor_distance * 
+      avg_annual_daily_traffic *
+      (K1_speed_no_build - k1_speed_build)
     
-    # Calculate induced demand and store it in the i-th position
-    induced_demand <- corridor_distance * avg_corridor_speed_build * k1_speed_build * induced_demand_elasticity
+    # Calculate induced demand
+    induced_demand[i] <- corridor_distance *
+      avg_corridor_speed_build *
+      k1_speed_build *
+      induced_demand_elasticity
     
     # Filter GHG emission factor (EF) for the current year
-    greet_ef_year <- GREETCarbonIntensity %>% filter(Year == year)
-    discount_rate <- SocialCostCarbon %>% filter(`emission.year` == year & gas == "CO2")
+    greet_ef_year <- GREETCarbonIntensity %>%
+      filter(Year == year)
+    discount_rate <- SocialCostCarbon %>%
+      filter(`emission.year` == year & gas == "CO2")
     
     # Calculate GHG impact for the current year
-    ghg_impact_year <- (fuel_consumption_reduced - induced_demand) * 9.915
+    ghg_impact_year <- (fuel_consumption_reduced[i] - induced_demand[i]) * 9.915
     
     # Calculate social cost of carbon
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
     
-    # Store results for the current year
-    ghg_impact[i] <- ghg_impact_year
+    # Store results
+    ghg_impact[i]  <- ghg_impact_year
     carbon_cost[i] <- social_cost_carbon
   }
   
@@ -68,8 +75,10 @@ corridor_speed_improvements <- function(corridor_distance,
     "Fuel Consumption Reduced (gallons)" = c(fuel_consumption_reduced, total_fuel_consumption_reduced),
     "Induced Demand" = round(c(induced_demand, total_induced_demand),4),
     "GHG Impact (MT CO₂)" = round(c(ghg_impact, total_ghg_impact),1),
-    "Carbon Cost ($)" = round(c(carbon_cost, total_carbon_cost),0),
-    check.names = FALSE
+    "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
+   title='Place holder text to explain Social Cost of Carbon'></i>" = 
+    format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
+  check.names = FALSE
   )
   
   return(results)
