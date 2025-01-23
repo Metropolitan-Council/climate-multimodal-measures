@@ -7,7 +7,7 @@ intersection_delay_reductions <-
            project_start,
            project_lifetime){
     
-    k2 = 0.37
+    k2 = 0.37 #default idling fuel factor in gallon/hour - comes from Argonne National Laboratory (ANL) Vehicle Idle Reduction Savings Worksheet
     total_peak_hours_reduced = vehicle_per_hour * number_peak_hours * (peak_hour_delay_noBuild - peak_hour_delay_build)
     
     # Generate years project covers
