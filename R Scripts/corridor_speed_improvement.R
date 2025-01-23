@@ -53,7 +53,8 @@ corridor_speed_improvements <- function(corridor_distance,
       filter(`emission.year` == year & gas == "CO2")
     
     # Calculate GHG impact for the current year
-    ghg_impact_year <- (fuel_consumption_reduced[i] - induced_demand[i]) * 9.915
+    ghg_impact_year <- ((fuel_consumption_reduced[i] - induced_demand[i]) * 9.915)/ 1000 # 9.915 derived from avg LD WTW GHG emission factor 
+
     
     # Calculate social cost of carbon
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`

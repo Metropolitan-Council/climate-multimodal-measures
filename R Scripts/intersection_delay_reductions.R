@@ -26,7 +26,7 @@ intersection_delay_reductions <-
       # Calculate VMT displaced for the current year and store in the i-th position
       fuel_consumption_reduced[i] <- k2 * total_peak_hours_reduced
       
-      ghg_impact_year <- fuel_consumption_reduced[i] * 9.915
+      ghg_impact_year <- (fuel_consumption_reduced[i] * 9.915)/ 1000 # 9.915 derived from avg LD WTW GHG emission factor 
       
       discount_rate <-
         SocialCostCarbon %>% filter(`emission.year` == current_year &
