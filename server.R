@@ -42,6 +42,12 @@ function(input, output, session) {
     )
   })
   
+  observeEvent(input$audience, {
+    req(input$audience)  # Ensure input$ev_type is not NULL
+    updateNumericInput(session,
+                       "ev_outreach_project_lifetime",
+                       value = if (input$audience == "Heavy Duty") 14 else 8)
+  }) 
   # EV Outreach Reduction Calculation
   ev_outreach_results <- reactive({
     if (is.null(input$no_participants) |
@@ -81,44 +87,52 @@ function(input, output, session) {
     )
   })
   
-  # EV Outreach Reduction Calculation
+  # Reactive expression for ev_infrastructure calculations
   ev_infrastructure_results <- reactive({
-    if (is.null(input$ev_infrastructure_project_start)) {
-      return ()
-    }
+    # Ensure project start date is provided
+    req(input$ev_infrastructure_project_start)
+    
     ev_infrastructure(
       ev_type = input$ev_type,
-      #LD or HD
       no_chargers = input$no_chargers,
       charger_type = input$charger_type,
-      #newly added - options are level 2 chargers of DCFC chargers
       charge_power = input$charge_power,
-      #19.2kwh for level 2 and 150 kwh for DCDC chargers
       annual_hours_available = input$annual_hours_available,
       location = input$ev_infrastructure_location,
-      #all locations can be extracted from CommunityTypeShape
       project_start = input$ev_infrastructure_project_start,
       project_lifetime = input$ev_infrastructure_project_lifetime,
-      #10 year default
       utilization_rate = input$utilization_rate,
-      #default should be based on the charger_type in the ChargerUtilizationRates dataset
       average_energy_efficiency = input$average_energy_efficiency,
       percentage_ICE = input$percentage_ICE
     )
   })
   
+  # Render DataTable for ev_infrastructure results
   output$ev_infrastructure_table <- renderDataTable({
-    if (is.null(input$ev_infrastructure_project_start)) {
-      return ()
+    # Ensure project start date is provided
+    req(input$ev_infrastructure_project_start)
+    
+    # Get the results from the reactive expression
+    results <- ev_infrastructure_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
     }
-    # Render table with HTML enabled, and disable sorting
+    
+    # Render the actual table
     DT::datatable(
-      ev_infrastructure_results(),
+      results,
       escape = FALSE,  # Enables rendering HTML
       options = list(
         dom = 't',      # Table layout without search box
         scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
+        ordering = FALSE, # Disable sorting buttons on headers
+        language = list(emptyTable = "No results to display.") # Placeholder message
       )
     )
   })
@@ -875,7 +889,6 @@ function(input, output, session) {
   })
   
 }
-
 
   
   

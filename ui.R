@@ -77,7 +77,7 @@ page_navbar(
                                                       selected = 2024),
                                           numericInput("ev_outreach_project_lifetime", 
                                                        "Project Lifetime (in years)",
-                                                       value = 14),
+                                                       value = 8),
                                           div(
                                             style = "display: flex; align-items: center;",
                                             numericInput("conversion_rate", 
@@ -153,117 +153,48 @@ page_navbar(
                               
                                       card(dataTableOutput("ev_infrastructure_table"))
                                     )))),
-              nav_panel(title = "Facilities/Hubs", 
-                        navset_card_tab(
-                          nav_panel(
-                            title = "Mobility Hubs",
-                            page_fillable(
-                              card(
-                                layout_column_wrap(
-                                  width = 1/3,
-                                  
-                                  checkboxGroupInput("mobility_mode",
-                                                     "Mobility Mode/s",
-                                                     choices = TotalVMTReductionPotential$mobility_mode,
-                                                     selected = TotalVMTReductionPotential$mobility_mode[1]),
-                                  selectInput("hub_location",
-                                              "Location",
-                                              choices = unique(CommunityType$CTU_NAME),
-                                              selected = CommunityType$CTU_NAME[1]),
-                                  shinyWidgets::autonumericInput("population_3mile",
-                                               "Population within the service area",
-                                               #  Default=rural area
-                                               value = 14137, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
-                                  dateInput("hub_project_start",
-                                            "Year",
-                                            value = "2024-01-01"),
-                                  numericInput("hub_project_lifetime",
-                                               "Project Lifetime (in years)",
-                                               value = 20),
-                                  numericInput("added_vmt",
-                                               "Increase in Annual Transit VMT (Mile)",
-                                               #  NEED DEFAULT
-                                               value = 0),
-                                  numericInput("reduction_potential",
-                                               "Total VMT Reduction Potential",
-                                               # VALUE SHOULD CHANGE BASED ON MODE SELECTIONS
-                                               # DEFAULT (Pedestrian Facility)
-                                               value = .058),
-                                  shinyWidgets::autonumericInput("annual_vmt",
-                                               "Annual VMT per capita",
-                                               # VALUE SHOULD CHANGE BASED ON LOCATION
-                                               # DEFAULT (Lindwood Twp.)
-                                               value = 10655, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
-                                  textOutput("selected_community_type_mobilityHub")
-                                  
-                                )
-                              ),
-                              card(dataTableOutput("mobility_hub_table"))
-                            )),
-                          nav_panel(
-                            title = "Pedestrian Facilities",
-                            page_fillable(
-                              card(
-                                layout_column_wrap(
-                                  width = 1/2,
-                                  selectInput("pedestrian_location",
-                                              "Location",
-                                              choices = unique(CommunityType$CTU_NAME),
-                                              selected = CommunityType$CTU_NAME[1]),
-                                  dateInput("pedestrian_project_start",
-                                            "Year",
-                                            value = "2024-01-01"),
-                                  numericInput("pedestrian_project_lifetime",
-                                               "Project Lifetime (in years)",
-                                               value = 20),
-                                  shinyWidgets::autonumericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
-                                  numericInput("one_way_facility_length", "Facility Length", value = 1),
-                                  numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
-                                  numericInput("no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
-                                  numericInput("annual_use_days", "Facility Annual Days of Use", value = 214),
-                                  numericInput("average_trip_replaced", "Average Length of Auto Trip Replaced (Mile)", value = .86), 
-                                  textOutput("selected_community_type_pedestrianFacility"),
-                                  textOutput("mode_shift_factor_pedestrianFacility"),
-                                  textOutput("credit_key_destinations_pedestrianFacility")
-                                )
-                              ),
-                              card(dataTableOutput("pedestrian_facilities_table"))
-                            )),
-                          nav_panel(
-                            title = "Multi-Use Trails and Bicycle Facilities",
-                            page_fillable(
-                              card(
-                                layout_column_wrap(
-                                  width = 1/2,
-                                  selectInput("trails_bike_location",
-                                              "Location",
-                                              choices = unique(CommunityType$CTU_NAME),
-                                              selected = CommunityType$CTU_NAME[1]),
-                                  selectInput("trails_bike_facility_type",
-                                              "Facility Type",
-                                              choices = c("On Street", "New Multiuse",
-                                                          "Conversion"),
-                                              selected = "On Street"),
-                                  dateInput("trails_bike_project_start",
-                                            "Year",
-                                            value = "2024-01-01"),
-                                  numericInput("trails_bike_project_lifetime",
-                                               "Project Lifetime (in years)",
-                                               value = 20),
-                                  shinyWidgets::autonumericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
-                                  numericInput("trails_bike_facility_length_range", "Facility Length", value = 1),
-                                  numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
-                                  numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
-                                  numericInput("trails_bike_days_open", "Facility Annual Days of Use", value = 214),
-                                  numericInput("length_trip_replaced_biking", "Average Length of Auto Trip Replaced (Mile)", value = 3.6),
-                                  textOutput("selected_community_type_trailsBikes"),
-                                  textOutput("mode_shift_factor_trailsBike"),
-                                  textOutput("credit_key_destinations_trailsBike")
-                                )
-                              ),
-                              card(dataTableOutput("trails_bike_facilities_table"))
+            
+                            nav_panel(title = "Transit Expansion",
+                        page_fillable(
+                          card(
+                            layout_column_wrap(
+                                          width = 1/2,
+                              selectInput("route_type",
+                                          "Transit Service Type",
+                                          choices = AdjustmentFactorsAndTripLengths$route_type,
+                                          selected = AdjustmentFactorsAndTripLengths$route_type[1]),
+                              selectInput("transit_expansion_location",
+                                          "Location",
+                                          choices = unique(CommunityType$CTU_NAME),
+                                          selected = CommunityType$CTU_NAME[1]),
+                              shinyWidgets::autonumericInput("ridership_increase", 
+                                           "Ridership Increase", 
+                                           #  Default from sample project: MetroTransit Micro G Line Exp
+                                           value = 32976, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
+                              dateInput("transit_expansion_project_start", 
+                                        "Year", 
+                                        value = "2024-01-01"),
+                              numericInput("transit_expansion_project_lifetime", 
+                                           "Project Lifetime (in years)", 
+                                           value = 14), 
+                              shinyWidgets::autonumericInput("added_transit", 
+                                           "Increase in Annual Transit VMT (Mile)", 
+                                           #  Default from sample project: MetroTransit Micro G Line Exp
+                                           value = 1566, decimalPlaces = 0, align = 'left'),
+                                           #  NEED DEFAULT, NONEIN MEMO
+                                           # value = 1),
+                              numericInput("average_trip_length", 
+                                           "Average Auto Trip Replaced (Mile)", 
+                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]), 
+                              numericInput("transit_expansion_adjustment_factor", 
+                                           "Transit Dependency Adjustment Factor", 
+                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]),
+                            textOutput("selected_community_type"),
                             )
-                          ))),
+                          ),
+                          card(dataTableOutput("transit_expansion_table"))
+                        )
+                        ),
               nav_panel(title = "Travel Demand Management", 
                         navset_card_tab(
                           nav_panel(
@@ -347,47 +278,117 @@ page_navbar(
                               ),
                               card(dataTableOutput("shared_mobility_table"))
                             )))),
-              nav_panel(title = "Transit Expansion",
-                        page_fillable(
-                          card(
-                            layout_column_wrap(
-                                          width = 1/2,
-                              selectInput("route_type",
-                                          "Transit Service Type",
-                                          choices = AdjustmentFactorsAndTripLengths$route_type,
-                                          selected = AdjustmentFactorsAndTripLengths$route_type[1]),
-                              selectInput("transit_expansion_location",
-                                          "Location",
-                                          choices = unique(CommunityType$CTU_NAME),
-                                          selected = CommunityType$CTU_NAME[1]),
-                              shinyWidgets::autonumericInput("ridership_increase", 
-                                           "Ridership Increase", 
-                                           #  Default from sample project: MetroTransit Micro G Line Exp
-                                           value = 32976, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
-                              dateInput("transit_expansion_project_start", 
-                                        "Year", 
-                                        value = "2024-01-01"),
-                              numericInput("transit_expansion_project_lifetime", 
-                                           "Project Lifetime (in years)", 
-                                           value = 14), 
-                              shinyWidgets::autonumericInput("added_transit", 
-                                           "Increase in Annual Transit VMT (Mile)", 
-                                           #  Default from sample project: MetroTransit Micro G Line Exp
-                                           value = 1566, decimalPlaces = 0, align = 'left'),
-                                           #  NEED DEFAULT, NONEIN MEMO
-                                           # value = 1),
-                              numericInput("average_trip_length", 
-                                           "Average Auto Trip Replaced (Mile)", 
-                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]), 
-                              numericInput("transit_expansion_adjustment_factor", 
-                                           "Transit Dependency Adjustment Factor", 
-                                           value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]),
-                            textOutput("selected_community_type"),
+              nav_panel(title = "Bicycle and Pedestrian Facilities", 
+                        navset_card_tab(
+                          nav_panel(
+                            title = "Mobility Hubs",
+                            page_fillable(
+                              card(
+                                layout_column_wrap(
+                                  width = 1/3,
+                                  
+                                  checkboxGroupInput("mobility_mode",
+                                                     "Mobility Mode/s",
+                                                     choices = TotalVMTReductionPotential$mobility_mode,
+                                                     selected = TotalVMTReductionPotential$mobility_mode[1]),
+                                  selectInput("hub_location",
+                                              "Location",
+                                              choices = unique(CommunityType$CTU_NAME),
+                                              selected = CommunityType$CTU_NAME[1]),
+                                  shinyWidgets::autonumericInput("population_3mile",
+                                                                 "Population within the service area",
+                                                                 #  Default=rural area
+                                                                 value = 14137, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
+                                  dateInput("hub_project_start",
+                                            "Year",
+                                            value = "2024-01-01"),
+                                  numericInput("hub_project_lifetime",
+                                               "Project Lifetime (in years)",
+                                               value = 20),
+                                  numericInput("added_vmt",
+                                               "Increase in Annual Transit VMT (Mile)",
+                                               #  NEED DEFAULT
+                                               value = 0),
+                                  numericInput("reduction_potential",
+                                               "Total VMT Reduction Potential",
+                                               # VALUE SHOULD CHANGE BASED ON MODE SELECTIONS
+                                               # DEFAULT (Pedestrian Facility)
+                                               value = .058),
+                                  shinyWidgets::autonumericInput("annual_vmt",
+                                                                 "Annual VMT per capita",
+                                                                 # VALUE SHOULD CHANGE BASED ON LOCATION
+                                                                 # DEFAULT (Lindwood Twp.)
+                                                                 value = 10655, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
+                                  textOutput("selected_community_type_mobilityHub")
+                                  
+                                )
+                              ),
+                              card(dataTableOutput("mobility_hub_table"))
+                            )),
+                          nav_panel(
+                            title = "Pedestrian Facilities",
+                            page_fillable(
+                              card(
+                                layout_column_wrap(
+                                  width = 1/2,
+                                  selectInput("pedestrian_location",
+                                              "Location",
+                                              choices = unique(CommunityType$CTU_NAME),
+                                              selected = CommunityType$CTU_NAME[1]),
+                                  dateInput("pedestrian_project_start",
+                                            "Year",
+                                            value = "2024-01-01"),
+                                  numericInput("pedestrian_project_lifetime",
+                                               "Project Lifetime (in years)",
+                                               value = 20),
+                                  shinyWidgets::autonumericInput("average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
+                                  numericInput("one_way_facility_length", "Facility Length", value = 1),
+                                  numericInput("no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
+                                  numericInput("no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
+                                  numericInput("annual_use_days", "Facility Annual Days of Use", value = 214),
+                                  numericInput("average_trip_replaced", "Average Length of Auto Trip Replaced (Mile)", value = .86), 
+                                  textOutput("selected_community_type_pedestrianFacility"),
+                                  textOutput("mode_shift_factor_pedestrianFacility"),
+                                  textOutput("credit_key_destinations_pedestrianFacility")
+                                )
+                              ),
+                              card(dataTableOutput("pedestrian_facilities_table"))
+                            )),
+                          nav_panel(
+                            title = "Multi-Use Trails and Bicycle Facilities",
+                            page_fillable(
+                              card(
+                                layout_column_wrap(
+                                  width = 1/2,
+                                  selectInput("trails_bike_location",
+                                              "Location",
+                                              choices = unique(CommunityType$CTU_NAME),
+                                              selected = CommunityType$CTU_NAME[1]),
+                                  selectInput("trails_bike_facility_type",
+                                              "Facility Type",
+                                              choices = c("On Street", "New Multiuse",
+                                                          "Conversion"),
+                                              selected = "On Street"),
+                                  dateInput("trails_bike_project_start",
+                                            "Year",
+                                            value = "2024-01-01"),
+                                  numericInput("trails_bike_project_lifetime",
+                                               "Project Lifetime (in years)",
+                                               value = 20),
+                                  shinyWidgets::autonumericInput("trails_bike_average_daily_traffic", "Average Annual Daily traffic (two way) on road parallel or adjacent to facility", value = 6000, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
+                                  numericInput("trails_bike_facility_length_range", "Facility Length", value = 1),
+                                  numericInput("trails_bike_no_key_destinations_25", "Number of Key Destinations within 0.25 mile", value = 1),
+                                  numericInput("trails_bike_no_key_destinations_50", "Number of Key Destinations within 0.5 mile", value = 1),
+                                  numericInput("trails_bike_days_open", "Facility Annual Days of Use", value = 214),
+                                  numericInput("length_trip_replaced_biking", "Average Length of Auto Trip Replaced (Mile)", value = 3.6),
+                                  textOutput("selected_community_type_trailsBikes"),
+                                  textOutput("mode_shift_factor_trailsBike"),
+                                  textOutput("credit_key_destinations_trailsBike")
+                                )
+                              ),
+                              card(dataTableOutput("trails_bike_facilities_table"))
                             )
-                          ),
-                          card(dataTableOutput("transit_expansion_table"))
-                        )
-                        ),
+                          ))),
               nav_panel(title = "Roadways",
                         navset_card_tab(
                           nav_panel(
