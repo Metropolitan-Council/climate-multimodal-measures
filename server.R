@@ -185,7 +185,7 @@ function(input, output, session) {
     }
     transit_expansion(
       ridership_increase = input$ridership_increase,
-      #no default in Task 4 Memo
+      fuel_type = input$fuel_type,
       route_type = input$route_type,
       #options in AdjustmentFactorsAndTripLengths
       added_transit = input$added_transit,

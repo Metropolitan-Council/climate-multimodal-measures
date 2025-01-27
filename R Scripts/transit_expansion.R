@@ -2,6 +2,7 @@ transit_expansion <-
   function(ridership_increase,
            route_type,
            added_transit,
+           fuel_type,
            location,
            project_start,
            project_lifetime,
@@ -36,15 +37,14 @@ transit_expansion <-
     vmt_displaced <- numeric(length(project_years))
     ghg_impact <- numeric(length(project_years))
     carbon_cost <- numeric(length(project_years))
+
     
-    if (route_type == "Commuter Rail Diesel") {
-      fuel_type <- "diesel_commuter_rail"
-    } else if (route_type == "Commuter Rail Electric") {
-      fuel_type <- "electric_commuter_rail"
-    } else if (route_type == "Light Rail Transit") {
-      fuel_type <- "light_rail"
-    } else {
-      fuel_type <- "diesel"  # Default fuel type
+    if(fuel_type == "Diesel"){
+      fuel_type = "diesel"
+    }
+    
+    if(fuel_type == "Electric"){
+      fuel_type = "electricity"
     }
     
     for (i in seq_along(project_years)) {
@@ -85,7 +85,6 @@ transit_expansion <-
       } else(
         added_transit_fuel_ef = greet_ef_year[[fuel_type]]
       )
-      
       # Calculate GHG impact for the current year
       ghg_impact_year <- (
         (
