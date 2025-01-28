@@ -8,6 +8,12 @@
 #
 
 function(input, output, session) {
+  # output$myMap <- renderLeaflet({
+  #   leaflet() %>%
+  #     addTiles() %>%
+  #     setView(lng = -98.5795, lat = 39.8283, zoom = 4) # Example: Centered on the U.S.
+  # })
+  
   # Employee Commute Reduction Calculation
   employee_commute_results <- reactive({
     if (is.null(input$project_start)) {

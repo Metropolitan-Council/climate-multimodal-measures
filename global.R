@@ -30,7 +30,7 @@ CommunityDesignation <- st_read(paste0(here::here(),"/data/raw data/shp_society_
 CommunityType <- CommunityDesignation
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/EFs_by_community_type.R"))
-source(paste0(getwd(), "/data/stock_percentages_ctu.R"))
+source(paste0(getwd(), "/data/stock_percentages.R"))
 source(paste0(getwd(), "/data/vmt_per_vehicle.R"))
 source(paste0(getwd(), "/data/vmt_per_capita.R"))
 
