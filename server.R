@@ -437,46 +437,7 @@ function(input, output, session) {
         lat2 = 45.41455
       )
   })
-  
-  # foundational.map <- shiny::reactive({
-  #   leaflet() %>%
-  #     addTiles(urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
-  #     addPolygons(
-  #       data = population
-  #       ,
-  #       fillOpacity = 0
-  #       # , opacity = 0.2
-  #       ,
-  #       opacity = 0
-  #       ,
-  #       color = "#000000"
-  #       ,
-  #       weight = 2
-  #       ,
-  #       layerId = population$GEOID
-  #     ) %>%
-  #     addPolygons(
-  #       data = locations,
-  #       fillColor = "#0062cc",
-  #       fillOpacity = 0.3,
-  #       color = "black",
-  #       weight = 1,
-  #       layerId = locations$CTU_NAME,
-  #       label = ~ CTU_NAME,
-  #       labelOptions = labelOptions(
-  #         style = list("color" = "black"),
-  #         textsize = "12px",
-  #         direction = "auto"
-  #       )
-  #     ) %>%
-  #     fitBounds(
-  #       lng1 = -94.01256,
-  #       lat1 = 44.47124,
-  #       lng2 = -92.73191,
-  #       lat2 = 45.41455
-  #     )
-  # })
-  # 
+
   output$myMap <- renderLeaflet({
     foundational.map()
     
@@ -530,7 +491,7 @@ function(input, output, session) {
         addCircles(
           lng = click$lng,
           lat = click$lat,
-          radius = 4828,
+          radius = 1609, #1 mile
           group = "circle"
         )
     }

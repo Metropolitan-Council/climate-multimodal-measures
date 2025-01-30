@@ -16,7 +16,6 @@ library(shinyBS)
 library(councilR)
 options(tigris_use_cache = TRUE)
 
-#Reading in our background data
 backgroundDataPath <- paste0(here::here(),"/data/raw data/MetCouncilTables.xlsx")
 
 backgroundDataNames <- excel_sheets(backgroundDataPath)
@@ -58,7 +57,6 @@ population <- ms_simplify(population, keep = 0.05,
 locations <- CommunityDesignation %>%
   st_transform(., crs = 4326)
 
-# location_bounds <- st_bbox(locations) 
 
 met_council_datatable <- function(provided_data) {
   
