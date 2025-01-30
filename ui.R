@@ -154,9 +154,12 @@ page_navbar(
                                       card(dataTableOutput("ev_infrastructure_table"))
                                     )))),
             
-                            nav_panel(title = "Transit Expansion",
-                        page_fillable(
-                          card(
+              nav_panel(title = "Travel Demand Management", 
+                        navset_card_tab(
+                          nav_panel(
+                            title = "Transit Expansion",
+                            page_fillable(
+                              card(
                             layout_column_wrap(
                                           width = 1/2,
                               selectInput("route_type",
@@ -185,8 +188,6 @@ page_navbar(
                                            "Increase in Annual Transit VMT (Mile)", 
                                            #  Default from sample project: MetroTransit Micro G Line Exp
                                            value = 1566, decimalPlaces = 0, align = 'left'),
-                                           #  NEED DEFAULT, NONEIN MEMO
-                                           # value = 1),
                               numericInput("average_trip_length", 
                                            "Average Auto Trip Replaced (Mile)", 
                                            value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]), 
@@ -198,7 +199,49 @@ page_navbar(
                           ),
                           card(dataTableOutput("transit_expansion_table"))
                         )
-                        ),
+                        ),      nav_panel(
+                          title = "Mobility Hubs",
+                          page_fillable(
+                            card(
+                              layout_column_wrap(
+                                width = 1/3,
+                                
+                                checkboxGroupInput("mobility_mode",
+                                                   "Mobility Mode/s",
+                                                   choices = TotalVMTReductionPotential$mobility_mode,
+                                                   selected = TotalVMTReductionPotential$mobility_mode[1]),
+                                selectInput("hub_location",
+                                            "Location",
+                                            choices = unique(CommunityType$CTU_NAME),
+                                            selected = CommunityType$CTU_NAME[1]),
+                                shinyWidgets::autonumericInput("population_3mile",
+                                                               "Population within the service area",
+                                                               #  Default=rural area
+                                                               value = 14137, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
+                                dateInput("hub_project_start",
+                                          "Year",
+                                          value = "2024-01-01"),
+                                numericInput("hub_project_lifetime",
+                                             "Project Lifetime (in years)",
+                                             value = 20),
+                                numericInput("added_vmt",
+                                             "Increase in Annual Transit VMT (Mile)",
+                                             value = 0),
+                                numericInput("reduction_potential",
+                                             "Total VMT Reduction Potential",
+                                             value = .058),
+                                shinyWidgets::autonumericInput("annual_vmt",
+                                                               "Annual VMT per capita",
+                                                               value = 10655, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
+                                textOutput("selected_community_type_mobilityHub")
+                                
+                              )
+                            ),
+                            card(dataTableOutput("mobility_hub_table"))
+                          )))),
+                        
+                        
+                        
               nav_panel(title = "Travel Demand Management", 
                         navset_card_tab(
                           nav_panel(
@@ -284,51 +327,6 @@ page_navbar(
                             )))),
               nav_panel(title = "Bicycle and Pedestrian Facilities", 
                         navset_card_tab(
-                          nav_panel(
-                            title = "Mobility Hubs",
-                            page_fillable(
-                              card(
-                                layout_column_wrap(
-                                  width = 1/3,
-                                  
-                                  checkboxGroupInput("mobility_mode",
-                                                     "Mobility Mode/s",
-                                                     choices = TotalVMTReductionPotential$mobility_mode,
-                                                     selected = TotalVMTReductionPotential$mobility_mode[1]),
-                                  selectInput("hub_location",
-                                              "Location",
-                                              choices = unique(CommunityType$CTU_NAME),
-                                              selected = CommunityType$CTU_NAME[1]),
-                                  shinyWidgets::autonumericInput("population_3mile",
-                                                                 "Population within the service area",
-                                                                 #  Default=rural area
-                                                                 value = 14137, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
-                                  dateInput("hub_project_start",
-                                            "Year",
-                                            value = "2024-01-01"),
-                                  numericInput("hub_project_lifetime",
-                                               "Project Lifetime (in years)",
-                                               value = 20),
-                                  numericInput("added_vmt",
-                                               "Increase in Annual Transit VMT (Mile)",
-                                               #  NEED DEFAULT
-                                               value = 0),
-                                  numericInput("reduction_potential",
-                                               "Total VMT Reduction Potential",
-                                               # VALUE SHOULD CHANGE BASED ON MODE SELECTIONS
-                                               # DEFAULT (Pedestrian Facility)
-                                               value = .058),
-                                  shinyWidgets::autonumericInput("annual_vmt",
-                                                                 "Annual VMT per capita",
-                                                                 # VALUE SHOULD CHANGE BASED ON LOCATION
-                                                                 # DEFAULT (Lindwood Twp.)
-                                                                 value = 10655, decimalPlaces = 0, align = 'left', emptyInputBehavior = "zero"),
-                                  textOutput("selected_community_type_mobilityHub")
-                                  
-                                )
-                              ),
-                              card(dataTableOutput("mobility_hub_table"))
-                            )),
                           nav_panel(
                             title = "Pedestrian Facilities",
                             page_fillable(
@@ -446,7 +444,6 @@ page_navbar(
                                               selected = CommunityType$CTU_NAME[1]),
                                   numericInput("corridor_distance",
                                                "Corridor Distance (Mile)",
-                                               #  NEED DEFAULT
                                                value = 1),
                                   dateInput("corridor_speed_project_start",
                                             "Project Start",
@@ -456,15 +453,12 @@ page_navbar(
                                                value = 20),
                                   numericInput("avg_annual_daily_traffic",
                                                "Annual average daily traffic under the no-build condition",
-                                               #  NEED DEFAULT, NONEIN MEMO
                                                value = 1),
                                    numericInput("avg_corridor_speed_no_build",
                                                "Average Corridor Speed under the No-Build Condition (mph)",
-                                               #  NEED DEFAULT
                                                value = 1),
                                   numericInput("avg_corridor_speed_build",
                                                "Average Corridor Speed under the Build Condition (mph)",
-                                               #  NEED DEFAULT
                                                value = 1.2),
                                   textOutput("selected_community_type_corridorSpeed"),
                                   textOutput("induced_demand_elasticity")
