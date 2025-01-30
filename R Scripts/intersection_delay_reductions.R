@@ -7,6 +7,7 @@ intersection_delay_reductions <-
            project_start,
            project_lifetime){
     
+    service_days = 260
     k2 = 0.37 #default idling fuel factor in gallon/hour - comes from Argonne National Laboratory (ANL) Vehicle Idle Reduction Savings Worksheet
     total_peak_hours_reduced = vehicle_per_hour * number_peak_hours * (peak_hour_delay_noBuild - peak_hour_delay_build)
     
@@ -24,7 +25,7 @@ intersection_delay_reductions <-
       current_year <- project_years[i]
       
       # Calculate VMT displaced for the current year and store in the i-th position
-      fuel_consumption_reduced[i] <- k2 * total_peak_hours_reduced
+      fuel_consumption_reduced[i] <- (k2 * total_peak_hours_reduced) * service_days 
       
       ghg_impact_year <- (fuel_consumption_reduced[i] * 9.915)/ 1000 # 9.915 derived from avg LD WTW GHG emission factor 
       
