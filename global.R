@@ -13,6 +13,7 @@ library(tigris)
 library(leaflet)
 library(rmapshaper)
 library(shinyBS)
+library(councilR)
 options(tigris_use_cache = TRUE)
 
 #Reading in our background data
@@ -27,6 +28,7 @@ for (sheet in backgroundDataNames) {
 FleetData <- read_xlsx(paste0(here::here(),"/data/raw data/FleetData.xlsx"))
 CommunityDesignation <- st_read(paste0(here::here(), "/data/raw data/PROPOSED2050COMMUNITYDESIGNATIONS.gpkg")) %>% rename(COMDESNAME = CD2050)
 CommunityType <- CommunityDesignation
+mpo_area <- import_from_gpkg("https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_metc/trans_metro_planning_org_area/gpkg_trans_metro_planning_org_area.zip") %>% st_zm()
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/EFs_by_community_type.R"))
 source(paste0(getwd(), "/data/stock_percentages.R"))

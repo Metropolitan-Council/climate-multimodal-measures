@@ -386,26 +386,40 @@ function(input, output, session) {
   foundational.map <- shiny::reactive({
     leaflet() %>%
       addTiles(urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
+      
+      # Add population layer
       addPolygons(
-        data = population
-        ,
-        fillOpacity = 0
-        # , opacity = 0.2
-        ,
-        opacity = 0
-        ,
-        color = "#000000"
-        ,
-        weight = 2
-        ,
+        data = population,
+        fillOpacity = 0,
+        opacity = 0,
+        color = "#000000",
+        weight = 2,
         layerId = population$GEOID
       ) %>%
+      
+      # Add mpo_area layer
+      addPolygons(
+        data = mpo_area,
+        fillColor = "#DDEBF8",  # No fill color
+        fillOpacity = 0,  # Ensure fill is fully transparent
+        color = "#002b5c",  # Outline color
+        weight = 3.5,  # Outline thickness
+        layerId = "mpo_area",
+        label = ~ paste("MPO Area"),
+        labelOptions = labelOptions(
+          style = list("color" = "black"),
+          textsize = "12px",
+          direction = "auto"
+        )
+      )%>%
+      
+      # Add locations layer
       addPolygons(
         data = locations,
-        fillColor = "#0062cc",
+        fillColor = "#5CABFF",
         fillOpacity = 0.3,
-        color = "black",
-        weight = 1,
+        color = "#002b5c",
+        weight = .5,
         layerId = locations$CTU_NAME,
         label = ~ CTU_NAME,
         labelOptions = labelOptions(
@@ -413,7 +427,9 @@ function(input, output, session) {
           textsize = "12px",
           direction = "auto"
         )
-      ) %>%
+      ) %>% 
+      
+      # Fit bounds to the mpo_area extent
       fitBounds(
         lng1 = -94.01256,
         lat1 = 44.47124,
@@ -422,6 +438,45 @@ function(input, output, session) {
       )
   })
   
+  # foundational.map <- shiny::reactive({
+  #   leaflet() %>%
+  #     addTiles(urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
+  #     addPolygons(
+  #       data = population
+  #       ,
+  #       fillOpacity = 0
+  #       # , opacity = 0.2
+  #       ,
+  #       opacity = 0
+  #       ,
+  #       color = "#000000"
+  #       ,
+  #       weight = 2
+  #       ,
+  #       layerId = population$GEOID
+  #     ) %>%
+  #     addPolygons(
+  #       data = locations,
+  #       fillColor = "#0062cc",
+  #       fillOpacity = 0.3,
+  #       color = "black",
+  #       weight = 1,
+  #       layerId = locations$CTU_NAME,
+  #       label = ~ CTU_NAME,
+  #       labelOptions = labelOptions(
+  #         style = list("color" = "black"),
+  #         textsize = "12px",
+  #         direction = "auto"
+  #       )
+  #     ) %>%
+  #     fitBounds(
+  #       lng1 = -94.01256,
+  #       lat1 = 44.47124,
+  #       lng2 = -92.73191,
+  #       lat2 = 45.41455
+  #     )
+  # })
+  # 
   output$myMap <- renderLeaflet({
     foundational.map()
     
