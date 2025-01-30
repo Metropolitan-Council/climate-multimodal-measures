@@ -8,12 +8,6 @@
 #
 
 function(input, output, session) {
-  # output$myMap <- renderLeaflet({
-  #   leaflet() %>%
-  #     addTiles() %>%
-  #     setView(lng = -98.5795, lat = 39.8283, zoom = 4) # Example: Centered on the U.S.
-  # })
-  
   # Employee Commute Reduction Calculation
   employee_commute_results <- reactive({
     if (is.null(input$project_start)) {
@@ -894,7 +888,30 @@ function(input, output, session) {
     })
   })
   
+  
+  output$data_sources_table <- renderDT({
+    datatable(data.frame(
+      Source = c(
+        "Imagine 2050 Community Designations",
+        "US Census",
+        "Met Council Scenario Planning Tool ",
+        "GREET 2023",
+        "Metro Transit Data",
+        "CARB",
+        "Met Council Transit Experience and Satisfaction Survey"
+      ),
+      Description = c(
+        "Community Designations Data",
+        "Population Data",
+        "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
+        "Electrcity Emissions",
+        "Average Auto Trip Replaced",
+        "Transit Dependency",
+        "Transit Dependency"
+      )
+    ))
+  })
 }
 
-  
+
   

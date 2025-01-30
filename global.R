@@ -10,7 +10,6 @@ library(lubridate)
 library(sf)
 library(tidycensus)
 library(tigris)
-# library(mapview)
 library(leaflet)
 library(rmapshaper)
 library(shinyBS)
@@ -26,7 +25,7 @@ for (sheet in backgroundDataNames) {
 }
 
 FleetData <- read_xlsx(paste0(here::here(),"/data/raw data/FleetData.xlsx"))
-CommunityDesignation <- st_read(paste0(here::here(),"/data/raw data/shp_society_thrive_msp2040_com_des/ThriveMSP2040CommunityDesignation.shp"))
+CommunityDesignation <- st_read(paste0(here::here(), "/data/raw data/PROPOSED2050COMMUNITYDESIGNATIONS.gpkg")) %>% rename(COMDESNAME = CD2050)
 CommunityType <- CommunityDesignation
 source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/EFs_by_community_type.R"))
