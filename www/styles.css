@@ -1,0 +1,22 @@
+  .info-box {
+    background-color: white; /* Light Gray Background */
+    border-left: 5px solid #002b5c; /* Deep Blue Left Border */
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: black; /* Black text for readability */
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle Shadow */
+  }
+
+.header-title {
+    font-family: 'Bold-Condensed', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #0054a4; /* Council Blue */
+    background-color: #f7f7f7; /* Light Gray Background */
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+  }
