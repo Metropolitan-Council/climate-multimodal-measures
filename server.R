@@ -42,31 +42,58 @@ function(input, output, session) {
     )
   })
   
-  observeEvent(input$audience, {
-    req(input$audience)  # Ensure input$ev_type is not NULL
-    updateNumericInput(session,
-                       "ev_outreach_project_lifetime",
-                       value = if (input$audience == "Heavy Duty") 14 else 8)
-  }) 
+  ####################### EV Outreach #############################################################################
+  # observeEvent(input$audience, {
+  #   req(input$audience)
+  #   updateNumericInput(session,
+  #                      "ev_outreach_project_lifetime",
+  #                      value = if (input$audience == "Heavy Duty") 
+  #                        14 else 8)
+  # }) 
   # EV Outreach Reduction Calculation
   ev_outreach_results <- reactive({
     if (is.null(input$no_participants) |
         is.null(input$ev_outreach_project_start) |
         is.null(input$ev_outreach_project_lifetime) |
-        is.null(input$conversion_rate) |
-        is.null(input$audience)) {
+        is.null(input$conversion_rate)) {
+        # is.null(input$audience)) {
       return ()
     }
     ev_outreach(
       no_participants = input$no_participants,
       project_start = input$ev_outreach_project_start,
-      project_lifetime = input$ev_outreach_project_lifetime,
-      #8 years default for light duty 14 years for heavy duty
-      conversion_rate = input$conversion_rate,
-      #default .04
-      audience = input$audience,
-      #LD or HD
+      project_lifetime = input$ev_outreach_project_lifetime, #8 years default for light duty 14 years for heavy duty
+      conversion_rate = input$conversion_rate, #default .04
+      # audience = input$audience, #LD or HD
       location = input$ev_outreach_location
+    )
+  })
+  
+  output$ev_outreach_table <- renderDataTable({
+    if (is.null(input$ev_outreach_project_start)) {
+      return()
+    }
+    
+    DT::datatable(
+      ev_outreach_results(),
+      escape = FALSE,  
+      rownames = FALSE,
+      options = list(
+        dom = 't',      # Table layout without search box
+        scrollX = TRUE, # Allows horizontal scrolling
+        ordering = FALSE # Disable sorting buttons on headers
+      )
+    )
+  })
+  
+  output$ev_outreach_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("EV Outreach Results"),
+        downloadButton("download_ev_outreach", "Download CSV")
+      ),
+      dataTableOutput("ev_outreach_table")  # Table renders below the button
     )
   })
   
@@ -79,13 +106,33 @@ function(input, output, session) {
     DT::datatable(
       ev_outreach_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
       )
-    )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
+  
+  
+  output$download_ev_outreach <- downloadHandler(
+    filename = function() {
+      paste("EV_Outreach_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(ev_outreach_results(), file, row.names = FALSE)
+    }
+  )
+  
+  #########################################################################################################################
   
   # Reactive expression for ev_infrastructure calculations
   ev_infrastructure_results <- reactive({
@@ -139,7 +186,6 @@ function(input, output, session) {
   
   
   # Shared Mobility
-  # double checking this name?
   shared_mobility_results <- reactive({
     if (is.null(input$project_start)) {
       return ()

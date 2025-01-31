@@ -1,7 +1,7 @@
 ev_outreach <- function(no_participants,
                         conversion_rate,
                         location,
-                        audience,
+                        # audience,
                         project_start,
                         project_lifetime) {
   
@@ -10,11 +10,6 @@ ev_outreach <- function(no_participants,
     pull(MappedCommunity)
   
   average_annual_accrual <- PerVehicleVMT %>% filter(MappedCommunity == community_type) %>% pull(PerVehicleVMT)
-  
-  # Generate years project covers
-  # project_start <- lubridate::year(project_start)
-  # project_start <- as.numeric(project_start)
-  # project_years <- seq(project_start, project_start + project_lifetime - 1)
   
 
   project_start <- as.numeric(project_start)  # Ensure numeric year
@@ -42,13 +37,15 @@ ev_outreach <- function(no_participants,
     
     gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year) %>% filter(MappedCommunity == community_type) %>% pull(EF)
     
-    if (audience == "Light Duty") {
-      ghg_impact_year <- (vmt_displaced_year * (gasoline_ef_year - greet_ef_year$electricity)) / 1000000
-    }
+    # if (audience == "Light Duty") {
+    #   ghg_impact_year <- (vmt_displaced_year * (gasoline_ef_year - greet_ef_year$electricity)) / 1000000
+    # }
+    # 
+    # if (audience == "Heavy Duty") {
+    #   ghg_impact_year <- (vmt_displaced_year * (diesel_ef_year - greet_ef_year$electricity)) / 1000000
+    # }
     
-    if (audience == "Heavy Duty") {
-      ghg_impact_year <- (vmt_displaced_year * (diesel_ef_year - greet_ef_year$electricity)) / 1000000
-    }
+    ghg_impact_year <- (vmt_displaced_year * (gasoline_ef_year - greet_ef_year$electricity)) / 1000000
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
     
@@ -64,13 +61,15 @@ ev_outreach <- function(no_participants,
   total_carbon_cost <- sum(carbon_cost)
   
   results <- data.frame(
-    year = c(project_years, "Total"),
-    "VMT (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
-    "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
+    Year = c(project_years, "Total"),
+    "VMT Reduction (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
+    "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 0), big.mark = ","),
     "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
       format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
     check.names = FALSE
   )
+
+  
   return(results)
 }

@@ -61,6 +61,7 @@ locations <- CommunityDesignation %>%
 met_council_datatable <- function(provided_data) {
   
   formatted_data <- provided_data
+  rownames(formatted_data) <- NULL  # ✅ Remove row names explicitly
   
   pretty_names <- colnames(formatted_data) %>%
     str_replace_all("_", " ") %>%  
@@ -80,9 +81,10 @@ met_council_datatable <- function(provided_data) {
             fillContainer = TRUE,
             rownames = FALSE,
             options = list(
+              rownames = FALSE,
               searching = FALSE,  # Disable search
               paging = FALSE,     # Disable pagination
-              dom = 't',          # Show only the table (no extra controls)
+              # dom = 't',          # Show only the table (no extra controls)
               ordering = FALSE,    # Disable ordering
               columnDefs = list(
                 list(targets = which(pretty_names != "Year") - 1,  
