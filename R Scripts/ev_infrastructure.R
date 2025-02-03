@@ -130,16 +130,3 @@ ev_infrastructure <- function(ev_type,
   )
   return(results)
 }
-
-# # Test the function
-# test <- ev_infrastructure(
-#   ev_type = "Light-Duty",
-#   no_chargers = 25,
-#   charge_power = 19.2,
-#   charger_type = "Level 2",
-#   annual_hours_available = 8760,
-#   location = "Andover",
-#   project_start = "2024-01-01",
-#   project_lifetime = 1,
-#   percentage_ICE = 95
-# )
