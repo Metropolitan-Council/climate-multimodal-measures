@@ -51,6 +51,7 @@ function(input, output, session) {
   #                        14 else 8)
   # }) 
   # EV Outreach Reduction Calculation
+  
   ev_outreach_results <- reactive({
     if (is.null(input$no_participants) |
         is.null(input$ev_outreach_project_start) |
@@ -66,23 +67,6 @@ function(input, output, session) {
       conversion_rate = input$conversion_rate, #default .04
       # audience = input$audience, #LD or HD
       location = input$ev_outreach_location
-    )
-  })
-  
-  output$ev_outreach_table <- renderDataTable({
-    if (is.null(input$ev_outreach_project_start)) {
-      return()
-    }
-    
-    DT::datatable(
-      ev_outreach_results(),
-      escape = FALSE,  
-      rownames = FALSE,
-      options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
-      )
     )
   })
   
@@ -132,7 +116,7 @@ function(input, output, session) {
     }
   )
   
-  #########################################################################################################################
+  ############################EV Infrastructure##############################################################
   
   # Reactive expression for ev_infrastructure calculations
   ev_infrastructure_results <- reactive({
@@ -154,6 +138,17 @@ function(input, output, session) {
     )
   })
   
+  output$ev_infrastructure_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Public Infrastructure Results"),
+        downloadButton("download_ev_infrastructure", "Download CSV")
+      ),
+      dataTableOutput("ev_infrastructure_table")  # Table renders below the button
+    )
+  })
+  
   # Render DataTable for ev_infrastructure results
   output$ev_infrastructure_table <- renderDataTable({
     # Ensure project start date is provided
@@ -171,19 +166,35 @@ function(input, output, session) {
       ))
     }
     
-    # Render the actual table
     DT::datatable(
-      results,
+      ev_infrastructure_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE, # Disable sorting buttons on headers
-        language = list(emptyTable = "No results to display.") # Placeholder message
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
       )
-    )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
   
+  output$download_ev_infrastructure <- downloadHandler(
+    filename = function() {
+      paste("EV_infrastructure_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(ev_infrastructure_results(), file, row.names = FALSE)
+    }
+  )
+
+  ########################## Shared Mobility ################################################  
   
   # Shared Mobility
   shared_mobility_results <- reactive({
