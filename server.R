@@ -154,7 +154,7 @@ output$download_employee_commute <- downloadHandler(
     req(input$ev_infrastructure_project_start)
     
     ev_infrastructure(
-      ev_type = input$ev_type,
+      # ev_type = input$ev_type,
       no_chargers = input$no_chargers,
       charger_type = input$charger_type,
       charge_power = input$charge_power,
@@ -1095,6 +1095,9 @@ output$download_employee_commute <- downloadHandler(
     updateNumericInput(session, 
                        "reduction_potential",
                        value = reduction_potential)
+    output$selected_community_type_mobilityHub <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
   })
   
   
@@ -1294,9 +1297,9 @@ output$download_employee_commute <- downloadHandler(
     # Update the numeric input for percentage_ICE
     updateNumericInput(session, "percentage_ICE", value = percentage_ICE)
     
-    # Dynamically update average_energy_efficiency based on the selected ev_type
+    # Dynamically update average_energy_efficiency
     average_energy_efficiency <- FuelEfficiency %>%
-      filter(`Vehicle Type` == input$ev_type) %>%
+      filter(`Vehicle Type` == 'Light-Duty') %>%
       pull(`Fuel Efficiency (Wh/mi)`)
     
     # Convert Wh/mi to kWh/mi by dividing by 1000
@@ -1315,7 +1318,7 @@ output$download_employee_commute <- downloadHandler(
     # Update the numeric input for charge_power
     updateNumericInput(session, "charge_power", value = charge_power)
   })
+  
 }
-
 
   

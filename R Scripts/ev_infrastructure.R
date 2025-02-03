@@ -1,4 +1,5 @@
-ev_infrastructure <- function(ev_type,
+ev_infrastructure <- function(
+                              # ev_type,
                               no_chargers,
                               charger_type,
                               charge_power,
@@ -27,7 +28,7 @@ ev_infrastructure <- function(ev_type,
   # Set default average energy efficiency if not provided
   if (is.null(average_energy_efficiency)) {
     average_energy_efficiency <- FuelEfficiency %>%
-      filter(`Vehicle Type` == ev_type) %>%
+      filter(`Vehicle Type` == 'Light-Duty') %>%
       pull(`Fuel Efficiency (Wh/mi)`)
   }
   
@@ -95,7 +96,8 @@ ev_infrastructure <- function(ev_type,
     gasoline_ef_year <- GasolineEFsCommunityType %>% filter(year == current_year, MappedCommunity == community_type) %>% pull(EF)
     
     # Determine carbon intensity based on vehicle type
-    carbon_intensity <- if (ev_type == "Light-Duty") gasoline_ef_year else diesel_ef_year
+    # carbon_intensity <- if (ev_type == "Light-Duty") gasoline_ef_year else diesel_ef_year
+    carbon_intensity <- gasoline_ef_year 
     carbon_intensity_grid <- greet_ef_year %>% pull(electricity)
     
     # Calculate GHG impact

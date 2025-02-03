@@ -147,12 +147,12 @@ div(
               card(
                 layout_column_wrap(
                   width = 1 / 2,
-                  radioButtons(
-                    "ev_type",
-                    "Type of Vehicle Serviced",
-                    choices = c("Light-Duty", "Heavy-Duty"),
-                    selected = "Light-Duty"
-                  ),
+                  # radioButtons(
+                  #   "ev_type",
+                  #   "Type of Vehicle Serviced",
+                  #   choices = c("Light-Duty", "Heavy-Duty"),
+                  #   selected = "Light-Duty"
+                  # ),
                   radioButtons(
                     "charger_type",
                     "Type of Charger Installed",
