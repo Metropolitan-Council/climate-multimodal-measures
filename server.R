@@ -797,10 +797,10 @@ output$download_employee_commute <- downloadHandler(
       # Add mpo_area layer
       addPolygons(
         data = mpo_area,
-        fillColor = "#DDEBF8",  # No fill color
-        fillOpacity = 0,  # Ensure fill is fully transparent
-        color = "#002b5c",  # Outline color
-        weight = 3.5,  # Outline thickness
+        fillColor = "#DDEBF8",
+        fillOpacity = 0,
+        color = "#002b5c",
+        weight = 3.5,
         layerId = "mpo_area",
         label = ~ paste("MPO Area"),
         labelOptions = labelOptions(
@@ -808,7 +808,7 @@ output$download_employee_commute <- downloadHandler(
           textsize = "12px",
           direction = "auto"
         )
-      )%>%
+      ) %>%
       
       # Add locations layer
       addPolygons(
@@ -832,13 +832,56 @@ output$download_employee_commute <- downloadHandler(
         lat1 = 44.47124,
         lng2 = -92.73191,
         lat2 = 45.41455
-      )
+      ) %>%
+      
+      # Add the reset view button
+      addEasyButton(
+        easyButton(
+          icon = "fa-home",
+          title = "Reset Map View",
+          position = "topright",
+          onClick = JS("function(btn, map) {
+                        Shiny.setInputValue('reset_map', Math.random());  // Send reset signal to R
+                      }")
+        )
+      ) %>%
+      
+      # Add the information icon
+      addControl(
+        html = as.character(
+          tags$i(
+            class = "fas fa-question-circle",
+            style = "font-size: 24px; cursor: pointer;",
+            `data-toggle` = "popover",
+            `data-placement` = "bottom",
+            title = "Emission factors are determined based on the community type of your proposed project’s location. 
+            
+            If your project involves a facility or hub, select its placement where it will be built, as the calculation accounts for the population within its surrounding radius."
+          )
+        ),
+        position = "topleft"
+      ) %>%
+      
+      # Ensure popovers work
+      htmlwidgets::onRender("
+      function(el, x) {
+        $(el).find('[data-toggle=\"popover\"]').popover({ trigger: 'hover', html: true });
+      }
+    ")
   })
+  
 
   output$myMap <- renderLeaflet({
     foundational.map()
-    
   })
+  
+  # Observe the reset signal and re-render the map
+  observeEvent(input$reset_map, {
+    output$myMap <- renderLeaflet({
+      foundational.map()  # This will reset the map
+    })
+  })
+  
   
   shiny::observeEvent(input$myMap_shape_click, {
     click <- input$myMap_shape_click

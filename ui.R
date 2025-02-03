@@ -13,10 +13,24 @@ tags$head(
   tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"),
   tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
   
-  # Fix: Place JavaScript inside tags$head()
   tags$script(
     HTML(
-      '$(document).ready(function(){ $("[data-bs-toggle=\'tooltip\']").tooltip(); });'
+      '$(document).ready(function(){
+          // Initialize static tooltips and popovers
+          $("[data-bs-toggle=\'tooltip\']").tooltip();
+          $("[data-bs-toggle=\'popover\']").popover({ trigger: "hover", html: true });
+        });
+        
+        // Use event delegation to initialize popovers for dynamically added elements
+        $(document).on("mouseenter", "[data-bs-toggle=\'popover\']", function(){
+          var $el = $(this);
+          // If the popover hasn\'t been initialized yet, initialize it
+          if (!$el.data("bs.popover")) {
+            $el.popover({ trigger: "hover", html: true });
+            $el.popover("show");
+          }
+        });
+      '
     )
   )
 )

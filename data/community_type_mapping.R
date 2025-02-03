@@ -4,7 +4,7 @@ CommunityTypeShape <- CommunityType %>%
     COMDESNAME %in% c("Urban", "Urban Center", "Urban Edge") ~ "Urban",
     COMDESNAME %in% c("Suburban", "Diversified Residential") ~ "Suburban",
     COMDESNAME %in% c("Suburban Edge", "Emerging Suburban Edge") ~ "Suburban Edge",
-    COMDESNAME %in% c("Diversified Rural", "Rural Residential", "Rural Center", "Agricultural", "Non-Council Area") ~ "Rural / Non-Council",
+    COMDESNAME %in% c("Diversified Rural", "Rural Residential", "Rural Center", "Agricultural", "Non-Council Community") ~ "Rural / Non-Council",
     TRUE ~ NA_character_  # For any unexpected values
   ))
 
