@@ -318,7 +318,6 @@ output$download_employee_commute <- downloadHandler(
   
   
   ####################Transit Expansion###############################################
-  
   # EV Outreach Reduction Calculation
   transit_expansion_results <- reactive({
     if (is.null(input$project_start)) {
@@ -353,7 +352,7 @@ output$download_employee_commute <- downloadHandler(
     )
   })
   
-  # Render DataTable for ev_infrastructure results
+  # Render DataTable for transit_expansion results
   output$transit_expansion_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$transit_expansion_project_start)
@@ -396,7 +395,17 @@ output$download_employee_commute <- downloadHandler(
       write.csv(transit_expansion_results(), file, row.names = FALSE)
     }
   )
-  ######################################################################################################
+  
+  observeEvent(input$route_type, {
+    selected_factor <- AdjustmentFactorsAndTripLengths$adjustment_factor[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
+    
+    selected_length <- AdjustmentFactorsAndTripLengths$average_trip_length_mi_trip[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
+    
+    updateNumericInput(session, "transit_expansion_adjustment_factor", value = selected_factor)
+    
+    updateNumericInput(session, "average_trip_length", value = selected_length)
+  })
+  ################################Corridor Speed Improvement######################################################################
   
   # Corridor Speed Improvement Results
   corridor_speed_improvement_results <- reactive({
@@ -428,6 +437,8 @@ output$download_employee_commute <- downloadHandler(
       ))
   })
   
+  ########################################Intersection Delay###########################################
+  
   # Intersection Delay Results
   intersection_delay_results <- reactive({
     if (is.null(input$project_start)) {
@@ -458,6 +469,7 @@ output$download_employee_commute <- downloadHandler(
       ))
   })
   
+  ##########################Mobility Hub######################################################
   # Mobility Hub Results
   mobility_hub_results <- reactive({
     if (is.null(input$project_start)) {
@@ -479,22 +491,62 @@ output$download_employee_commute <- downloadHandler(
     )
   })
   
-  output$mobility_hub_table <- renderDataTable({
-    if (is.null(input$project_start)) {
-      return ()
-    }
-    # Render table with HTML enabled, and disable sorting
-    DT::datatable(
-      mobility_hub_results(),
-      escape = FALSE,  # Enables rendering HTML
-      options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
-      )
+  output$mobility_hub_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Mobility Hub Result"),
+        downloadButton("download_mobility_hub", "Download CSV")
+      ),
+      dataTableOutput("mobility_hub_table")  # Table renders below the button
     )
   })
   
+  # Render DataTable for transit_expansion results
+  output$mobility_hub_table <- renderDataTable({
+    # Ensure project start date is provided
+    req(input$hub_project_start)
+    
+    # Get the results from the reactive expression
+    results <- mobility_hub_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
+    }
+    
+    DT::datatable(
+      mobility_hub_results(),
+      escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
+      options = list(
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
+      )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
+  })
+  output$download_mobility_hub <- downloadHandler(
+    filename = function() {
+      paste("Mobility_Hub_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(mobility_hub_results(), file, row.names = FALSE)
+    }
+  )
+  
+  ###################################Pedestrian Facilites##################################################
   # Pedestrian Facilities Results
   pedestrian_facilities_results <- reactive({
     if (is.null(input$project_start)) {
@@ -529,6 +581,8 @@ output$download_employee_commute <- downloadHandler(
       )
     )
   })
+  
+  ##############################Multi-use Trails###########################################################
   
   # Multi-Use Trails and Bicycle Facilities Results
   trails_bike_facilities_results <- reactive({
@@ -565,6 +619,8 @@ output$download_employee_commute <- downloadHandler(
       )
     )
   })
+  
+  ################################ Map ######################################################################
   
   foundational.map <- shiny::reactive({
     leaflet() %>%
@@ -711,15 +767,15 @@ output$download_employee_commute <- downloadHandler(
     }
   })
   
-  observeEvent(input$route_type, {
-    selected_factor <- AdjustmentFactorsAndTripLengths$adjustment_factor[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
-    
-    selected_length <- AdjustmentFactorsAndTripLengths$average_trip_length_mi_trip[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
-    
-    updateNumericInput(session, "transit_expansion_adjustment_factor", value = selected_factor)
-    
-    updateNumericInput(session, "average_trip_length", value = selected_length)
-  })
+  # observeEvent(input$route_type, {
+  #   selected_factor <- AdjustmentFactorsAndTripLengths$adjustment_factor[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
+  # 
+  #   selected_length <- AdjustmentFactorsAndTripLengths$average_trip_length_mi_trip[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
+  # 
+  #   updateNumericInput(session, "transit_expansion_adjustment_factor", value = selected_factor)
+  # 
+  #   updateNumericInput(session, "average_trip_length", value = selected_length)
+  # })
   
   observeEvent(input$fleet, {
     if (input$fleet == "Scooter") {

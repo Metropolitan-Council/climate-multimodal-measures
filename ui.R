@@ -322,7 +322,7 @@ div(
                   ),
                   tags$div(class = "info-box", textOutput("selected_community_type_mobilityHub"))
                 )
-              ), card(dataTableOutput("mobility_hub_table"))
+              ),   card(uiOutput("mobility_hub_ui"))
             ))
           )),
           

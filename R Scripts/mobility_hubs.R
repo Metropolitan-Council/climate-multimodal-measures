@@ -19,8 +19,6 @@ mobility_hubs <-
         pull(total_vmt_reduction_potential)
     }
     
-    print(reduction_potential)
-    
     if (is.null(annual_vmt)) {
       annual_vmt = VMTPerCapitaByCommunityType %>% filter(MappedCommunity == community_type) %>% pull(VMTperCapita)
     }
@@ -96,9 +94,9 @@ mobility_hubs <-
     
     # Create a data frame with results including totals
     results <- data.frame(
-      year = c(project_years, "Total"),
-      "VMT (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
-      "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
+      Year = c(project_years, "Total"),
+      "VMT Reduction (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
+      "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact),0), big.mark = ","),
       "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
         format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
@@ -107,12 +105,4 @@ mobility_hubs <-
     
     return(results)
   }
-
-
-# test <- mobility_hubs(mobility_mode = "Bike Share",
-#                       added_vmt = 1200,
-#                       project_lifetime = 5,
-#                       project_start = "2027-01-01",
-#                       location = "Andover", 
-#                       population_3mile = 5000)
 
