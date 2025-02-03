@@ -32,8 +32,8 @@ ev_infrastructure <- function(ev_type,
   }
   
   # Generate years project covers based on project start date and length of project
-  project_start <- as.numeric(lubridate::year(project_start))
-  project_years <- seq(project_start, project_start + project_lifetime - 1)
+  project_start <- as.numeric(project_start)  # Ensure numeric year
+  project_years <- seq(project_start, project_start + project_lifetime - 1)  # Create year range
   
   # Calculate default percentage_ICE for the first year
   FleetData <- FleetData %>%

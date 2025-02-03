@@ -14,9 +14,8 @@ employee_commute <- function(daily_commute_no,
   }
   
   # Generate years project covers based on project start date and length of project
-  project_start <- lubridate::year(project_start)
-  project_start <- as.numeric(project_start)
-  project_years <- seq(project_start, project_start + project_lifetime - 1)
+  project_start <- as.numeric(project_start)  # Ensure numeric year
+  project_years <- seq(project_start, project_start + project_lifetime - 1)  # Create year range
   
   
   # Initialize vectors to store results

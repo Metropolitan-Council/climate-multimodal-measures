@@ -24,10 +24,8 @@ mobility_hubs <-
     }
     
     # Generate years project covers
-    project_start <- lubridate::year(project_start)
-    project_start <- as.numeric(project_start)
-    project_years <-
-      seq(project_start, project_start + project_lifetime - 1)
+    project_start <- as.numeric(project_start)  # Ensure numeric year
+    project_years <- seq(project_start, project_start + project_lifetime - 1)  # Create year range
     
     # Initialize vectors to store results
     auto_vmt_displaced <- numeric(length(project_years))

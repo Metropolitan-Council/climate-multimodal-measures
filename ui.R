@@ -175,7 +175,12 @@ div(
                     align = 'left',
                     emptyInputBehavior = "zero"
                   ),
-                  dateInput("ev_infrastructure_project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "ev_infrastructure_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput(
                     "ev_infrastructure_project_lifetime",
                     "Project Lifetime (in years)",
@@ -254,7 +259,12 @@ div(
                     align = 'left',
                     emptyInputBehavior = "zero"
                   ),
-                  dateInput("transit_expansion_project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "transit_expansion_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput(
                     "transit_expansion_project_lifetime",
                     "Project Lifetime (in years)",
@@ -308,7 +318,12 @@ div(
                     align = 'left',
                     emptyInputBehavior = "zero"
                   ),
-                  dateInput("hub_project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "hub_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput("hub_project_lifetime", "Project Lifetime (in years)", value = 20),
                   numericInput("added_vmt", "Increase in Annual Transit VMT (Mile)", value = 0),
                   numericInput("reduction_potential", "Total VMT Reduction Potential", value = .058),
@@ -347,7 +362,12 @@ div(
                     align = 'left',
                     emptyInputBehavior = "zero"
                   ),
-                  dateInput("project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput("project_lifetime", "Project Lifetime (in years)", value = 4)
                   ,
                   numericInput(
@@ -387,7 +407,12 @@ div(
                     align = 'left',
                     emptyInputBehavior = "zero"
                   ),
-                  dateInput("shared_mobility_project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "shared_mobility_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput(
                     "shared_mobility_project_lifetime",
                     "Project Lifetime (in years)",
@@ -430,7 +455,12 @@ div(
                     choices = unique(CommunityType$CTU_NAME),
                     selected = CommunityType$CTU_NAME[1]
                   ),
-                  dateInput("pedestrian_project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "pedestrian_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput(
                     "pedestrian_project_lifetime",
                     "Project Lifetime (in years)",
@@ -489,7 +519,12 @@ div(
                     choices = c("On Street", "New Multiuse", "Conversion"),
                     selected = "On Street"
                   ),
-                  dateInput("trails_bike_project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "trails_bike_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput(
                     "trails_bike_project_lifetime",
                     "Project Lifetime (in years)",
@@ -543,7 +578,12 @@ div(
                     selected = CommunityType$CTU_NAME[1]
                   ),
                   numericInput("number_peak_hours", "Number of Peak Hours", value = 1),
-                  dateInput("intersection_delay_project_start", "Year", value = "2024-01-01"),
+                  selectInput(
+                    "intersection_delay_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput(
                     "intersection_delay_project_lifetime",
                     "Project Lifetime (in years)",
@@ -578,7 +618,12 @@ div(
                     selected = CommunityType$CTU_NAME[1]
                   ),
                   numericInput("corridor_distance", "Corridor Distance (Mile)", value = 1),
-                  dateInput("corridor_speed_project_start", "Project Start", value = "2024-01-01"),
+                  selectInput(
+                    "corridor_speed_project_start",
+                    "Year",
+                    choices = seq(2024, 2050, 1),
+                    selected = 2024
+                  ),
                   numericInput(
                     "corridor_speed_project_lifetime",
                     "Project Lifetime (in years)",

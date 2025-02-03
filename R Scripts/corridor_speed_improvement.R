@@ -23,8 +23,8 @@ corridor_speed_improvements <- function(corridor_distance,
   }
   
   # Generate years project covers
-  project_start <- lubridate::year(project_start)
-  project_years <- seq(project_start, project_start + project_lifetime - 1)
+  project_start <- as.numeric(project_start)  # Ensure numeric year
+  project_years <- seq(project_start, project_start + project_lifetime - 1)  # Create year range
   
   # Initialize vectors to store results
   fuel_consumption_reduced <- numeric(length(project_years))
@@ -73,7 +73,7 @@ corridor_speed_improvements <- function(corridor_distance,
   # Create a data frame with results including totals
   results <- data.frame(
     Year = c(project_years, "Total"),
-    "Fuel Consumption Reduced (gallons)" = c(fuel_consumption_reduced, total_fuel_consumption_reduced),
+    "Fuel Consumption Reduced (gallons)" = rount(c(fuel_consumption_reduced, total_fuel_consumption_reduced),0),
     "Induced Demand" = round(c(induced_demand, total_induced_demand),0),
     "GHG Reduction (MT CO₂))" = round(c(ghg_impact, total_ghg_impact),0),
     "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 

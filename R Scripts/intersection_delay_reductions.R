@@ -12,9 +12,8 @@ intersection_delay_reductions <-
     total_peak_hours_reduced = vehicle_per_hour * number_peak_hours * (peak_hour_delay_noBuild - peak_hour_delay_build)
     
     # Generate years project covers
-    project_start <- lubridate::year(project_start)
-    project_start <- as.numeric(project_start)
-    project_years <- seq(project_start, project_start + project_lifetime - 1)
+    project_start <- as.numeric(project_start)  # Ensure numeric year
+    project_years <- seq(project_start, project_start + project_lifetime - 1)  # Create year range
     
     # Initialize vectors to store results
     fuel_consumption_reduced <- numeric(length(project_years))
@@ -50,7 +49,7 @@ intersection_delay_reductions <-
     results <- data.frame(
       Year = c(project_years, "Total"),
       "Fuel Consumption Reduced (gallons)" = round(c(fuel_consumption_reduced, total_fuel_consumption_reduced),0),
-      "GHG Reduction (MT CO₂))" = round(c(ghg_impact, total_ghg_impact)0),
+      "GHG Reduction (MT CO₂))" = round(c(ghg_impact, total_ghg_impact),0),
       "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
         format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),

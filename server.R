@@ -223,7 +223,6 @@ output$download_employee_commute <- downloadHandler(
       write.csv(ev_infrastructure_results(), file, row.names = FALSE)
     }
   )
-
   ########################## Shared Mobility ################################################  
   
   # Shared Mobility
@@ -315,8 +314,6 @@ output$download_employee_commute <- downloadHandler(
       write.csv(shared_mobility_results(), file, row.names = FALSE)
     }
   )
-  
-  
   ####################Transit Expansion###############################################
   # EV Outreach Reduction Calculation
   transit_expansion_results <- reactive({
@@ -927,96 +924,31 @@ output$download_employee_commute <- downloadHandler(
       output$map_tab_label <- renderText("Map")
     }
   })
+######################Sources#########################################################
   
-  # observeEvent(input$route_type, {
-  #   selected_factor <- AdjustmentFactorsAndTripLengths$adjustment_factor[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
-  # 
-  #   selected_length <- AdjustmentFactorsAndTripLengths$average_trip_length_mi_trip[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
-  # 
-  #   updateNumericInput(session, "transit_expansion_adjustment_factor", value = selected_factor)
-  # 
-  #   updateNumericInput(session, "average_trip_length", value = selected_length)
-  # })
-  
-  observeEvent(input$fleet, {
-    if (input$fleet == "Scooter") {
-      updateNumericInput(session, "average_occupancy", value = 1)
-      updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.5)
-      updateNumericInput(session, "prct_deadhead_miles", value = 0)
-      updateNumericInput(session, "trip_miles", value = 0.71)
-      
-    } else if (input$fleet == "Bike") {
-      updateNumericInput(session, "average_occupancy", value = 1)
-      updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.5)
-      updateNumericInput(session, "prct_deadhead_miles", value = 0)
-      updateNumericInput(session, "trip_miles", value = 2.97)
-      
-    } else {
-      updateNumericInput(session, "average_occupancy", value = 1.5)
-      updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.83)
-      updateNumericInput(session, "prct_deadhead_miles", value = 0.4)
-      updateNumericInput(session, "trip_miles", value = 5.87)
-    }
+  output$data_sources_table <- renderDT({
+    datatable(data.frame(
+      Source = c(
+        "Imagine 2050 Community Designations",
+        "US Census",
+        "Met Council Scenario Planning Tool ",
+        "GREET 2023",
+        "Metro Transit Data",
+        "CARB",
+        "Met Council Transit Experience and Satisfaction Survey"
+      ),
+      Description = c(
+        "Community Designations Data",
+        "Population Data",
+        "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
+        "Electrcity Emissions",
+        "Average Auto Trip Replaced",
+        "Transit Dependency",
+        "Transit Dependency"
+      )
+    ))
   })
-
-
-  observe({
-    req(input$ev_infrastructure_location, input$ev_infrastructure_project_start, input$charger_type)
-    
-    # Get the selected community type
-    community_type <- CommunityTypeShape %>%
-      filter(CTU_NAME == input$ev_infrastructure_location) %>%
-      pull(MappedCommunity)
-    
-    # Update the text output for the community type
-    output$selected_community_type_EVInfrastructure <- renderText({
-      paste("Selected Community Type:", community_type)
-    })
-    
-    # Ensure current_year is defined based on the selected project start year
-    current_year <- as.numeric(format(input$ev_infrastructure_project_start, "%Y"))
-    
-    # Filter FleetData based on the selected community type
-    filtered_FleetData <- FleetData %>%
-      filter(MappedCommunity == community_type) %>%
-      mutate(year = as.numeric(year))
-    
-    # Determine the closest year
-    closest_year <- filtered_FleetData %>%
-      summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
-      pull(closest_year)
-    
-    # Filter the dataset to get the fleet proportions from the closest year
-    fleet_proportion <- filtered_FleetData %>%
-      filter(year == closest_year)
-    
-    # Calculate percentage_ICE and round to 2 decimals
-    percentage_ICE <- round(fleet_proportion$electricity, 2)
-    
-    # Update the numeric input for percentage_ICE
-    updateNumericInput(session, "percentage_ICE", value = percentage_ICE)
-    
-    # Dynamically update average_energy_efficiency based on the selected ev_type
-    average_energy_efficiency <- FuelEfficiency %>%
-      filter(`Vehicle Type` == input$ev_type) %>%
-      pull(`Fuel Efficiency (Wh/mi)`)
-    
-    # Convert Wh/mi to kWh/mi by dividing by 1000
-    average_energy_efficiency <- round(average_energy_efficiency / 1000, 2)
-    
-    # Update the numeric input for average_energy_efficiency
-    updateNumericInput(session, "average_energy_efficiency", value = average_energy_efficiency)
-    
-    # Dynamically update charge_power based on the selected charger_type
-    charge_power <- if (input$charger_type == "DCFC") {
-      150  # Default power for DCFC
-    } else {
-      19.2  # Default power for Level 2 chargers
-    }
-    
-    # Update the numeric input for charge_power
-    updateNumericInput(session, "charge_power", value = charge_power)
-  })
+  #################################Reactions/Events#########################################
 
   observeEvent(input$transit_expansion_location, {
     # Get the selected community type
@@ -1304,28 +1236,84 @@ output$download_employee_commute <- downloadHandler(
     })
   })
   
+  observeEvent(input$fleet, {
+    if (input$fleet == "Scooter") {
+      updateNumericInput(session, "average_occupancy", value = 1)
+      updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.5)
+      updateNumericInput(session, "prct_deadhead_miles", value = 0)
+      updateNumericInput(session, "trip_miles", value = 0.71)
+      
+    } else if (input$fleet == "Bike") {
+      updateNumericInput(session, "average_occupancy", value = 1)
+      updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.5)
+      updateNumericInput(session, "prct_deadhead_miles", value = 0)
+      updateNumericInput(session, "trip_miles", value = 2.97)
+      
+    } else {
+      updateNumericInput(session, "average_occupancy", value = 1.5)
+      updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.83)
+      updateNumericInput(session, "prct_deadhead_miles", value = 0.4)
+      updateNumericInput(session, "trip_miles", value = 5.87)
+    }
+  })
   
-  output$data_sources_table <- renderDT({
-    datatable(data.frame(
-      Source = c(
-        "Imagine 2050 Community Designations",
-        "US Census",
-        "Met Council Scenario Planning Tool ",
-        "GREET 2023",
-        "Metro Transit Data",
-        "CARB",
-        "Met Council Transit Experience and Satisfaction Survey"
-      ),
-      Description = c(
-        "Community Designations Data",
-        "Population Data",
-        "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
-        "Electrcity Emissions",
-        "Average Auto Trip Replaced",
-        "Transit Dependency",
-        "Transit Dependency"
-      )
-    ))
+  
+  observe({
+    req(input$ev_infrastructure_location, input$ev_infrastructure_project_start, input$charger_type)
+    
+    # Get the selected community type
+    community_type <- CommunityTypeShape %>%
+      filter(CTU_NAME == input$ev_infrastructure_location) %>%
+      pull(MappedCommunity)
+    
+    # Update the text output for the community type
+    output$selected_community_type_EVInfrastructure <- renderText({
+      paste("Selected Community Type:", community_type)
+    })
+    
+    # # Ensure current_year is defined based on the selected project start year
+    current_year <- as.numeric(input$ev_infrastructure_project_start)
+    
+    # Filter FleetData based on the selected community type
+    filtered_FleetData <- FleetData %>%
+      filter(MappedCommunity == community_type) %>%
+      mutate(year = as.numeric(year))
+    
+    # Determine the closest year
+    closest_year <- filtered_FleetData %>%
+      summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
+      pull(closest_year)
+    
+    # Filter the dataset to get the fleet proportions from the closest year
+    fleet_proportion <- filtered_FleetData %>%
+      filter(year == closest_year)
+    
+    # Calculate percentage_ICE and round to 2 decimals
+    percentage_ICE <- round(fleet_proportion$electricity, 2)
+    
+    # Update the numeric input for percentage_ICE
+    updateNumericInput(session, "percentage_ICE", value = percentage_ICE)
+    
+    # Dynamically update average_energy_efficiency based on the selected ev_type
+    average_energy_efficiency <- FuelEfficiency %>%
+      filter(`Vehicle Type` == input$ev_type) %>%
+      pull(`Fuel Efficiency (Wh/mi)`)
+    
+    # Convert Wh/mi to kWh/mi by dividing by 1000
+    average_energy_efficiency <- round(average_energy_efficiency / 1000, 2)
+    
+    # Update the numeric input for average_energy_efficiency
+    updateNumericInput(session, "average_energy_efficiency", value = average_energy_efficiency)
+    
+    # Dynamically update charge_power based on the selected charger_type
+    charge_power <- if (input$charger_type == "DCFC") {
+      150  # Default power for DCFC
+    } else {
+      19.2  # Default power for Level 2 chargers
+    }
+    
+    # Update the numeric input for charge_power
+    updateNumericInput(session, "charge_power", value = charge_power)
   })
 }
 
