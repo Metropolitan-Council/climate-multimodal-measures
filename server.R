@@ -8,7 +8,8 @@
 #
 
 function(input, output, session) {
-  # Employee Commute Reduction Calculation
+  
+  ####################### Employee Commute #############################################################################
   employee_commute_results <- reactive({
     if (is.null(input$project_start)) {
       return ()
@@ -26,21 +27,50 @@ function(input, output, session) {
     )
   })
   
+  output$employee_commute_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Employee Commute Results"),
+        downloadButton("download_employee_commute", "Download CSV")
+      ),
+      dataTableOutput("employee_commute_table")  # Table renders below the button
+    )
+  })
   output$employee_commute_table <- renderDataTable({
     if (is.null(input$project_start)) {
-      return ()
-    } 
+      return()
+    }
+    
     # Render table with HTML enabled, and disable sorting
     DT::datatable(
       employee_commute_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
       )
-    )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
+  
+
+output$download_employee_commute <- downloadHandler(
+  filename = function() {
+    paste("Employee_Commute_Data_", Sys.Date(), ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(employee_commute_results(), file, row.names = FALSE)
+  }
+)
   
   ####################### EV Outreach #############################################################################
   # observeEvent(input$audience, {
@@ -220,20 +250,63 @@ function(input, output, session) {
     )
   })
   
+  output$shared_mobility_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Shared Mobility Results"),
+        downloadButton("download_shared_mobility", "Download CSV")
+      ),
+      dataTableOutput("shared_mobility_table")  # Table renders below the button
+    )
+  })
+  
+  # Render DataTable for ev_infrastructure results
   output$shared_mobility_table <- renderDataTable({
-    if (is.null(input$project_start)) {
-      return ()
+    # Ensure project start date is provided
+    req(input$shared_mobility_project_start)
+    
+    # Get the results from the reactive expression
+    results <- shared_mobility_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
     }
+    
     DT::datatable(
       shared_mobility_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
       )
-    )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
+  output$download_shared_mobility <- downloadHandler(
+    filename = function() {
+      paste("Shared_Mobility_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(shared_mobility_results(), file, row.names = FALSE)
+    }
+  )
+  
+  
+  ####################Transit Expansion###############################################
   
   # EV Outreach Reduction Calculation
   transit_expansion_results <- reactive({

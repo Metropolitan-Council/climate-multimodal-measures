@@ -361,7 +361,7 @@ div(
                     textOutput("selected_community_type_employeeCommute")
                   )
                 )
-              ), card(dataTableOutput("employee_commute_table"))
+              ), card(uiOutput("employee_commute_ui"))
             )),
             nav_panel(title = "Shared Mobility", page_fillable(
               card(
@@ -416,7 +416,7 @@ div(
                   )
                   
                 )
-              ), card(dataTableOutput("shared_mobility_table"))
+              ), card(uiOutput("shared_mobility_ui"))
             ))
           )),
           nav_panel(title = "Bicycle and Pedestrian Facilities", navset_card_tab(
