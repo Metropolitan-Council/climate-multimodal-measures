@@ -296,13 +296,20 @@ div(
               card(
                 layout_column_wrap(
                   width = 1 / 3,
-                  
-                  checkboxGroupInput(
+                  selectizeInput(
                     "mobility_mode",
                     "Mobility Mode/s",
                     choices = TotalVMTReductionPotential$mobility_mode,
-                    selected = TotalVMTReductionPotential$mobility_mode[1]
+                    selected = TotalVMTReductionPotential$mobility_mode[1],
+                    multiple = TRUE,
+                    options = list(plugins = list("remove_button"))
                   ),
+                  # checkboxGroupInput(
+                  #   "mobility_mode",
+                  #   "Mobility Mode/s",
+                  #   choices = TotalVMTReductionPotential$mobility_mode,
+                  #   selected = TotalVMTReductionPotential$mobility_mode[1]
+                  # ),
                   selectInput(
                     "hub_location",
                     "Location",
