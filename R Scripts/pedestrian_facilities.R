@@ -142,8 +142,8 @@ pedestrian_facilities <- function(average_daily_traffic,
   
   # Create a data frame with results including totals
   results <- data.frame(
-    year = c(project_years, "Total"),
-    "VMT (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
+    Year = c(project_years, "Total"),
+    "VMT Reduction (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
     "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
     "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
@@ -153,13 +153,3 @@ pedestrian_facilities <- function(average_daily_traffic,
   
   return(results)
 }
-
-# test<- pedestrian_facilities(average_daily_traffic = 6000,
-# one_way_facility_length = 1.5,
-# no_key_destinations_25 = 1,
-# no_key_destinations_50 = 4,
-# location = "Andover",
-# project_start = "2024-01-01",
-# project_lifetime = 1,
-# annual_use_days = NULL,
-# average_trip_replaced = NULL)

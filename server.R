@@ -423,19 +423,60 @@ output$download_employee_commute <- downloadHandler(
     )
   })
   
-  output$corridor_speed_improvements_table <- renderDataTable({
-    if (is.null(input$project_start)) {
-      return ()
+  output$corridor_speed_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Mobility Hub Result"),
+        downloadButton("download_corridor_speed", "Download CSV")
+      ),
+      dataTableOutput("corridor_speed_table")  # Table renders below the button
+    )
+  })
+  
+  # Render DataTable for transit_expansion results
+  output$corridor_speed_table <- renderDataTable({
+    # Ensure project start date is provided
+    req(input$corridor_speed_project_start)
+    
+    # Get the results from the reactive expression
+    results <- corridor_speed_improvement_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
     }
+    
     DT::datatable(
       corridor_speed_improvement_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
-      ))
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
+      )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
+  output$download_corridor_speed <- downloadHandler(
+    filename = function() {
+      paste("Corridor_Speed_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(corridor_speed_improvement_results(), file, row.names = FALSE)
+    }
+  )
   
   ########################################Intersection Delay###########################################
   
@@ -455,19 +496,60 @@ output$download_employee_commute <- downloadHandler(
     )
   })
   
-  output$intersection_delay_reductions_table <- renderDataTable({
-    if (is.null(input$project_start)) {
-      return ()
+  output$intersection_delay_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Mobility Hub Result"),
+        downloadButton("download_intersection_delay", "Download CSV")
+      ),
+      dataTableOutput("intersection_delay_table")  # Table renders below the button
+    )
+  })
+  
+  # Render DataTable for transit_expansion results
+  output$intersection_delay_table <- renderDataTable({
+    # Ensure project start date is provided
+    req(input$intersection_delay_project_start)
+    
+    # Get the results from the reactive expression
+    results <- intersection_delay_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
     }
+    
     DT::datatable(
       intersection_delay_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
-      ))
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
+      )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
+  output$download_intersection_delay <- downloadHandler(
+    filename = function() {
+      paste("Intersection_Delay_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(intersection_delay_results(), file, row.names = FALSE)
+    }
+  )
   
   ##########################Mobility Hub######################################################
   # Mobility Hub Results
@@ -566,21 +648,60 @@ output$download_employee_commute <- downloadHandler(
     )
   })
   
-  output$pedestrian_facilities_table <- renderDataTable({
-    if (is.null(input$project_start)) {
-      return ()
+  output$pedestrian_facility_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Pedestrian Facility Result"),
+        downloadButton("download_mobility_hub", "Download CSV")
+      ),
+      dataTableOutput("pedestrian_facility_table")  # Table renders below the button
+    )
+  })
+  
+  # Render DataTable for transit_expansion results
+  output$pedestrian_facility_table <- renderDataTable({
+    # Ensure project start date is provided
+    req(input$pedestrian_project_start)
+    
+    # Get the results from the reactive expression
+    results <- pedestrian_facilities_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
     }
-    # Render table with HTML enabled, and disable sorting
+    
     DT::datatable(
       pedestrian_facilities_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
       )
-    )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
+  output$download_pedestrian_facility <- downloadHandler(
+    filename = function() {
+      paste("Pedestrian_Facility_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(pedestrian_facility_results(), file, row.names = FALSE)
+    }
+  )
   
   ##############################Multi-use Trails###########################################################
   
@@ -605,20 +726,60 @@ output$download_employee_commute <- downloadHandler(
     )
   })
   
-  output$trails_bike_facilities_table <- renderDataTable({
-    if (is.null(input$project_start)) {
-      return ()
+  output$trails_bike_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Multi-use Trails and Bicycle Facilities Result"),
+        downloadButton("download_trails_bike", "Download CSV")
+      ),
+      dataTableOutput("trails_bike_table")  # Table renders below the button
+    )
+  })
+  
+  # Render DataTable for transit_expansion results
+  output$trails_bike_table <- renderDataTable({
+    # Ensure project start date is provided
+    req(input$trails_bike_project_start)
+    
+    # Get the results from the reactive expression
+    results <- trails_bike_facilities_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
     }
+    
     DT::datatable(
       trails_bike_facilities_results(),
       escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
       options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
       )
-    )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
   })
+  output$download_trails_bike <- downloadHandler(
+    filename = function() {
+      paste("Multi-Use_Trails_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(trails_bike_facilities_results(), file, row.names = FALSE)
+    }
+  )
   
   ################################ Map ######################################################################
   

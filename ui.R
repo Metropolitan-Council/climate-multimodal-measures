@@ -471,7 +471,7 @@ div(
                     textOutput("credit_key_destinations_pedestrianFacility")
                   )
                 )
-              ), card(dataTableOutput("pedestrian_facilities_table"))
+              ), card(uiOutput("pedestrian_facility_ui"))
             )),
             nav_panel(title = "Multi-Use Trails and Bicycle Facilities", page_fillable(
               card(
@@ -528,7 +528,7 @@ div(
                   tags$div(class = "info-box", textOutput("mode_shift_factor_trailsBike")),
                   tags$div(class = "info-box", textOutput("credit_key_destinations_trailsBike"))
                 )
-              ), card(dataTableOutput("trails_bike_facilities_table"))
+              ), card(uiOutput("trails_bike_ui"))
             ))
           )),
           nav_panel(title = "Roadways", navset_card_tab(
@@ -565,7 +565,7 @@ div(
                     textOutput("selected_community_type_intersectionDelay")
                   )
                 )
-              ), card(dataTableOutput("intersection_delay_reductions_table"))
+              ),  card(uiOutput("intersection_delay_ui"))
             )),
             nav_panel(title = "Corridor Speed", page_fillable(
               card(
@@ -605,7 +605,7 @@ div(
                   ),
                   tags$div(class = "info-box", textOutput("induced_demand_elasticity"))
                 )
-              ), card(dataTableOutput("corridor_speed_improvements_table"))
+              ), card(uiOutput("corridor_speed_ui"))
             ))
           )),
           widths = c(2, 10)

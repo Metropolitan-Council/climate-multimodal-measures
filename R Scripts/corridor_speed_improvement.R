@@ -72,10 +72,10 @@ corridor_speed_improvements <- function(corridor_distance,
   
   # Create a data frame with results including totals
   results <- data.frame(
-    year = c(project_years, "Total"),
+    Year = c(project_years, "Total"),
     "Fuel Consumption Reduced (gallons)" = c(fuel_consumption_reduced, total_fuel_consumption_reduced),
-    "Induced Demand" = round(c(induced_demand, total_induced_demand),4),
-    "GHG Impact (MT CO₂)" = round(c(ghg_impact, total_ghg_impact),1),
+    "Induced Demand" = round(c(induced_demand, total_induced_demand),0),
+    "GHG Reduction (MT CO₂))" = round(c(ghg_impact, total_ghg_impact),0),
     "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
     format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
@@ -84,11 +84,3 @@ corridor_speed_improvements <- function(corridor_distance,
   
   return(results)
 }
-
-test <- corridor_speed_improvements(corridor_distance = 1,
-                                        avg_annual_daily_traffic = 1,
-                                        avg_corridor_speed_no_build = 1,
-                                        avg_corridor_speed_build = 1.2,
-                                        location = "Linwood Twp.",
-                                        project_start = "2024-01-01",
-                                        project_lifetime = 1)

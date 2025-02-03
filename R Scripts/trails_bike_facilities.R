@@ -151,8 +151,8 @@ trails_bike_facilities <- function(average_daily_traffic,
   
   # Create a data frame with results including totals
   results <- data.frame(
-    year = c(project_years, "Total"),
-    "VMT (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
+    Year = c(project_years, "Total"),
+    "VMT Reduction (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
     "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 1), big.mark = ","),
     "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
    title='Place holder text to explain Social Cost of Carbon'></i>" = 
