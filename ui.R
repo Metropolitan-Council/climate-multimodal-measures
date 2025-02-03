@@ -280,7 +280,7 @@ div(
                   ),
                   tags$div(class = "info-box", textOutput("selected_community_type"), ),
                 )
-              ), card(dataTableOutput("transit_expansion_table"))
+              ),  card(uiOutput("transit_expansion_ui"))
             )),
             nav_panel(title = "Mobility Hubs", page_fillable(
               card(

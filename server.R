@@ -278,6 +278,17 @@ output$download_employee_commute <- downloadHandler(
       ))
     }
     
+      output$shared_mobility_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Shared Mobility Results"),
+        downloadButton("download_shared_mobility", "Download CSV")
+      ),
+      dataTableOutput("shared_mobility_table")  # Table renders below the button
+    )
+  })
+    
     DT::datatable(
       shared_mobility_results(),
       escape = FALSE,  # Enables rendering HTML
@@ -331,19 +342,61 @@ output$download_employee_commute <- downloadHandler(
     )
   })
   
-  output$transit_expansion_table <- renderDataTable({
-    if (is.null(input$project_start)) {
-      return ()
-    }
-    DT::datatable(
-      transit_expansion_results(),
-      escape = FALSE,  # Enables rendering HTML
-      options = list(
-        dom = 't',      # Table layout without search box
-        scrollX = TRUE, # Allows horizontal scrolling
-        ordering = FALSE # Disable sorting buttons on headers
-      ))
+  output$transit_expansion_ui <- renderUI({
+    tagList(
+      div(
+        style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
+        h4("Transit Expansion Results"),
+        downloadButton("download_transit_expansion", "Download CSV")
+      ),
+      dataTableOutput("transit_expansion_table")  # Table renders below the button
+    )
   })
+  
+  # Render DataTable for ev_infrastructure results
+  output$transit_expansion_table <- renderDataTable({
+    # Ensure project start date is provided
+    req(input$transit_expansion_project_start)
+    
+    # Get the results from the reactive expression
+    results <- transit_expansion_results()
+    
+    # Check if results are NULL or empty
+    if (is.null(results) || nrow(results) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No data available to display."),
+        escape = FALSE,
+        options = list(dom = 't', ordering = FALSE)
+      ))
+    }
+    
+    DT::datatable(
+     transit_expansion_results(),
+      escape = FALSE,  # Enables rendering HTML
+      rownames = FALSE,
+      options = list(
+        dom = 'tip',    # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 10, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100)  # ✅ Allow users to select number of rows
+      )
+    ) %>%  
+      formatStyle(
+        'Year',  
+        target = 'row',
+        fontWeight = styleEqual("Total", "bold")
+      )
+  })
+  output$download_transit_expansion <- downloadHandler(
+    filename = function() {
+      paste("Transit_Expansion_Data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(transit_expansion_results(), file, row.names = FALSE)
+    }
+  )
+  ######################################################################################################
   
   # Corridor Speed Improvement Results
   corridor_speed_improvement_results <- reactive({
