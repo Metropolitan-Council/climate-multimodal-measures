@@ -304,12 +304,6 @@ div(
                     multiple = TRUE,
                     options = list(plugins = list("remove_button"))
                   ),
-                  # checkboxGroupInput(
-                  #   "mobility_mode",
-                  #   "Mobility Mode/s",
-                  #   choices = TotalVMTReductionPotential$mobility_mode,
-                  #   selected = TotalVMTReductionPotential$mobility_mode[1]
-                  # ),
                   selectInput(
                     "hub_location",
                     "Location",
@@ -333,7 +327,14 @@ div(
                   ),
                   numericInput("hub_project_lifetime", "Project Lifetime (in years)", value = 20),
                   numericInput("added_vmt", "Increase in Annual Transit VMT (Mile)", value = 0),
-                  numericInput("reduction_potential", "Total VMT Reduction Potential", value = .058),
+                  numericInput(
+                    "reduction_potential", 
+                    "Total VMT Reduction Potential", 
+                    value = 0.058, 
+                    min = 0, 
+                    max = 1, 
+                    step = 0.01
+                  ),
                   shinyWidgets::autonumericInput(
                     "annual_vmt",
                     "Annual VMT per capita",
