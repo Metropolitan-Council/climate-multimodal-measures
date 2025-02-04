@@ -424,7 +424,7 @@ output$download_employee_commute <- downloadHandler(
     tagList(
       div(
         style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
-        h4("Mobility Hub Result"),
+        h4("Corridor Speed Improvements Results"),
         downloadButton("download_corridor_speed", "Download CSV")
       ),
       dataTableOutput("corridor_speed_table")  # Table renders below the button
@@ -497,7 +497,7 @@ output$download_employee_commute <- downloadHandler(
     tagList(
       div(
         style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
-        h4("Mobility Hub Result"),
+        h4("Intersection Delay Results"),
         downloadButton("download_intersection_delay", "Download CSV")
       ),
       dataTableOutput("intersection_delay_table")  # Table renders below the button
@@ -574,7 +574,7 @@ output$download_employee_commute <- downloadHandler(
     tagList(
       div(
         style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;",
-        h4("Mobility Hub Result"),
+        h4("Mobility Hub Results"),
         downloadButton("download_mobility_hub", "Download CSV")
       ),
       dataTableOutput("mobility_hub_table")  # Table renders below the button
@@ -851,7 +851,7 @@ output$download_employee_commute <- downloadHandler(
         html = as.character(
           tags$i(
             class = "fas fa-question-circle",
-            style = "font-size: 24px; cursor: pointer;",
+            style = "font-size: 18px; cursor: pointer;",
             `data-toggle` = "popover",
             `data-placement` = "bottom",
             title = "Emission factors are determined based on the community type of your proposed project’s location. 
@@ -898,7 +898,7 @@ output$download_employee_commute <- downloadHandler(
       clicked_point_projected <- st_transform(clicked_point, crs = 3857)
       
       # Create a buffer (circle) around the point with the given radius in meters
-      buffer_circle <- st_buffer(clicked_point_projected, dist = 16093)  # Buffer in meters
+      buffer_circle <- st_buffer(clicked_point_projected, dist = 4828)  # Buffer in meters (3 miles)
       
       # Transform back to WGS84 for visualization/intersection (if needed)
       buffer_circle_wgs84 <- st_transform(buffer_circle, crs = 4326)
