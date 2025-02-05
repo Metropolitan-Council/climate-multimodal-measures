@@ -614,12 +614,12 @@ div(
                   numericInput("vehicle_per_hour", "Intersection Vehicle Per Hour", value = 1),
                   numericInput(
                     "peak_hour_delay_noBuild",
-                    "Peak Hour Delay Per Vehicle under No-Build Condition (Hour)",
+                    "Peak Hour Delay Per Vehicle under No-Build Condition (Vehicle Hours)",
                     value = 2
                   ),
                   numericInput(
                     "peak_hour_delay_build",
-                    "Peak Hour Delay Per Vehicle under Build Condition (Hour)",
+                    "Peak Hour Delay Per Vehicle under Build Condition (Vehicle Hours)",
                     value = 1
                   ),
                   tags$div(

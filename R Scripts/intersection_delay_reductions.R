@@ -51,7 +51,7 @@ intersection_delay_reductions <-
       "Fuel Consumption Reduced (gallons)" = round(c(fuel_consumption_reduced, total_fuel_consumption_reduced),0),
       "GHG Reduction (MT CO₂))" = round(c(ghg_impact, total_ghg_impact),0),
       "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
-   title='Place holder text to explain Social Cost of Carbon'></i>" = 
+   title='The Social Cost of Carbon estimates the economic savings from avoiding one ton of CO₂ emissions, reflecting reduced damages to agriculture, human health, infrastructure, and ecosystems. Using a 2% Ramsey discount rate, future damages are valued at 98% of their present value.'></i>" = 
         format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
       check.names = FALSE
     )

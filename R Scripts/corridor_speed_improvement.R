@@ -73,14 +73,16 @@ corridor_speed_improvements <- function(corridor_distance,
   # Create a data frame with results including totals
   results <- data.frame(
     Year = c(project_years, "Total"),
-    "Fuel Consumption Reduced (gallons)" = rount(c(fuel_consumption_reduced, total_fuel_consumption_reduced),0),
-    "Induced Demand" = round(c(induced_demand, total_induced_demand),0),
-    "GHG Reduction (MT CO₂))" = round(c(ghg_impact, total_ghg_impact),0),
-    "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
-   title='Place holder text to explain Social Cost of Carbon'></i>" = 
-    format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
-  check.names = FALSE
+    "Fuel Consumption Reduced (gallons)" = round(c(fuel_consumption_reduced, total_fuel_consumption_reduced), 0),
+    "Induced Demand" = round(c(induced_demand, total_induced_demand), 0),
+    "GHG Reduction (MT CO₂)" = round(c(ghg_impact, total_ghg_impact), 0),
+    "Carbon Cost Reduction ($) 
+    <i class='fas fa-question-circle' data-toggle='tooltip' data-placement='top' 
+      title='The Social Cost of Carbon estimates the economic savings from avoiding one ton of CO₂ emissions, reflecting reduced damages to agriculture, human health, infrastructure, and ecosystems. Using a 2% Ramsey discount rate, future damages are valued at 98% of their present value.'></i>" = 
+      format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
+    check.names = FALSE
   )
+  
   
   return(results)
 }

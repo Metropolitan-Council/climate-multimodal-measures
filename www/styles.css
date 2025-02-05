@@ -74,4 +74,7 @@
     border: 2px solid #002b5c; /* Dark Blue Border */
   }
   
-  
+  .tooltip-inner {
+  background-color: black !important;
+  color: white !important;
+}
