@@ -653,7 +653,7 @@ div(
                   ),
                   numericInput(
                     "avg_annual_daily_traffic",
-                    "Annual average daily traffic under the no-build condition",
+                    "Average peak hour traffic under the no-build condition",
                     value = 1
                   ),
                   numericInput(
