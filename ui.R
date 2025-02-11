@@ -20,7 +20,7 @@ tags$head(
           $("[data-bs-toggle=\'tooltip\']").tooltip();
           $("[data-bs-toggle=\'popover\']").popover({ trigger: "hover", html: true });
         });
-        
+
         // Use event delegation to initialize popovers for dynamically added elements
         $(document).on("mouseenter", "[data-bs-toggle=\'popover\']", function(){
           var $el = $(this);
@@ -110,7 +110,7 @@ div(
                     "ev_outreach_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   selectInput(
                     "ev_outreach_project_start",
@@ -177,7 +177,7 @@ div(
                     "ev_infrastructure_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   numericInput("no_chargers", "Number of Chargers", value = 10),
                   numericInput("charge_power", "Charger Power Level (kW)", value = 150),
@@ -262,7 +262,7 @@ div(
                     "transit_expansion_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   shinyWidgets::autonumericInput(
                     "ridership_increase",
@@ -304,7 +304,7 @@ div(
                   ),
                   tags$div(class = "info-box", textOutput("selected_community_type"), ),
                 )
-              ),  card(uiOutput("transit_expansion_ui"))
+              ), card(uiOutput("transit_expansion_ui"))
             )),
             nav_panel(title = "Mobility Hubs", page_fillable(
               card(
@@ -322,7 +322,7 @@ div(
                     "hub_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   shinyWidgets::autonumericInput(
                     "population_3mile",
@@ -342,11 +342,11 @@ div(
                   numericInput("hub_project_lifetime", "Project Lifetime (in years)", value = 20),
                   numericInput("added_vmt", "Increase in Annual Transit VMT (Mile)", value = 0),
                   numericInput(
-                    "reduction_potential", 
-                    "Total VMT Reduction Potential", 
-                    value = 0.058, 
-                    min = 0, 
-                    max = 1, 
+                    "reduction_potential",
+                    "Total VMT Reduction Potential",
+                    value = 0.058,
+                    min = 0,
+                    max = 1,
                     step = 0.01
                   ),
                   shinyWidgets::autonumericInput(
@@ -359,7 +359,7 @@ div(
                   ),
                   tags$div(class = "info-box", textOutput("selected_community_type_mobilityHub"))
                 )
-              ),   card(uiOutput("mobility_hub_ui"))
+              ), card(uiOutput("mobility_hub_ui"))
             ))
           )),
           
@@ -374,7 +374,7 @@ div(
                     "location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   shinyWidgets::autonumericInput(
                     "daily_commute_no",
@@ -419,7 +419,7 @@ div(
                     "shared_mobility_location",
                     "Shared Mobility Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   shinyWidgets::autonumericInput(
                     "no_trips",
@@ -475,7 +475,7 @@ div(
                     "pedestrian_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   selectInput(
                     "pedestrian_project_start",
@@ -533,7 +533,7 @@ div(
                     "trails_bike_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   selectInput(
                     "trails_bike_facility_type",
@@ -589,7 +589,7 @@ div(
             ))
           )),
           nav_panel(title = "Roadways", navset_card_tab(
-            nav_panel(title = "Intersection Delay", page_fillable(
+            nav_panel(title = "Intersection Delay Reductions", page_fillable(
               card(
                 layout_column_wrap(
                   width = 1 / 2,
@@ -597,7 +597,7 @@ div(
                     "intersection_delay_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   numericInput("number_peak_hours", "Number of Peak Hours", value = 1),
                   selectInput(
@@ -627,9 +627,9 @@ div(
                     textOutput("selected_community_type_intersectionDelay")
                   )
                 )
-              ),  card(uiOutput("intersection_delay_ui"))
+              ), card(uiOutput("intersection_delay_ui"))
             )),
-            nav_panel(title = "Corridor Speed", page_fillable(
+            nav_panel(title = "Corridor Speed Improvements", page_fillable(
               card(
                 layout_column_wrap(
                   width = 1 / 2,
@@ -637,7 +637,7 @@ div(
                     "corridor_speed_location",
                     "Location",
                     choices = unique(CommunityType$CTU_NAME),
-                    selected = CommunityType$CTU_NAME[1]
+                    selected = CommunityType$CTU_NAME[2]
                   ),
                   numericInput("corridor_distance", "Corridor Distance (Mile)", value = 1),
                   selectInput(
@@ -680,10 +680,120 @@ div(
       ),
       
       nav_panel(
-        tags$span("Sources", style = "color: #002b5c; font-weight: bold; font-size: 18px"),
-        page_fillable(card(
-          h1("Data Sources"), DTOutput("data_sources_table"), br(),
-        ))
+        title = tags$span("Methodology and Sources", style = "color: #002b5c; font-weight: bold; font-size: 18px"),
+        
+        # Custom header placed above the navlistPanel
+        div(
+          style = "padding: 10px; border-bottom: 2px solid #ddd; margin-bottom: 10px; background-color: transparent;",
+          
+          # Title text
+          tags$span(
+            "Project Emissions Quantification Methodologies and Sources",
+            style = "color: #002b5c; font-weight: bold; font-size: 18px;"
+          ),
+          
+          # Line break
+          tags$br(),
+          
+          # Informational paragraph with larger font
+          tags$p(
+            "If you would like to learn more about the methodology behind each project type, please read the Regional Solicitation Recommended Methodology for Estimating GHG Impacts.",
+            style = "font-size: 16px; color: #333; margin-top: 5px;"
+          )
+        ),
+        
+        tabsetPanel(
+          # Tab 1: Methodologies (contains sub-tabs for different project types)
+          tabPanel(
+            "Methodologies",
+            navlistPanel(
+              tabPanel(
+                "EV Outreach",
+                
+                tags$br(), 
+                
+                p("Auto VMT Displaced (annual) = ACCL or H × N × R"),
+                tags$ul(
+                  tags$li(
+                    strong("ACCL or H:"),
+                    " Average annual accrual rate of a typical LD or HD vehicle."
+                  ),
+                  tags$li(strong("N:"), " Number of participants."),
+                  tags$li(
+                    strong("R:"),
+                    " Conversion rate of participants – Default rate used in app is 4%."
+                  )
+                ),
+                p(
+                  "GHG Emissions Impacts (annual) = Auto VMT Displaced × (CIL or H – CIE)"
+                ),
+                tags$ul(
+                  tags$li(
+                    strong("CIL or H:"),
+                    " Carbon intensity (CI) that accounts for LD (gasoline) vehicle WTW emissions."
+                  ),
+                  tags$li(strong("CIE:"), " Carbon intensity of electricity grid")
+                )
+              ),
+              
+              tabPanel(
+                "Public Infrastructure",
+                tags$br(), 
+                
+                p(
+                  HTML(
+                    "Auto VMT Displaced (annual) = &Sigma; N<sub>i</sub> P<sub>i</sub> U<sub>i</sub> H<sub>i</sub> &divide; EVEF &times; FICE"
+                  )
+                ),
+                tags$ul(
+                  tags$li(strong("N:"), "Number of chargers of a certain power level"),
+                  tags$li(strong("P:"), "Charger power level (e.g., 50 kW, 150 kW)"),
+                  tags$li(
+                    strong("U:"),
+                    "Average charger utilization rate dictated by charger type"
+                  ),
+                  tags$li(
+                    strong("H:"),
+                    "Annual total hours that the chargers are online and available for charging"
+                  ),
+                  tags$li(
+                    strong("EVEF:"),
+                    "Average energy efficiency values (in Wh per mile)"
+                  ),
+                  tags$li(strong("FICE:"), "Current fraction of ICE vehicles in the fleet")
+                ),
+                p(
+                  "GHG Emissions Impacts (annual) = Auto VMT Displaced × (CIL or H – CIE)"
+                ),
+                tags$ul(
+                  tags$li(
+                    strong("CIL or H:"),
+                    " Carbon intensity (CI) that accounts for LD vehicle WTW emissions."
+                  ),
+                  tags$li(
+                    strong("CIE:"),
+                    " Carbon intensity of electricity grid; default values can be retrieved from the GREET model."
+                  )
+                )
+              ),
+              
+              tabPanel("Transit Expansion", p("Content for Methodology 3")),
+              tabPanel("Mobility Hubs", p("Content for Methodology 4")),
+              tabPanel("Employee Commute", p("Content for Methodology 5")),
+              tabPanel("Shared Mobility", p("Content for Methodology 6")),
+              tabPanel("Pedestrian Facilities", p("Content for Methodology 7")),
+              tabPanel(
+                "Multi-Use Trails and Bicycle Facilities",
+                p("Content for Methodology 8")
+              ),
+              tabPanel("Intersection Delay", p("Content for Methodology 9")),
+              tabPanel("Corridor Speed", p("Content for Methodology 10"))
+            )
+          ),
+          
+          # Tab 2: Sources
+          tabPanel("Sources", DTOutput("data_sources_table"))
+        )
       )
     )
   )

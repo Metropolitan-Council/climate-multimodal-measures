@@ -802,7 +802,7 @@ output$download_employee_commute <- downloadHandler(
         color = "#002b5c",
         weight = 3.5,
         layerId = "mpo_area",
-        label = ~ paste("MPO Area"),
+        label = ~ paste("Other"),
         labelOptions = labelOptions(
           style = list("color" = "black"),
           textsize = "12px",
@@ -898,7 +898,7 @@ output$download_employee_commute <- downloadHandler(
       clicked_point_projected <- st_transform(clicked_point, crs = 3857)
       
       # Create a buffer (circle) around the point with the given radius in meters
-      buffer_circle <- st_buffer(clicked_point_projected, dist = 4828)  # Buffer in meters (3 miles)
+      buffer_circle <- st_buffer(clicked_point_projected, dist = 1609)  # Buffer in meters (1 miles)
       
       # Transform back to WGS84 for visualization/intersection (if needed)
       buffer_circle_wgs84 <- st_transform(buffer_circle, crs = 4326)
@@ -949,24 +949,78 @@ output$download_employee_commute <- downloadHandler(
     }
   })
   
+#   observe({
+#   CTU_NAME <- map_selected_location()
+#   
+#   if (!is.null(CTU_NAME) && CTU_NAME %in% CTU$CTU_NAME) {
+#     community_type <- CTU$Community_Type[match(CTU_NAME, CTU$CTU_NAME)]
+#   } else {
+#     CTU_NAME <- "Other"
+#     community_type <- "Rural / Non-Council"
+#   }
+# 
+#   output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
+# 
+#   updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
+#   updateSelectInput(session, "location", selected = CTU_NAME)
+#   updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
+#   updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
+#   updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
+#   updateSelectInput(session, "hub_location", selected = CTU_NAME)
+#   updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
+#   updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
+#   updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
+# 
+#   # Update a text output for community type, if needed
+#   output$community_type_label <- renderText(paste("Community Type:", community_type))
+# 
+#   # If you need to store this value in a reactiveVal for later use
+#   selected_community_type <- reactiveVal()
+#   selected_community_type(community_type)
+# })
   observe({
     CTU_NAME <- map_selected_location()
     
-    if (!is.null(CTU_NAME)) {
-      output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
-      updateSelectInput(session, "location", selected = CTU_NAME)
-      updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
-      updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
-      updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
-      updateSelectInput(session, "hub_location", selected = CTU_NAME)
-      updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
-      updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
-      updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
-      updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
-    } else {
-      output$map_tab_label <- renderText("Map")
+    # Check if CTU_NAME is NULL or "mpo_area" and replace it with "Other"
+    if (is.null(CTU_NAME) || CTU_NAME == "mpo_area") {
+      CTU_NAME <- "Other"
+      community_type <- "Rural / Non-Council"
     }
+    
+    output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
+    
+    updateSelectInput(session, "location", selected = CTU_NAME)
+    updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
+    updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
+    updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
+    updateSelectInput(session, "hub_location", selected = CTU_NAME)
+    updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
+    updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
+    updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
+    updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
+    
+    # If you have a text output to show the community type
+    output$community_type_label <- renderText(paste("Community Type:", community_type))
   })
+  
+  # observe({
+  #   CTU_NAME <- map_selected_location()
+  # 
+  #   if (!is.null(CTU_NAME)) {
+  #     output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
+  #     updateSelectInput(session, "location", selected = CTU_NAME)
+  #     updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
+  #     updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
+  #     updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
+  #     updateSelectInput(session, "hub_location", selected = CTU_NAME)
+  #     updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
+  #     updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
+  #     updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
+  #     updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
+  #   } else {
+  #     output$map_tab_label <- renderText("Map")
+  #   }
+  # })
 ######################Sources#########################################################
   
   output$data_sources_table <- renderDT({
@@ -978,7 +1032,10 @@ output$download_employee_commute <- downloadHandler(
         "GREET 2023",
         "Metro Transit Data",
         "CARB",
-        "Met Council Transit Experience and Satisfaction Survey"
+        "Met Council Transit Experience and Satisfaction Survey",
+        "Mobility Hub Planning and Implementation Guidebook",
+        "CARB 2018 Clean Miles Standard" ,
+        "CARB 2018 Clean Miles Standard "
       ),
       Description = c(
         "Community Designations Data",
@@ -986,8 +1043,11 @@ output$download_employee_commute <- downloadHandler(
         "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
         "Electrcity Emissions",
         "Average Auto Trip Replaced",
-        "Transit Dependency",
-        "Transit Dependency"
+        "Transit Dependency Adjustment Factors",
+        "Transit Dependency Adjustment Factors",
+        "Total VMT Reduction Potential",
+        "Percentage of deadhead miles",
+        "Average Occupancy per Vehicle"
       )
     ))
   })
