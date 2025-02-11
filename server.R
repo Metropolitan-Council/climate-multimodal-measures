@@ -949,35 +949,6 @@ output$download_employee_commute <- downloadHandler(
     }
   })
   
-#   observe({
-#   CTU_NAME <- map_selected_location()
-#   
-#   if (!is.null(CTU_NAME) && CTU_NAME %in% CTU$CTU_NAME) {
-#     community_type <- CTU$Community_Type[match(CTU_NAME, CTU$CTU_NAME)]
-#   } else {
-#     CTU_NAME <- "Other"
-#     community_type <- "Rural / Non-Council"
-#   }
-# 
-#   output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
-# 
-#   updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
-#   updateSelectInput(session, "location", selected = CTU_NAME)
-#   updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
-#   updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
-#   updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
-#   updateSelectInput(session, "hub_location", selected = CTU_NAME)
-#   updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
-#   updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
-#   updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
-# 
-#   # Update a text output for community type, if needed
-#   output$community_type_label <- renderText(paste("Community Type:", community_type))
-# 
-#   # If you need to store this value in a reactiveVal for later use
-#   selected_community_type <- reactiveVal()
-#   selected_community_type(community_type)
-# })
   observe({
     CTU_NAME <- map_selected_location()
     
@@ -1002,25 +973,6 @@ output$download_employee_commute <- downloadHandler(
     # If you have a text output to show the community type
     output$community_type_label <- renderText(paste("Community Type:", community_type))
   })
-  
-  # observe({
-  #   CTU_NAME <- map_selected_location()
-  # 
-  #   if (!is.null(CTU_NAME)) {
-  #     output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
-  #     updateSelectInput(session, "location", selected = CTU_NAME)
-  #     updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
-  #     updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
-  #     updateSelectInput(session, "transit_expansion_location", selected = CTU_NAME)
-  #     updateSelectInput(session, "hub_location", selected = CTU_NAME)
-  #     updateSelectInput(session, "pedestrian_location", selected = CTU_NAME)
-  #     updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
-  #     updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
-  #     updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
-  #   } else {
-  #     output$map_tab_label <- renderText("Map")
-  #   }
-  # })
 ######################Sources#########################################################
   
   output$data_sources_table <- renderDT({

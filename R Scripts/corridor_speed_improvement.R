@@ -44,7 +44,7 @@ corridor_speed_improvements <- function(corridor_distance,
     induced_demand[i] <- corridor_distance *
       avg_corridor_speed_build *
       k1_speed_build *
-      induced_demand_elasticity
+      induced_demand_elasticity * service_days
     
     # Filter GHG emission factor (EF) for the current year
     greet_ef_year <- GREETCarbonIntensity %>%
@@ -53,7 +53,7 @@ corridor_speed_improvements <- function(corridor_distance,
       filter(`emission.year` == year & gas == "CO2")
     
     # Calculate GHG impact for the current year
-    ghg_impact_year <- ((fuel_consumption_reduced[i] - induced_demand[i]) * 9.915)/ 1000 # 9.915 derived from avg LD WTW GHG emission factor 
+    ghg_impact_year <- ((fuel_consumption_reduced[i] - induced_demand[i] * k1_speed_build) * 9.915)/ 1000 # 9.915 derived from avg LD WTW GHG emission factor 
 
     
     # Calculate social cost of carbon
@@ -74,7 +74,7 @@ corridor_speed_improvements <- function(corridor_distance,
   results <- data.frame(
     Year = c(project_years, "Total"),
     "Fuel Consumption Reduced (gallons)" = round(c(fuel_consumption_reduced, total_fuel_consumption_reduced), 0),
-    "Induced Demand" = round(c(induced_demand, total_induced_demand), 0),
+    "Induced Vehicle Miles (Miles)" = round(c(induced_demand, total_induced_demand), 0),
     "GHG Reduction (MT CO₂)" = round(c(ghg_impact, total_ghg_impact), 0),
     "Carbon Cost Reduction ($) 
     <i class='fas fa-question-circle' data-toggle='tooltip' data-placement='top' 
