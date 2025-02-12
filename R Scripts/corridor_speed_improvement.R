@@ -42,8 +42,7 @@ corridor_speed_improvements <- function(corridor_distance,
     
     # Calculate induced demand
     induced_demand[i] <- corridor_distance *
-      avg_corridor_speed_build *
-      k1_speed_build *
+      avg_annual_daily_traffic *
       induced_demand_elasticity * service_days
     
     # Filter GHG emission factor (EF) for the current year
