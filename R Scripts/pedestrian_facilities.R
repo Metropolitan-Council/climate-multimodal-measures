@@ -30,7 +30,7 @@ pedestrian_facilities <- function(average_daily_traffic,
   
   # Use case_when for facility length range
   facility_length_range <- case_when(
-    one_way_facility_length == 1 ~ "1",
+    one_way_facility_length <= 1 ~ "1",
     one_way_facility_length > 1 &
       one_way_facility_length <= 2 ~ "1.01",
     one_way_facility_length > 2 ~ "2",
@@ -125,6 +125,7 @@ pedestrian_facilities <- function(average_daily_traffic,
           vmt_displaced_year * greet_ef_year$electricity * fleet_proportion$electricity
         )
       ) / 1000000
+    
     
     social_cost_carbon <- ghg_impact_year * discount_rate$`2.0% Ramsey`
     
