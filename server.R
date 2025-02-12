@@ -973,6 +973,14 @@ output$download_employee_commute <- downloadHandler(
     # If you have a text output to show the community type
     output$community_type_label <- renderText(paste("Community Type:", community_type))
   })
+  
+  observeEvent(input$fleet, {
+    updateNumericInput(
+      session,
+      "shared_mobility_project_lifetime",
+      value = ifelse(input$fleet %in% c("Bike", "Scooter"), 5, 8)
+    )
+  })
 ######################Sources#########################################################
   
   output$data_sources_table <- renderDT({
