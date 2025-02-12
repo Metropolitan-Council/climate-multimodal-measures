@@ -710,7 +710,7 @@ div(
               tabPanel(
                 "EV Outreach",
                 
-                tags$br(), 
+                tags$br(),
                 
                 p("Auto VMT Displaced (annual) = ACCL or H × N × R"),
                 tags$ul(
@@ -721,11 +721,11 @@ div(
                   tags$li(strong("N:"), " Number of participants."),
                   tags$li(
                     strong("R:"),
-                    " Conversion rate of participants – Default rate used in app is 4%."
+                    " Conversion rate of participants"
                   )
                 ),
                 p(
-                  "GHG Emissions Impacts (annual) = Auto VMT Displaced × (CIL or H – CIE)"
+                  "GHG Emissions Impacts (annual) = Auto VMT Displaced × (CIL – CIE)"
                 ),
                 tags$ul(
                   tags$li(
@@ -738,7 +738,7 @@ div(
               
               tabPanel(
                 "Public Infrastructure",
-                tags$br(), 
+                tags$br(),
                 
                 p(
                   HTML(
@@ -776,18 +776,278 @@ div(
                   )
                 )
               ),
-              
-              tabPanel("Transit Expansion", p("Content for Methodology 3")),
-              tabPanel("Mobility Hubs", p("Content for Methodology 4")),
-              tabPanel("Employee Commute", p("Content for Methodology 5")),
-              tabPanel("Shared Mobility", p("Content for Methodology 6")),
-              tabPanel("Pedestrian Facilities", p("Content for Methodology 7")),
               tabPanel(
-                "Multi-Use Trails and Bicycle Facilities",
-                p("Content for Methodology 8")
+                "Transit Expansion",
+                tags$br(),
+                
+                p(HTML("Auto VMT Displaced (annual) = R x A x L")),
+                tags$ul(
+                  tags$li(
+                    strong("R:"),
+                    "Increase in annual transit ridership; for new services, use projected total riders in a year instead."
+                  ),
+                  tags$li(
+                    strong("A:"),
+                    "Adjustment factor to account for transit dependency"
+                  ),
+                  tags$li(strong("L:"), "Length of average auto trip replaced ")
+                ),
+                p(
+                  "GHG Emissions Impacts (annual) = Auto VMT Displaced × (CIL) - Added Transit VMT × CIB"
+                ),
+                tags$ul(
+                  tags$li(
+                    strong("CIL"),
+                    "Carbon intensity that accounts for gasoline vehicle WTW emissions."
+                  ),
+                  tags$li(
+                    strong("Added Transit VMT"),
+                    "Added Transit VMT = Additional transit VMT (annual) due to service expansion "
+                  ),
+                  tags$li(
+                    strong("CIB"),
+                    "Carbon intensity that accounts for transit bus WTW emissions"
+                  ),
+                  
+                )
               ),
-              tabPanel("Intersection Delay", p("Content for Methodology 9")),
-              tabPanel("Corridor Speed", p("Content for Methodology 10"))
+              tabPanel(
+                "Mobility Hubs",
+                tags$br(),
+                
+                p(HTML("Auto VMT Displaced (annual) = VE × P × VMTPC")),
+                tags$ul(
+                  tags$li(
+                    strong("VE:"),
+                    "Total VMT reduction potential of various mobility elements."
+                  ),
+                  tags$li(
+                    strong("P:"),
+                    "Population within the service area (within approximately 1 mile of the identified hub location)."
+                  ),
+                  tags$li(
+                    strong("VMTPC:"),
+                    "Average annual VMT per capita in the community"
+                  )
+                ),
+                
+                p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL - Added Transit VMT × CIB")),
+                tags$ul(
+                  tags$li(
+                    strong("CIL:"),
+                    "Carbon intensity that accounts for gasoline vehicle WTW emissions"
+                  ),
+                  tags$li(
+                    strong("Added Transit VMT:"),
+                    "Additional transit VMT (annual) due to service expansion"
+                  ),
+                  tags$li(
+                    strong("CIB:"),
+                    "Carbon intensity that accounts for transit bus WTW emissions"
+                  )
+                )
+              ),
+              
+              tabPanel(
+                "Employee Commute",
+                tags$br(),
+                
+                p(HTML("Auto VMT Displaced (annual) = N × TC × D")),
+                tags$ul(
+                  tags$li(
+                    strong("N:"),
+                    "Number of daily one-way commute trips reduced"            ),
+                  tags$li(
+                    strong("TC:"),
+                    "Average commute trip distance"
+                  ),
+                  tags$li(
+                    strong("D :"),
+                    "Working days in a year"
+                  )
+                ),
+                
+                p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL")),
+                tags$ul(
+                  tags$li(
+                    strong("CIL:"),
+                    "Carbon intensity that accounts for gasoline vehicle WTW emissions"
+                  )
+                )
+              ),
+              
+              tabPanel(
+                "Shared Mobility",
+                tags$br(),
+                
+                p(HTML("New Service VMT (annual) = V × T × L")),
+                tags$ul(
+                  tags$li(
+                    strong("V:"),
+                    "Number of vehicles or equipment directly associated or dispatched with the project."
+                  ),
+                  tags$li(
+                    strong("T:"),
+                    "Average number of annual trips per vehicle expected directly associated with the project."
+                  ),
+                  tags$li(
+                    strong("L:"),
+                    "Estimated length of average vehicle trip directly associated with the project."
+                  )
+                ),
+                
+                p(HTML("Auto VMT Displaced (annual) = V × T × L × A × O × (1- DM)")),
+                tags$ul(
+                  tags$li(
+                    strong("V:"),
+                    "Number of vehicles or equipment directly associated or dispatched with the project."
+                  ),
+                  tags$li(
+                    strong("T:"),
+                    "Average number of annual trips per vehicle expected directly associated with the project."
+                  ),
+                  tags$li(
+                    strong("L:"),
+                    "Estimated length of average vehicle trip directly associated with the project."
+                  )
+                ),
+                  tags$li(
+                    strong("A:"),
+                    "Adjustment factor that accounts for the trips that are displaced by the project."
+                  ),
+                  tags$li(
+                    strong("O:"),
+                    "Average occupancy of per vehicle or equipment dispatched in the project"
+                  ),
+                  tags$li(
+                    strong("DM:"),
+                    "Percentage of deadhead miles out of total vehicle miles."
+                  )
+                ),
+                
+                p(HTML("GHG Emissions Impacts = Auto VMT Displaced × CIL - New Service VMT × CIL")),
+                tags$ul(
+                  tags$li(
+                    strong("CIL:"),
+                    "Carbon intensity that accounts for auto vehicle WTW emissions"
+                  ),
+                  tags$li(
+                    strong("CIL:"),
+                    "Carbon intensity that accounts for new service vehicle WTW emissions."
+                  )
+                )
+              ),
+              tabPanel(
+                "Pedestrian Facilities",
+                tags$br(),
+                
+                p(HTML("Auto VMT Displaced (annual) = D × AADT × (M + C) × L")),
+                tags$ul(
+                  tags$li(
+                    strong("D:"),
+                    "Annual days of use of new facility; default is 214 days."
+                  ),
+                  tags$li(
+                    strong("AADT:"),
+                    "Average annual daily traffic (two-way) on road parallel or adjacent to facility."
+                  ),
+                  tags$li(
+                    strong("M:"),
+                    "Mode shift factor (see table below)."
+                  ),
+                  tags$li(
+                    strong("C:"),
+                    "Credit for key destinations near facility (see table below)."
+                  ),
+                  tags$li(
+                    strong("L:"),
+                    "Average length of auto trip replaced"
+                  )
+                ),
+                
+                p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL")),
+                tags$ul(
+                  tags$li(
+                    strong("CIL or H:"),
+                    "Carbon intensity that accounts for gasoline vehicle WTW emissions"
+                  )
+                )
+              ),
+            tabPanel(
+              "Multi-Use Trails and Bicycle Facilities",
+              tags$br(),
+              
+              p(HTML("Auto VMT Displaced (annual) = D × AADT × (M + C) × (GFA * L)")),
+              tags$ul(
+                tags$li(
+                  strong("D:"),
+                  "Annual days of use of new facility; default is 214 days."
+                ),
+                tags$li(
+                  strong("AADT:"),
+                  "Average annual daily traffic (two-way) on road parallel or adjacent to facility."
+                ),
+                tags$li(
+                  strong("M:"),
+                  "Mode shift factor (see table below)."
+                ),
+                tags$li(
+                  strong("C:"),
+                  "Credit for key destinations near facility (see table below)."
+                ),
+                tags$li(
+                  strong("GFA:"),
+                  "Growth Factor Adjustment"
+                ),
+                tags$li(
+                  strong("L:"),
+                  "Average length of auto trip replaced"
+                )
+              ),
+              
+              p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL")),
+              tags$ul(
+                tags$li(
+                  strong("CIL or H:"),
+                  "Carbon intensity that accounts for gasoline vehicle WTW emissions"
+                )
+              ),
+              tabPanel(
+                "Intersection Delay",
+                tags$br(),
+                
+                p(HTML("Fuel Consumption Reduced (Gallons) = k2 * Total Peak Hour Delay Reduced")),
+                tags$ul(
+                  tags$li(
+                    strong("k2:"),
+                    "Idling fuel use factor, in gallon/hour"
+                  )
+                ),
+                
+                p(HTML("GHG Reduced (kg) = Fuel Consumption Reduced (Gallons) × 9.915"))
+              ),
+              tabPanel(
+                "Corridor Speed Improvement",
+                tags$br(),
+                
+                p(HTML("Fuel Consumption Reduced (Gallons) = Corridor Distance (miles) × AADTno build × [k1speed no build – (1 + EID) × k1speed build]")),
+                tags$ul(
+                  tags$li(
+                    strong("AADTno build:"),
+                    "Annual average daily traffic under the no-build condition."
+                  ),
+                  tags$li(
+                    strong("EID:"),
+                    "Elasticity of induced VMT due to improved corridor speed; default value can be found in Table 26, with justification further explained in the following section."
+                  ),
+                  tags$li(
+                    strong("K1:"),
+                    "Running fuel use factor, in gallon/hour. The default assumes LD gasoline vehicles only: 000019137 × cruise-speed² - 0.0020660 × cruise-speed + 0.088916."
+                  )
+                ),
+                
+                p(HTML("GHG Reduced (kg) = Fuel Consumption Reduced (Gallons) × 9.915"))
+              )
             )
           ),
           
