@@ -1355,7 +1355,7 @@ output$download_employee_commute <- downloadHandler(
       filter(year == closest_year)
     
     # Calculate percentage_ICE and round to 2 decimals
-    percentage_ICE <- round(fleet_proportion$electricity, 2)
+    percentage_ICE <- round(fleet_proportion$electricity, 2) * 100
     
     # Update the numeric input for percentage_ICE
     updateNumericInput(session, "percentage_ICE", value = percentage_ICE)
@@ -1380,6 +1380,11 @@ output$download_employee_commute <- downloadHandler(
     
     # Update the numeric input for charge_power
     updateNumericInput(session, "charge_power", value = charge_power)
+  })
+  
+  observeEvent(input$charger_type, {
+    updateNumericInput(session, "utilization_rate",
+                       value = ifelse(input$charger_type == "DCFC", 5, 20))
   })
   
 }

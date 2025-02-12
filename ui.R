@@ -210,11 +210,11 @@ div(
                     style = "display: flex; align-items: center;",
                     numericInput(
                       "utilization_rate",
-                      "Utilization Rate",
-                      value = .5,
+                      "Utilization Rate (%)",
+                      value = 50,
                       min = 0,
-                      max = 1,
-                      step = 0.01
+                      max = 100,
+                      step = 1
                     ),
                     tags$i(
                       class = "fas fa-question-circle",
@@ -226,11 +226,11 @@ div(
                   ),
                   numericInput(
                     "percentage_ICE",
-                    "Fraction of EV in Regional Fleet",
+                    "Percentage of EV in Regional Fleet (%)",
                     value = NULL,
                     min = 0,
-                    max = 1,
-                    step = 0.01
+                    max = 100,
+                    step = 1
                   )
                 ),
                 tags$div(
@@ -895,7 +895,7 @@ div(
                     "Estimated length of average vehicle trip directly associated with the project."
                   )
                 ),
-                
+                  
                 p(HTML("Auto VMT Displaced (annual) = V × T × L × A × O × (1- DM)")),
                 tags$ul(
                   tags$li(
@@ -924,19 +924,7 @@ div(
                     "Percentage of deadhead miles out of total vehicle miles."
                   )
                 ),
-                
-                p(HTML("GHG Emissions Impacts = Auto VMT Displaced × CIL - New Service VMT × CIL")),
-                tags$ul(
-                  tags$li(
-                    strong("CIL:"),
-                    "Carbon intensity that accounts for auto vehicle WTW emissions"
-                  ),
-                  tags$li(
-                    strong("CIL:"),
-                    "Carbon intensity that accounts for new service vehicle WTW emissions."
-                  )
-                )
-              ),
+              
               tabPanel(
                 "Pedestrian Facilities",
                 tags$br(),
@@ -1011,6 +999,7 @@ div(
                   strong("CIL or H:"),
                   "Carbon intensity that accounts for gasoline vehicle WTW emissions"
                 )
+              )
               ),
               tabPanel(
                 "Intersection Delay",
@@ -1030,10 +1019,10 @@ div(
                 "Corridor Speed Improvement",
                 tags$br(),
                 
-                p(HTML("Fuel Consumption Reduced (Gallons) = Corridor Distance (miles) × AADTno build × [k1speed no build – (1 + EID) × k1speed build]")),
+                p(HTML("Fuel Consumption Reduced (Gallons) = Corridor Distance (miles) × AADT no build × [k1speed no build – (1 + EID) × k1speed build]")),
                 tags$ul(
                   tags$li(
-                    strong("AADTno build:"),
+                    strong("AADT no build:"),
                     "Annual average daily traffic under the no-build condition."
                   ),
                   tags$li(
