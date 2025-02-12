@@ -29,7 +29,7 @@ ev_infrastructure <- function(
   if (is.null(average_energy_efficiency)) {
     average_energy_efficiency <- FuelEfficiency %>%
       filter(`Vehicle Type` == 'Light-Duty') %>%
-      pull(`Fuel Efficiency (Wh/mi)`)
+      pull(`Average of Fuel Economy Combined (kWh/100 mi)`)/100
   }
   
   # Generate years project covers based on project start date and length of project
@@ -59,7 +59,7 @@ ev_infrastructure <- function(
   vmt_displaced <- numeric(length(project_years))
   ghg_impact <- numeric(length(project_years))
   carbon_cost <- numeric(length(project_years))
-  
+
   # Loop through each project year
   for (i in seq_along(project_years)) {
     current_year <- project_years[i]
