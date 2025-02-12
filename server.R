@@ -995,7 +995,8 @@ output$download_employee_commute <- downloadHandler(
         "Met Council Transit Experience and Satisfaction Survey",
         "Mobility Hub Planning and Implementation Guidebook",
         "CARB 2018 Clean Miles Standard" ,
-        "CARB 2018 Clean Miles Standard "
+        "CARB 2018 Clean Miles Standard ",
+        "EV WATTS Charging Station Dashboard Q4-23"
       ),
       Description = c(
         "Community Designations Data",
@@ -1007,7 +1008,8 @@ output$download_employee_commute <- downloadHandler(
         "Transit Dependency Adjustment Factors",
         "Total VMT Reduction Potential",
         "Percentage of deadhead miles",
-        "Average Occupancy per Vehicle"
+        "Average Occupancy per Vehicle",
+        "EV Charge Utilization Rates"
       )
     ))
   })
