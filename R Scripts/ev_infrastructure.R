@@ -25,6 +25,8 @@ ev_infrastructure <- function(
     }
   }
   
+  utilization_rate = utilization_rate / 100
+  
   # Set default average energy efficiency if not provided
   if (is.null(average_energy_efficiency)) {
     average_energy_efficiency <- FuelEfficiency %>%
@@ -83,6 +85,13 @@ ev_infrastructure <- function(
     
     # Convert percentage to a fraction for calculations
     current_percentage_ICE_fraction <- current_percentage_ICE / 100
+    
+    print(paste("utilization rate: ", utilization_rate))
+    print(paste("no_chargers: ", no_chargers))
+    print(paste("charge_power: ", charge_power))
+    print(paste("annual_hours_available: ", annual_hours_available))
+    print(paste("average_energy_efficiency: ", average_energy_efficiency))
+    print(paste("current_percentage_ICE_fraction: ", current_percentage_ICE_fraction))
     
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / 
