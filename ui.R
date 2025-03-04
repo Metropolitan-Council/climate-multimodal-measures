@@ -351,7 +351,7 @@ div(
                   ),
                   shinyWidgets::autonumericInput(
                     "annual_vmt",
-                    "Annual VMT per capita",
+                    "Annual VMT per Capita within 3 Mile",
                     value = 10655,
                     decimalPlaces = 0,
                     align = 'left',

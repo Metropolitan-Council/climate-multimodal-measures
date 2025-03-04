@@ -153,7 +153,7 @@ trails_bike_facilities <- function(average_daily_traffic,
     Year = c(project_years, "Total"),
     "VMT Reduction (Miles)" = format(round(c(auto_vmt_displaced, total_vmt_displaced), 0), big.mark = ","),
     "GHG Reduction (MT CO₂)" = format(round(c(ghg_impact, total_ghg_impact), 0), big.mark = ","),
-    "Carbon Cost Reduction ($) <i class='fas fa-question-circle' 
+    "Social Cost of Carbon Reduction ($) <i class='fas fa-question-circle' 
    title='The Social Cost of Carbon estimates the economic savings from avoiding one ton of CO₂ emissions, reflecting reduced damages to agriculture, human health, infrastructure, and ecosystems. Using a 2% Ramsey discount rate, future damages are valued at 98% of their present value.'></i>" = 
       format(round(c(carbon_cost, total_carbon_cost), 0), big.mark = ","),
     check.names = FALSE
