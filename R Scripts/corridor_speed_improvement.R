@@ -14,13 +14,7 @@ corridor_speed_improvements <- function(corridor_distance,
   
   speed_improvement_prct <- ((avg_corridor_speed_build - avg_corridor_speed_no_build) / avg_corridor_speed_no_build)
   
-  if (speed_improvement_prct <= .05) {
-    induced_demand_elasticity <- 0
-  } else if (speed_improvement_prct > .05 & speed_improvement_prct <= .2) {
-    induced_demand_elasticity <- 2 * speed_improvement_prct - 0.1
-  } else if (speed_improvement_prct > .2) {
-    induced_demand_elasticity <- 0.3
-  }
+  induced_demand_elasticity = 0.35 * speed_improvement_prct
   
   # Generate years project covers
   project_start <- as.numeric(project_start)  # Ensure numeric year
