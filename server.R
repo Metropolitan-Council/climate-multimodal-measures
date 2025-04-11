@@ -996,7 +996,8 @@ output$download_employee_commute <- downloadHandler(
         "Mobility Hub Planning and Implementation Guidebook",
         "CARB 2018 Clean Miles Standard" ,
         "CARB 2018 Clean Miles Standard ",
-        "EV WATTS Charging Station Dashboard Q4-23"
+        "EV WATTS Charging Station Dashboard Q4-23",
+        "Barr, Lawrence C. Testing for the significance of induced highway travel demand in metropolitan areas"
       ),
       Description = c(
         "Community Designations Data",
@@ -1009,7 +1010,8 @@ output$download_employee_commute <- downloadHandler(
         "Total VMT Reduction Potential",
         "Percentage of deadhead miles",
         "Average Occupancy per Vehicle",
-        "EV Charge Utilization Rates"
+        "EV Charge Utilization Rates",
+        "Elasticity of induced VMT due to improved corridor speed"
       )
     ))
   })
