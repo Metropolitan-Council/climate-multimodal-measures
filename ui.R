@@ -576,10 +576,20 @@ div(
                     value = 1
                   ),
                   numericInput("trails_bike_days_open", "Facility Annual Days of Use", value = 214),
-                  numericInput(
-                    "length_trip_replaced_biking",
-                    "Average Length of Auto Trip Replaced (Mile)",
-                    value = 3.6
+                  div(
+                    style = "display: flex; align-items: center;",
+                    numericInput(
+                      "length_trip_replaced_biking",
+                      "Average Length of Auto Trip Replaced (Mile)",
+                      value = 3.6
+                    ),
+                    tags$i(
+                      class = "fas fa-question-circle",
+                      style = "margin-left: 5px; cursor: pointer;",
+                      `data-bs-toggle` = "tooltip",
+                      `data-bs-placement` = "right",
+                      title = "A higher number of e-bike users on the facility may result in a greater trip distance."
+                    )
                   ),
                   tags$div(class = "info-box", textOutput("selected_community_type_trailsBikes")),
                   tags$div(class = "info-box", textOutput("mode_shift_factor_trailsBike")),
