@@ -629,7 +629,7 @@ div(
                 )
               ), card(uiOutput("intersection_delay_ui"))
             )),
-            nav_panel(title = "Corridor Speed Improvements", page_fillable(
+            nav_panel(title = "Corridor Speed Increases", page_fillable(
               card(
                 layout_column_wrap(
                   width = 1 / 2,
@@ -1016,7 +1016,7 @@ div(
                 p(HTML("GHG Reduced (kg) = Fuel Consumption Reduced (Gallons) × 9.915"))
               ),
               tabPanel(
-                "Corridor Speed Improvement",
+                "Corridor Speed Increases",
                 tags$br(),
                 
                 p(HTML("Fuel Consumption Reduced (Gallons) = Corridor Distance (miles) × AADT no build × [k1speed no build – (1 + EID) × k1speed build]")),
