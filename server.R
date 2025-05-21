@@ -22,7 +22,8 @@ function(input, output, session) {
       location = input$location,
       working_days = input$working_days,
       # default should be 260 days
-      average_commute = input$average_commute # default should be based on the mapping the location and what that maps to in CommunityTypeShape
+      average_commute = input$average_commute 
+      # TODO default should be based on the mapping the location and what that maps to in CommunityTypeShape
     )
   })
   
@@ -1290,6 +1291,7 @@ function(input, output, session) {
       
       # Calculate k1 values for build and no-build scenarios
       # TODO Make sure these match with items listed in MetCouncilTables.xlsx
+      # TODO document what each value means, 
       k1_speed_build <- 0.000019137 * input$avg_corridor_speed_build^2 - 0.0020660 * input$avg_corridor_speed_build + 0.088916
       k1_speed_no_build <- 0.000019137 * input$avg_corridor_speed_no_build^2 - 0.0020660 * input$avg_corridor_speed_no_build + 0.088916
       
