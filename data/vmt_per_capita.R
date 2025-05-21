@@ -10,7 +10,7 @@ population <- get_acs(
   geometry = TRUE,
   cache_table = TRUE
 ) %>%
-  sf::st_transform('+proj=longlat +datum=WGS84')
+  sf::st_transform("+proj=longlat +datum=WGS84")
 
 population <- ms_simplify(population, keep = 0.05, keep_shapes = TRUE)
 
@@ -27,7 +27,7 @@ CommunityType <- CommunityType %>%
         "Agricultural",
         "Non-Council Area"
       ) ~ "Rural / Non-Council",
-      TRUE ~ NA_character_  
+      TRUE ~ NA_character_
     )
   )
 

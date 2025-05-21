@@ -1,4 +1,4 @@
-#Loading Packages
+# Loading Packages
 library(scales)
 library(shiny)
 library(bslib)
@@ -17,7 +17,7 @@ library(councilR)
 library(shinyWidgets)
 options(tigris_use_cache = TRUE)
 
-backgroundDataPath <- paste0(here::here(),"/data/raw data/MetCouncilTables.xlsx")
+backgroundDataPath <- paste0(here::here(), "/data/raw data/MetCouncilTables.xlsx")
 
 backgroundDataNames <- excel_sheets(backgroundDataPath)
 
@@ -25,8 +25,9 @@ for (sheet in backgroundDataNames) {
   assign(sheet, read_excel(backgroundDataPath, sheet = sheet), envir = .GlobalEnv)
 }
 
-FleetData <- read_xlsx(paste0(here::here(),"/data/raw data/FleetData.xlsx"))
-CommunityDesignation <- st_read(paste0(here::here(), "/data/raw data/PROPOSED2050COMMUNITYDESIGNATIONS.gpkg")) %>% rename(COMDESNAME = CD2050)
+FleetData <- read_xlsx(paste0(here::here(), "/data/raw data/FleetData.xlsx"))
+CommunityDesignation <- st_read(paste0(here::here(), "/data/raw data/PROPOSED2050COMMUNITYDESIGNATIONS.gpkg")) %>%
+  rename(COMDESNAME = CD2050)
 CommunityType <- CommunityDesignation
 mpo_area <- import_from_gpkg("https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_metc/trans_metro_planning_org_area/gpkg_trans_metro_planning_org_area.zip") %>% st_zm()
 source(paste0(getwd(), "/data/community_type_mapping.R"))
@@ -35,12 +36,14 @@ source(paste0(getwd(), "/data/stock_percentages.R"))
 source(paste0(getwd(), "/data/vmt_per_vehicle.R"))
 source(paste0(getwd(), "/data/vmt_per_capita.R"))
 
-added_functions <- c("employee_commute", "ev_outreach", "ev_infrastructure",
-                     "shared_mobility", "transit_expansion", "mobility_hubs",
-                     "pedestrian_facilities", "trails_bike_facilities",
-                     "corridor_speed_improvement", "intersection_delay_reductions")
-for(added_function in added_functions) {
-  source(paste0(getwd(),"/R Scripts/", added_function, ".R"))
+added_functions <- c(
+  "employee_commute", "ev_outreach", "ev_infrastructure",
+  "shared_mobility", "transit_expansion", "mobility_hubs",
+  "pedestrian_facilities", "trails_bike_facilities",
+  "corridor_speed_improvement", "intersection_delay_reductions"
+)
+for (added_function in added_functions) {
+  source(paste0(getwd(), "/R Scripts/", added_function, ".R"))
 }
 
 population <- get_acs(
@@ -50,47 +53,58 @@ population <- get_acs(
   geometry = TRUE,
   cache_table = TRUE
 ) %>%
-  sf::st_transform('+proj=longlat +datum=WGS84')
+  sf::st_transform("+proj=longlat +datum=WGS84")
 
-population <- ms_simplify(population, keep = 0.05,
-                          keep_shapes = TRUE)
+population <- ms_simplify(population,
+  keep = 0.05,
+  keep_shapes = TRUE
+)
 
 locations <- CommunityDesignation %>%
   st_transform(., crs = 4326)
 
 
 met_council_datatable <- function(provided_data) {
-  
   formatted_data <- provided_data
-  rownames(formatted_data) <- NULL  # ✅ Remove row names explicitly
-  
+  rownames(formatted_data) <- NULL # ✅ Remove row names explicitly
+
   pretty_names <- colnames(formatted_data) %>%
-    str_replace_all("_", " ") %>%  
+    str_replace_all("_", " ") %>%
     str_to_title() %>%
     str_replace_all("Vmt", "VMT") %>%
-    str_replace_all("Ghg", "GHG") 
+    str_replace_all("Ghg", "GHG")
   colnames(formatted_data) <- pretty_names
   cols_to_center <- setdiff(pretty_names, "Year")
-  
-  numeric_cols <- colnames(formatted_data)[sapply(formatted_data, class)=="numeric"]
-  formatted_data[numeric_cols] <- round(formatted_data[numeric_cols], digits = 4) 
-  
-  datatable(formatted_data %>%
-              mutate(across(numeric_cols, ~ formatC(.x, big.mark = ",", 
-                                                    format = "f",
-                                                    drop0trailing = TRUE))), 
-            fillContainer = TRUE,
-            rownames = FALSE,
-            options = list(
-              rownames = FALSE,
-              searching = FALSE,  # Disable search
-              paging = FALSE,     # Disable pagination
-              # dom = 't',          # Show only the table (no extra controls)
-              ordering = FALSE,    # Disable ordering
-              columnDefs = list(
-                list(targets = which(pretty_names != "Year") - 1,  
-                     className = 'dt-center')))) %>%
-    formatStyle('Year', target = 'row', 
-                fontWeight = styleEqual("Total", c('bold'))) %>%
-    formatStyle(cols_to_center, textAlign = 'center')
+
+  numeric_cols <- colnames(formatted_data)[sapply(formatted_data, class) == "numeric"]
+  formatted_data[numeric_cols] <- round(formatted_data[numeric_cols], digits = 4)
+
+  datatable(
+    formatted_data %>%
+      mutate(across(numeric_cols, ~ formatC(.x,
+        big.mark = ",",
+        format = "f",
+        drop0trailing = TRUE
+      ))),
+    fillContainer = TRUE,
+    rownames = FALSE,
+    options = list(
+      rownames = FALSE,
+      searching = FALSE, # Disable search
+      paging = FALSE, # Disable pagination
+      # dom = 't',          # Show only the table (no extra controls)
+      ordering = FALSE, # Disable ordering
+      columnDefs = list(
+        list(
+          targets = which(pretty_names != "Year") - 1,
+          className = "dt-center"
+        )
+      )
+    )
+  ) %>%
+    formatStyle("Year",
+      target = "row",
+      fontWeight = styleEqual("Total", c("bold"))
+    ) %>%
+    formatStyle(cols_to_center, textAlign = "center")
 }

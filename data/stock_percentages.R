@@ -12,18 +12,19 @@ stock_to_fuel_type <- c(
 # Filter out NA values and add fuel_type column
 FleetData <- FleetData %>%
   filter(!is.na(stock)) %>%
-  mutate(fuel_type = stock_to_fuel_type[stock]) %>% rename(CTU_NAME = ctu) %>% 
+  mutate(fuel_type = stock_to_fuel_type[stock]) %>%
+  rename(CTU_NAME = ctu) %>%
   left_join(CommunityTypeShape)
 
 # Calculate the total VMT for each community type, year, and fuel type
 total_vmt_by_fuel_type <- FleetData %>%
   group_by(MappedCommunity, year, fuel_type) %>%
-  summarise(total_vmt = sum(vmt, na.rm = TRUE), .groups = 'drop')
+  summarise(total_vmt = sum(vmt, na.rm = TRUE), .groups = "drop")
 
 # Calculate the total VMT for each community type and year
 total_vmt_by_community_type_year <- FleetData %>%
   group_by(MappedCommunity, year) %>%
-  summarise(total_vmt = sum(vmt, na.rm = TRUE), .groups = 'drop')
+  summarise(total_vmt = sum(vmt, na.rm = TRUE), .groups = "drop")
 
 # Join the total VMT data frames and calculate percentage VMT by fuel type
 FleetData <- total_vmt_by_fuel_type %>%
@@ -37,7 +38,9 @@ FleetData <- FleetData %>%
   mutate(year = as.numeric(year))
 
 FleetData <- FleetData %>%
-  mutate(year = as.numeric(year),
-         diesel = diesel / 100,
-         electricity = electricity / 100,
-         gasoline = gasoline / 100)
+  mutate(
+    year = as.numeric(year),
+    diesel = diesel / 100,
+    electricity = electricity / 100,
+    gasoline = gasoline / 100
+  )

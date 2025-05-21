@@ -5,7 +5,7 @@ CommunityTypeShape <- CommunityType %>%
     COMDESNAME %in% c("Suburban", "Diversified Residential") ~ "Suburban",
     COMDESNAME %in% c("Suburban Edge", "Emerging Suburban Edge") ~ "Suburban Edge",
     COMDESNAME %in% c("Diversified Rural", "Rural Residential", "Rural Center", "Agricultural", "Non-Council Community") ~ "Rural / Non-Council",
-    TRUE ~ NA_character_  # For any unexpected values
+    TRUE ~ NA_character_ # For any unexpected values
   ))
 
 CommunityTypeShape <- CommunityTypeShape %>%
@@ -17,8 +17,8 @@ CommunityTypeShape <- CommunityTypeShape %>%
 new_row <- data.frame(
   OBJECTID = max(CommunityTypeShape$OBJECTID, na.rm = TRUE) + 1, # Ensure unique ID
   CTU_NAME = "Other",
-  ProposalB = NA,  # Set to NA or a default value
-  ACRES = NA,  # Set to NA or 0 if needed
+  ProposalB = NA, # Set to NA or a default value
+  ACRES = NA, # Set to NA or 0 if needed
   UNIQ = "Other",
   COMDESNAME = "Rural / Non-Council",
   MappedCommunity = "Rural / Non-Council"

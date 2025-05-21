@@ -12,7 +12,6 @@ tags$head(
   tags$link(rel = "stylesheet", href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"),
   tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"),
   tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
-  
   tags$script(
     HTML(
       '$(document).ready(function(){
@@ -41,7 +40,7 @@ div(
   class = "main-container",
   # Custom Class for Styling
   style = "width: 100vw; height: 100vh; padding: 0; margin: 0; overflow: hidden; display: flex; flex-direction: column;",
-  
+
   # Header Section (Above Navbar)
   div(
     class = "header-section",
@@ -53,13 +52,11 @@ div(
     ),
     h2("Transportation Project Emission Reduction Calculator", class = "header-title")
   ),
-  
+
   # Nested Page Navbar
   div(
     class = "navbar-wrapper",
     style = "flex-grow: 1; display: flex; flex-direction: column; background-color: white; padding: 15px;",
-    
-    
     page_navbar(
       # Add dependencies for Bootstrap 5 and FontAwesome
       tags$head(
@@ -79,8 +76,8 @@ div(
           )
         )
       ),
-      
-      
+
+
       # Define Navigation Panels
       nav_panel(
         title = tags$span("Calculations", style = "color: #002b5c; font-weight: bold; font-size: 18px"),
@@ -88,8 +85,10 @@ div(
           nav_panel(
             title = textOutput("map_tab_label"),
             page_fillable(
-              card(leaflet::leafletOutput(outputId = "myMap"
-                                          , height = 850)),
+              card(leaflet::leafletOutput(
+                outputId = "myMap",
+                height = 850
+              )),
               "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
             )
           ),
@@ -103,7 +102,7 @@ div(
                     "Expected Number of Participants",
                     value = 4000,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   selectInput(
@@ -186,7 +185,7 @@ div(
                     "Annual Hours Available",
                     value = 8760,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   selectInput(
@@ -240,7 +239,6 @@ div(
               ), card(uiOutput("ev_infrastructure_ui"))
             ))
           )),
-          
           nav_panel(title = "Transit Expansion", navset_card_tab(
             nav_panel(title = "Transit Expansion", page_fillable(
               card(
@@ -270,7 +268,7 @@ div(
                     #  Default from sample project: MetroTransit Micro G Line Exp
                     value = 32976,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   selectInput(
@@ -290,7 +288,7 @@ div(
                     #  Default from sample project: MetroTransit Micro G Line Exp
                     value = 1566,
                     decimalPlaces = 0,
-                    align = 'left'
+                    align = "left"
                   ),
                   numericInput(
                     "average_trip_length",
@@ -330,7 +328,7 @@ div(
                     #  Default=rural area
                     value = 14137,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   selectInput(
@@ -354,7 +352,7 @@ div(
                     "Annual VMT per Capita within 3 Mile",
                     value = 10655,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   tags$div(class = "info-box", textOutput("selected_community_type_mobilityHub"))
@@ -362,9 +360,6 @@ div(
               ), card(uiOutput("mobility_hub_ui"))
             ))
           )),
-          
-          
-          
           nav_panel(title = "Travel Demand Management", navset_card_tab(
             nav_panel(title = "Employee Commute", page_fillable(
               card(
@@ -379,9 +374,9 @@ div(
                   shinyWidgets::autonumericInput(
                     "daily_commute_no",
                     "Number of Daily One-Way Commute Trips Reduced",
-                    value = 1000 ,
+                    value = 1000,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   selectInput(
@@ -390,8 +385,7 @@ div(
                     choices = seq(2024, 2050, 1),
                     selected = 2024
                   ),
-                  numericInput("project_lifetime", "Project Lifetime (in years)", value = 4)
-                  ,
+                  numericInput("project_lifetime", "Project Lifetime (in years)", value = 4),
                   numericInput(
                     "average_commute",
                     "Average One-way Commute Trip Distance (Mile)",
@@ -426,7 +420,7 @@ div(
                     "Number of Annual Trips per Vehicle/Equipment",
                     value = 1000,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   selectInput(
@@ -461,7 +455,6 @@ div(
                     class = "info-box",
                     textOutput("selected_community_type_sharedMobility")
                   )
-                  
                 )
               ), card(uiOutput("shared_mobility_ui"))
             ))
@@ -493,7 +486,7 @@ div(
                     "Average Annual Daily traffic (two way) on road parallel or adjacent to facility",
                     value = 6000,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   numericInput("one_way_facility_length", "Facility Length", value = 1),
@@ -557,7 +550,7 @@ div(
                     "Average Annual Daily traffic (two way) on road parallel or adjacent to facility",
                     value = 6000,
                     decimalPlaces = 0,
-                    align = 'left',
+                    align = "left",
                     emptyInputBehavior = "zero"
                   ),
                   numericInput(
@@ -688,30 +681,28 @@ div(
           widths = c(2, 10)
         )
       ),
-      
       nav_panel(
         title = tags$span("Methodology and Sources", style = "color: #002b5c; font-weight: bold; font-size: 18px"),
-        
+
         # Custom header placed above the navlistPanel
         div(
           style = "padding: 10px; border-bottom: 2px solid #ddd; margin-bottom: 10px; background-color: transparent;",
-          
+
           # Title text
           tags$span(
             "Project Emissions Quantification Methodologies and Sources",
             style = "color: #002b5c; font-weight: bold; font-size: 18px;"
           ),
-          
+
           # Line break
           tags$br(),
-          
+
           # Informational paragraph with larger font
           tags$p(
             "If you would like to learn more about the methodology behind each project type, please read the Regional Solicitation Recommended Methodology for Estimating GHG Impacts.",
             style = "font-size: 16px; color: #333; margin-top: 5px;"
           )
         ),
-        
         tabsetPanel(
           # Tab 1: Methodologies (contains sub-tabs for different project types)
           tabPanel(
@@ -719,9 +710,7 @@ div(
             navlistPanel(
               tabPanel(
                 "EV Outreach",
-                
                 tags$br(),
-                
                 p("Auto VMT Displaced (annual) = ACCL or H × N × R"),
                 tags$ul(
                   tags$li(
@@ -745,11 +734,9 @@ div(
                   tags$li(strong("CIE:"), " Carbon intensity of electricity grid")
                 )
               ),
-              
               tabPanel(
                 "Public Infrastructure",
                 tags$br(),
-                
                 p(
                   HTML(
                     "Auto VMT Displaced (annual) = &Sigma; N<sub>i</sub> P<sub>i</sub> U<sub>i</sub> H<sub>i</sub> &divide; EVEF &times; FICE"
@@ -789,7 +776,6 @@ div(
               tabPanel(
                 "Transit Expansion",
                 tags$br(),
-                
                 p(HTML("Auto VMT Displaced (annual) = R x A x L")),
                 tags$ul(
                   tags$li(
@@ -818,13 +804,11 @@ div(
                     strong("CIB"),
                     "Carbon intensity that accounts for transit bus WTW emissions"
                   ),
-                  
                 )
               ),
               tabPanel(
                 "Mobility Hubs",
                 tags$br(),
-                
                 p(HTML("Auto VMT Displaced (annual) = VE × P × VMTPC")),
                 tags$ul(
                   tags$li(
@@ -840,7 +824,6 @@ div(
                     "Average annual VMT per capita in the community"
                   )
                 ),
-                
                 p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL - Added Transit VMT × CIB")),
                 tags$ul(
                   tags$li(
@@ -857,16 +840,15 @@ div(
                   )
                 )
               ),
-              
               tabPanel(
                 "Employee Commute",
                 tags$br(),
-                
                 p(HTML("Auto VMT Displaced (annual) = N × TC × D")),
                 tags$ul(
                   tags$li(
                     strong("N:"),
-                    "Number of daily one-way commute trips reduced"            ),
+                    "Number of daily one-way commute trips reduced"
+                  ),
                   tags$li(
                     strong("TC:"),
                     "Average commute trip distance"
@@ -876,7 +858,6 @@ div(
                     "Working days in a year"
                   )
                 ),
-                
                 p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL")),
                 tags$ul(
                   tags$li(
@@ -885,11 +866,9 @@ div(
                   )
                 )
               ),
-              
               tabPanel(
                 "Shared Mobility",
                 tags$br(),
-                
                 p(HTML("New Service VMT (annual) = V × T × L")),
                 tags$ul(
                   tags$li(
@@ -905,7 +884,6 @@ div(
                     "Estimated length of average vehicle trip directly associated with the project."
                   )
                 ),
-                  
                 p(HTML("Auto VMT Displaced (annual) = V × T × L × A × O × (1- DM)")),
                 tags$ul(
                   tags$li(
@@ -921,24 +899,22 @@ div(
                     "Estimated length of average vehicle trip directly associated with the project."
                   )
                 ),
-                  tags$li(
-                    strong("A:"),
-                    "Adjustment factor that accounts for the trips that are displaced by the project."
-                  ),
-                  tags$li(
-                    strong("O:"),
-                    "Average occupancy of per vehicle or equipment dispatched in the project"
-                  ),
-                  tags$li(
-                    strong("DM:"),
-                    "Percentage of deadhead miles out of total vehicle miles."
-                  )
+                tags$li(
+                  strong("A:"),
+                  "Adjustment factor that accounts for the trips that are displaced by the project."
                 ),
-              
+                tags$li(
+                  strong("O:"),
+                  "Average occupancy of per vehicle or equipment dispatched in the project"
+                ),
+                tags$li(
+                  strong("DM:"),
+                  "Percentage of deadhead miles out of total vehicle miles."
+                )
+              ),
               tabPanel(
                 "Pedestrian Facilities",
                 tags$br(),
-                
                 p(HTML("Auto VMT Displaced (annual) = D × AADT × (M + C) × L")),
                 tags$ul(
                   tags$li(
@@ -962,7 +938,6 @@ div(
                     "Average length of auto trip replaced"
                   )
                 ),
-                
                 p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL")),
                 tags$ul(
                   tags$li(
@@ -971,50 +946,47 @@ div(
                   )
                 )
               ),
-            tabPanel(
-              "Multi-Use Trails and Bicycle Facilities",
-              tags$br(),
-              
-              p(HTML("Auto VMT Displaced (annual) = D × AADT × (M + C) × (GFA * L)")),
-              tags$ul(
-                tags$li(
-                  strong("D:"),
-                  "Annual days of use of new facility; default is 214 days."
+              tabPanel(
+                "Multi-Use Trails and Bicycle Facilities",
+                tags$br(),
+                p(HTML("Auto VMT Displaced (annual) = D × AADT × (M + C) × (GFA * L)")),
+                tags$ul(
+                  tags$li(
+                    strong("D:"),
+                    "Annual days of use of new facility; default is 214 days."
+                  ),
+                  tags$li(
+                    strong("AADT:"),
+                    "Average annual daily traffic (two-way) on road parallel or adjacent to facility."
+                  ),
+                  tags$li(
+                    strong("M:"),
+                    "Mode shift factor (see table below)."
+                  ),
+                  tags$li(
+                    strong("C:"),
+                    "Credit for key destinations near facility (see table below)."
+                  ),
+                  tags$li(
+                    strong("GFA:"),
+                    "Growth Factor Adjustment"
+                  ),
+                  tags$li(
+                    strong("L:"),
+                    "Average length of auto trip replaced"
+                  )
                 ),
-                tags$li(
-                  strong("AADT:"),
-                  "Average annual daily traffic (two-way) on road parallel or adjacent to facility."
-                ),
-                tags$li(
-                  strong("M:"),
-                  "Mode shift factor (see table below)."
-                ),
-                tags$li(
-                  strong("C:"),
-                  "Credit for key destinations near facility (see table below)."
-                ),
-                tags$li(
-                  strong("GFA:"),
-                  "Growth Factor Adjustment"
-                ),
-                tags$li(
-                  strong("L:"),
-                  "Average length of auto trip replaced"
+                p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL")),
+                tags$ul(
+                  tags$li(
+                    strong("CIL or H:"),
+                    "Carbon intensity that accounts for gasoline vehicle WTW emissions"
+                  )
                 )
-              ),
-              
-              p(HTML("GHG Emissions Impacts (annual) = Auto VMT Displaced × CIL")),
-              tags$ul(
-                tags$li(
-                  strong("CIL or H:"),
-                  "Carbon intensity that accounts for gasoline vehicle WTW emissions"
-                )
-              )
               ),
               tabPanel(
                 "Intersection Delay",
                 tags$br(),
-                
                 p(HTML("Fuel Consumption Reduced (Gallons) = k2 * Total Peak Hour Delay Reduced")),
                 tags$ul(
                   tags$li(
@@ -1022,13 +994,11 @@ div(
                     "Idling fuel use factor, in gallon/hour"
                   )
                 ),
-                
                 p(HTML("GHG Reduced (kg) = Fuel Consumption Reduced (Gallons) × 9.915"))
               ),
               tabPanel(
                 "Corridor Speed Increases",
                 tags$br(),
-                
                 p(HTML("Fuel Consumption Reduced (Gallons) = Corridor Distance (miles) × AADT no build × [k1speed no build – (1 + EID) × k1speed build]")),
                 tags$ul(
                   tags$li(
@@ -1044,12 +1014,11 @@ div(
                     "Running fuel use factor, in gallon/hour. The default assumes LD gasoline vehicles only: 000019137 × cruise-speed² - 0.0020660 × cruise-speed + 0.088916."
                   )
                 ),
-                
                 p(HTML("GHG Reduced (kg) = Fuel Consumption Reduced (Gallons) × 9.915"))
               )
             )
           ),
-          
+
           # Tab 2: Sources
           tabPanel("Sources", DTOutput("data_sources_table"))
         )
