@@ -1,3 +1,5 @@
+# TODO add source for 1.21 value, why multiplying by 1000
+# TODO comment each transformation 
 FleetDataCommunityType <- FleetData %>%
   rename(CTU_NAME = ctu) %>%
   left_join(CommunityTypeShape)
