@@ -325,7 +325,7 @@ function(input, output, session) {
       route_type = input$route_type,
       # options in AdjustmentFactorsAndTripLengths
       added_transit = input$added_transit,
-      # no default in Task 4 Memo CHANGE UI NAME TO ADDED TRANSIT VMT
+      # TODO no default in Task 4 Memo CHANGE UI NAME TO ADDED TRANSIT VMT
       location = input$transit_expansion_location,
       project_start = input$transit_expansion_project_start,
       project_lifetime = input$transit_expansion_project_lifetime,
@@ -333,7 +333,7 @@ function(input, output, session) {
       average_trip_length = input$average_trip_length,
       # default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
       adjustment_factor = input$adjustment_factor # default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
-      # ADD TEXT TO UI TO EXPLAIN ADJUSTMENT FACTOR
+      # TODO ADD TEXT TO UI TO EXPLAIN ADJUSTMENT FACTOR
     )
   })
   
@@ -415,7 +415,8 @@ function(input, output, session) {
       avg_corridor_speed_build = input$avg_corridor_speed_build,
       location = input$corridor_speed_location,
       project_start = input$corridor_speed_project_start,
-      project_lifetime = input$corridor_speed_project_lifetime # Default is 7 I think if this corresponds to traffic management technologies
+      project_lifetime = input$corridor_speed_project_lifetime 
+      # TODO Default is 7 I think if this corresponds to traffic management technologies
     )
   })
   
@@ -488,7 +489,8 @@ function(input, output, session) {
       peak_hour_delay_build = input$peak_hour_delay_build,
       location = input$intersection_delay_location,
       project_start = input$intersection_delay_project_start,
-      project_lifetime = input$intersection_delay_project_lifetime # Default is 7 I think if this corresponds to traffic management technologies
+      project_lifetime = input$intersection_delay_project_lifetime 
+      # TODO Default is 7 I think if this corresponds to traffic management technologies
     )
   })
   
@@ -1287,6 +1289,7 @@ function(input, output, session) {
       })
       
       # Calculate k1 values for build and no-build scenarios
+      # TODO Make sure these match with items listed in MetCouncilTables.xlsx
       k1_speed_build <- 0.000019137 * input$avg_corridor_speed_build^2 - 0.0020660 * input$avg_corridor_speed_build + 0.088916
       k1_speed_no_build <- 0.000019137 * input$avg_corridor_speed_no_build^2 - 0.0020660 * input$avg_corridor_speed_no_build + 0.088916
       
@@ -1294,6 +1297,7 @@ function(input, output, session) {
       speed_improvement_prct <- ((input$avg_corridor_speed_build - input$avg_corridor_speed_no_build) / input$avg_corridor_speed_no_build)
       
       # Determine induced demand elasticity based on speed improvement percentage
+      # TODO Make sure these match with items listed in MetCouncilTables.xlsx
       if (speed_improvement_prct <= .05) {
         induced_demand_elasticity <- 0
       } else if (speed_improvement_prct > .05 & speed_improvement_prct <= .2) {
@@ -1310,6 +1314,7 @@ function(input, output, session) {
   )
   
   observeEvent(input$fleet, {
+    # TODO Make sure these match with items listed in MetCouncilTables.xlsx
     if (input$fleet == "Scooter") {
       updateNumericInput(session, "average_occupancy", value = 1)
       updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.5)
@@ -1377,6 +1382,7 @@ function(input, output, session) {
     updateNumericInput(session, "average_energy_efficiency", value = average_energy_efficiency)
     
     # Dynamically update charge_power based on the selected charger_type
+    # TODO Make sure these match with items listed in MetCouncilTables.xlsx
     charge_power <- if (input$charger_type == "DCFC") {
       150 # Default power for DCFC
     } else {
@@ -1388,6 +1394,7 @@ function(input, output, session) {
   })
   
   observeEvent(input$charger_type, {
+    # TODO Make sure these match with items listed in MetCouncilTables.xlsx
     updateNumericInput(session, "utilization_rate",
                        value = ifelse(input$charger_type == "DCFC", 5, 20)
     )
