@@ -14,6 +14,7 @@ library(leaflet)
 library(rmapshaper)
 library(shinyBS)
 library(councilR)
+library(shinyWidgets)
 options(tigris_use_cache = TRUE)
 
 backgroundDataPath <- paste0(here::here(),"/data/raw data/MetCouncilTables.xlsx")
