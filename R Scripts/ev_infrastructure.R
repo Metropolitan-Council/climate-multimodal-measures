@@ -1,3 +1,20 @@
+#' Please document inputs
+#'
+#' @param no_chargers 
+#' @param charger_type 
+#' @param charge_power 
+#' @param annual_hours_available 
+#' @param location 
+#' @param project_start 
+#' @param project_lifetime 
+#' @param utilization_rate 
+#' @param average_energy_efficiency 
+#' @param percentage_ICE 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 ev_infrastructure <- function(
                               # ev_type,
                               no_chargers,

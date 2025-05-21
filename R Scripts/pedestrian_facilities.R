@@ -1,3 +1,19 @@
+#' Title
+#'
+#' @param average_daily_traffic 
+#' @param one_way_facility_length 
+#' @param no_key_destinations_25 
+#' @param no_key_destinations_50 
+#' @param location 
+#' @param project_start 
+#' @param project_lifetime 
+#' @param annual_use_days 
+#' @param average_trip_replaced 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 pedestrian_facilities <- function(average_daily_traffic,
                                   one_way_facility_length,
                                   no_key_destinations_25,

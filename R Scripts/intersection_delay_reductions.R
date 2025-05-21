@@ -1,3 +1,17 @@
+#' Title
+#'
+#' @param number_peak_hours 
+#' @param vehicle_per_hour 
+#' @param peak_hour_delay_noBuild 
+#' @param peak_hour_delay_build 
+#' @param location 
+#' @param project_start 
+#' @param project_lifetime 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 intersection_delay_reductions <-
   function(number_peak_hours,
            vehicle_per_hour,

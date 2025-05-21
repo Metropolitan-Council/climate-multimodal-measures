@@ -1,3 +1,18 @@
+#' Title
+#'
+#' @param mobility_mode 
+#' @param added_vmt 
+#' @param project_lifetime 
+#' @param project_start 
+#' @param location 
+#' @param population_3mile 
+#' @param reduction_potential 
+#' @param annual_vmt 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 mobility_hubs <-
   function(mobility_mode,
            added_vmt,

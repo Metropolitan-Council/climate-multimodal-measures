@@ -1,3 +1,15 @@
+#' Title
+#'
+#' @param no_participants 
+#' @param conversion_rate 
+#' @param location 
+#' @param project_start 
+#' @param project_lifetime 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 ev_outreach <- function(no_participants,
                         conversion_rate,
                         location,

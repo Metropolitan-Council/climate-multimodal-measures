@@ -1,3 +1,17 @@
+#' Title
+#'
+#' @param corridor_distance 
+#' @param avg_annual_daily_traffic 
+#' @param avg_corridor_speed_no_build 
+#' @param avg_corridor_speed_build 
+#' @param location 
+#' @param project_start 
+#' @param project_lifetime 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 corridor_speed_improvements <- function(corridor_distance,
                                         avg_annual_daily_traffic,
                                         avg_corridor_speed_no_build,

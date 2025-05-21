@@ -1,3 +1,16 @@
+#' Title
+#'
+#' @param daily_commute_no 
+#' @param project_start 
+#' @param project_lifetime 
+#' @param location 
+#' @param working_days 
+#' @param average_commute 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 employee_commute <- function(daily_commute_no,
                              project_start,
                              project_lifetime,

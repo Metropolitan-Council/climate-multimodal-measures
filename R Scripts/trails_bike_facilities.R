@@ -1,3 +1,20 @@
+#' Title
+#'
+#' @param average_daily_traffic 
+#' @param facility_length_range 
+#' @param no_key_destinations_25 
+#' @param no_key_destinations_50 
+#' @param facility_type 
+#' @param location 
+#' @param project_start 
+#' @param project_lifetime 
+#' @param days_open 
+#' @param length_trip_replaced_biking 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 trails_bike_facilities <- function(average_daily_traffic,
                                    facility_length_range,
                                    no_key_destinations_25,

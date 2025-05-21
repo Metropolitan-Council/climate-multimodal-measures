@@ -1,3 +1,20 @@
+#' Title
+#'
+#' @param fleet 
+#' @param no_vehicles 
+#' @param no_trips 
+#' @param project_lifetime 
+#' @param project_start 
+#' @param location 
+#' @param adjustment_factor 
+#' @param average_occupancy 
+#' @param trip_miles 
+#' @param prct_deadhead_miles 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 shared_mobility <-
   function(fleet,
            no_vehicles,

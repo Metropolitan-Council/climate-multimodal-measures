@@ -1,3 +1,19 @@
+#' Title
+#'
+#' @param ridership_increase 
+#' @param route_type 
+#' @param added_transit 
+#' @param fuel_type 
+#' @param location 
+#' @param project_start 
+#' @param project_lifetime 
+#' @param average_trip_length 
+#' @param adjustment_factor 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 transit_expansion <-
   function(ridership_increase,
            route_type,
