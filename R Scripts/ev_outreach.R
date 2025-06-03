@@ -1,15 +1,24 @@
-#' Title
+#'  Calculate Benefits of EV Outreach Projects 
 #'
-#' @param no_participants 
-#' @param conversion_rate 
-#' @param location 
-#' @param project_start 
-#' @param project_lifetime 
-#'
+#' @param no_participants (numeric), Number of participants in the outreach project.
+#' @param conversion_rate (numeric), Conversion rate of participants to EV owners.
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param project_start (numeric), Year the project starts
+#' @param project_end (numeric), Year the project ends
+#' 
 #' @returns
+#'  A data frame with VMT Reduction (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
 #' @export
 #'
 #' @examples
+#' ev_outreach(
+#' no_participants = 1000,
+#' conversion_rate = 0.04,
+#' location = "Andover",
+#' project_start = 2025,
+#' project_lifetime = 10
+#' )
+
 ev_outreach <- function(no_participants,
                         conversion_rate,
                         location,
@@ -85,3 +94,9 @@ ev_outreach <- function(no_participants,
   
   return(results)
 }
+
+test <- ev_outreach(no_participants = 1000,
+         conversion_rate = 0.1,
+         location = "Andover",
+         project_start = 2025,
+         project_lifetime = 10)

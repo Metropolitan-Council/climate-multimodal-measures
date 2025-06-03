@@ -1,20 +1,30 @@
-#' Title
+#' Calculate Benefits of Shared Mobility Projects
 #'
-#' @param fleet 
-#' @param no_vehicles 
-#' @param no_trips 
-#' @param project_lifetime 
-#' @param project_start 
-#' @param location 
-#' @param adjustment_factor 
-#' @param average_occupancy 
-#' @param trip_miles 
-#' @param prct_deadhead_miles 
+#' @param fleet (character), Type of shared mobility fleet (e.g., "Bike", "Scooter", "Non-EV Rideshares", "EV Rideshares") 
+#' @param no_vehicles (numeric), Number of vehicles in the shared mobility fleet
+#' @param no_trips (numeric), Average number of annual trips per vehicle expected directly associated with the project
+#' @param project_lifetime (numeric), Length of the project in years
+#' @param project_start (numeric), Year the project starts
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param adjustment_factor (numeric), Adjustment factor that accounts for the trips that are displaced by the project; if not provided, defaults to 0.5 for Bikes and Scooters, and 0.83 for Rideshares
+#' @param average_occupancy (numeric), Average occupancy of the shared mobility vehicles; if not provided, defaults to 1 for Bikes and Scooters, and 1.55 for Rideshares
+#' @param trip_miles (numeric), Average trip distance in miles; if not provided, defaults to the average trip distance for the respective fleet type
+#' @param prct_deadhead_miles (numeric), Percentage of deadhead miles for Rideshares; if not provided, defaults to 0.4
 #'
 #' @returns
+#' A data frame with VMT Reduction (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
 #' @export
 #'
 #' @examples
+#' shared_mobility(
+#' fleet = "Bike",
+#' no_vehicles = 100,
+#' no_trips = 10000,
+#' project_lifetime = 5,
+#' project_start = 2025,
+#' location = "Andover"
+#' )
+
 shared_mobility <-
   function(fleet,
            no_vehicles,

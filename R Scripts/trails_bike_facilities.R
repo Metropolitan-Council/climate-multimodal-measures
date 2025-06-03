@@ -1,20 +1,32 @@
-#' Title
-#'
-#' @param average_daily_traffic 
-#' @param facility_length_range 
-#' @param no_key_destinations_25 
-#' @param no_key_destinations_50 
-#' @param facility_type 
-#' @param location 
-#' @param project_start 
-#' @param project_lifetime 
-#' @param days_open 
-#' @param length_trip_replaced_biking 
+#' Calculate Benefits of Multiuse Trails and Bike Facilities Projects
+#'  
+#' @param average_daily_traffic (numeric), Average annual daily traffic on road parallel or adjacent to facility
+#' @param facility_length_range (numeric), Length of the one-way facility in miles, categorized into ranges
+#' @param no_key_destinations_25 (numeric), Number of key destinations within 1/4 mile of the facility
+#' @param no_key_destinations_50 (numeric), Number of key destinations within 1/2 mile of the facility
+#' @param facility_type (character), Type of facility (e.g., "On Street", "New Multiuse", "Conversion")
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param project_start (numeric), Year the project starts
+#' @param project_lifetime (numeric), Lifetime of the project in years
+#' @param days_open (numeric), Number of days the facility is used annually; if not provided, defaults to 214 days
+#' @param length_trip_replaced_biking (numeric), Average trip length replaced by the facility in miles; if not provided, defaults to 3.6 miles
 #'
 #' @returns
+#' A data frame with VMT Reduction (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
 #' @export
 #'
 #' @examples
+#' trails_bike_facilities(
+#' average_daily_traffic = 15000,
+#' facility_length_range = 1.5,
+#' no_key_destinations_25 = 3,
+#' no_key_destinations_50 = 5,
+#' facility_type = "New Multiuse",
+#' location = "Andover",
+#' project_start = 2025,
+#' project_lifetime = 20
+#' )
+
 trails_bike_facilities <- function(average_daily_traffic,
                                    facility_length_range,
                                    no_key_destinations_25,

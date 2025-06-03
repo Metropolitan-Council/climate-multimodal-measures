@@ -1,16 +1,26 @@
-#' Title
+#' Calculate Benefits of Employee Commuting Programs
 #'
-#' @param daily_commute_no 
-#' @param project_start 
-#' @param project_lifetime 
-#' @param location 
-#' @param working_days 
-#' @param average_commute 
+#' @param daily_commute_no (numeric), Number of daily one-way commute trips reduced 
+#' @param project_start (numeric), Year the project starts
+#' @param project_lifetime (numeric), Lifetime of the project in years
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param working_days (numeric), Number of working days per year, default is 260 (5 days a week for 52 weeks)
+#' @param average_commute (numeric), Average one-way commute distance in miles
 #'
 #' @returns
+#'  A data frame with VMT Reduction (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
 #' @export
 #'
 #' @examples
+#' employee_commute(
+#' daily_commute_no = 100,
+#' project_start = 2025,
+#' project_lifetime = 4,
+#' location = 'Andover',
+#' working_days = 255,
+#' average_commute = 11
+#' )
+
 employee_commute <- function(daily_commute_no,
                              project_start,
                              project_lifetime,
@@ -112,3 +122,10 @@ employee_commute <- function(daily_commute_no,
   )
   return(results)
 }
+
+test <- employee_commute(daily_commute_no = 100,
+                             project_start = 2025,
+                             project_lifetime = 4,
+                             location = 'Andover',
+                             working_days = 255,
+                             average_commute = 11)
