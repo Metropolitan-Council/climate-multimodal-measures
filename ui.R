@@ -283,7 +283,7 @@ div(
                     value = 14
                   ),
                   shinyWidgets::autonumericInput(
-                    "added_transit",
+                    "added_transit_vmt",
                     "Increase in Annual Transit VMT (Mile)",
                     #  Default from sample project: MetroTransit Micro G Line Exp
                     value = 1566,
@@ -295,11 +295,21 @@ div(
                     "Average Auto Trip Replaced (Mile)",
                     value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]
                   ),
+                  div(
+                    style = "display: flex; align-items: center;",
                   numericInput(
                     "transit_expansion_adjustment_factor",
                     "Transit Dependency Adjustment Factor",
                     value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]
                   ),
+                  tags$i(
+                    class = "fas fa-question-circle",
+                    style = "margin-left: 5px; cursor: pointer;",
+                    `data-bs-toggle` = "tooltip",
+                    `data-bs-placement` = "right",
+                    title = "Adjustment factor to modify the estimated impact of new or expanded transit services by accounting for the share of riders who own vehicles and could realistically shift from driving to transit"
+                  )
+                ),
                   tags$div(class = "info-box", textOutput("selected_community_type"), ),
                 )
               ), card(uiOutput("transit_expansion_ui"))
@@ -612,7 +622,7 @@ div(
                   numericInput(
                     "intersection_delay_project_lifetime",
                     "Project Lifetime (in years)",
-                    value = 20
+                    value = 7
                   ),
                   numericInput("vehicle_per_hour", "Intersection Vehicle Per Hour", value = 1),
                   numericInput(
@@ -652,7 +662,7 @@ div(
                   numericInput(
                     "corridor_speed_project_lifetime",
                     "Project Lifetime (in years)",
-                    value = 20
+                    value = 7
                   ),
                   numericInput(
                     "avg_annual_daily_traffic",

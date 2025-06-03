@@ -325,8 +325,7 @@ function(input, output, session) {
       fuel_type = input$fuel_type,
       route_type = input$route_type,
       # options in AdjustmentFactorsAndTripLengths
-      added_transit = input$added_transit,
-      # TODO no default in Task 4 Memo CHANGE UI NAME TO ADDED TRANSIT VMT
+      added_transit = input$added_transit_vmt,
       location = input$transit_expansion_location,
       project_start = input$transit_expansion_project_start,
       project_lifetime = input$transit_expansion_project_lifetime,
@@ -334,7 +333,6 @@ function(input, output, session) {
       average_trip_length = input$average_trip_length,
       # default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
       adjustment_factor = input$adjustment_factor # default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
-      # TODO ADD TEXT TO UI TO EXPLAIN ADJUSTMENT FACTOR
     )
   })
   
@@ -417,7 +415,6 @@ function(input, output, session) {
       location = input$corridor_speed_location,
       project_start = input$corridor_speed_project_start,
       project_lifetime = input$corridor_speed_project_lifetime 
-      # TODO Default is 7 I think if this corresponds to traffic management technologies
     )
   })
   
@@ -491,7 +488,6 @@ function(input, output, session) {
       location = input$intersection_delay_location,
       project_start = input$intersection_delay_project_start,
       project_lifetime = input$intersection_delay_project_lifetime 
-      # TODO Default is 7 I think if this corresponds to traffic management technologies
     )
   })
   
@@ -1316,7 +1312,6 @@ function(input, output, session) {
   )
   
   observeEvent(input$fleet, {
-    # TODO Make sure these match with items listed in MetCouncilTables.xlsx
     if (input$fleet == "Scooter") {
       updateNumericInput(session, "average_occupancy", value = 1)
       updateNumericInput(session, "shared_mobility_adjustment_factor", value = 0.5)
@@ -1384,7 +1379,6 @@ function(input, output, session) {
     updateNumericInput(session, "average_energy_efficiency", value = average_energy_efficiency)
     
     # Dynamically update charge_power based on the selected charger_type
-    # TODO Make sure these match with items listed in MetCouncilTables.xlsx
     charge_power <- if (input$charger_type == "DCFC") {
       150 # Default power for DCFC
     } else {
@@ -1396,9 +1390,8 @@ function(input, output, session) {
   })
   
   observeEvent(input$charger_type, {
-    # TODO Make sure these match with items listed in MetCouncilTables.xlsx
     updateNumericInput(session, "utilization_rate",
-                       value = ifelse(input$charger_type == "DCFC", 5, 20)
+                       value = ifelse(input$charger_type == "DCFC", 4, 15)
     )
   })
 }
