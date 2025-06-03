@@ -68,7 +68,6 @@ shared_mobility <-
     }
     
     # Assign Non-EV Rideshares and EV Rideshares fleet
-    # TODO double check values with documentation
     if (fleet == "Non-EV Rideshares" || fleet == "EV Rideshares") {
       if (is.null(trip_miles)) {
         trip_miles <- TripDistances %>% filter(mode_type == "Smartphone ridehailing service") %>% pull(distance_avg)
