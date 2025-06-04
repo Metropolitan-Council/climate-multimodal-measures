@@ -119,7 +119,7 @@ div(
                   ),
                   numericInput(
                     "ev_outreach_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 8
                   ),
                   div(
@@ -196,7 +196,7 @@ div(
                   ),
                   numericInput(
                     "ev_infrastructure_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 10
                   ),
                   # numericInput("utilization_rate", "Utilization", value = .6),
@@ -279,12 +279,12 @@ div(
                   ),
                   numericInput(
                     "transit_expansion_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 14
                   ),
                   shinyWidgets::autonumericInput(
                     "added_transit_vmt",
-                    "Increase in Annual Transit VMT (Mile)",
+                    "Increase in Annual Transit VMT (Miles)",
                     #  Default from sample project: MetroTransit Micro G Line Exp
                     value = 1566,
                     decimalPlaces = 0,
@@ -292,7 +292,7 @@ div(
                   ),
                   numericInput(
                     "average_trip_length",
-                    "Average Auto Trip Replaced (Mile)",
+                    "Average Auto Trip Replaced (Miles)",
                     value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]
                   ),
                   div(
@@ -347,8 +347,8 @@ div(
                     choices = seq(2024, 2050, 1),
                     selected = 2024
                   ),
-                  numericInput("hub_project_lifetime", "Project Lifetime (in years)", value = 20),
-                  numericInput("added_vmt", "Increase in Annual Transit VMT (Mile)", value = 0),
+                  numericInput("hub_project_lifetime", "Project Lifetime (Years)", value = 20),
+                  numericInput("added_vmt", "Increase in Annual Transit VMT (Miles)", value = 0),
                   numericInput(
                     "reduction_potential",
                     "Total VMT Reduction Potential",
@@ -359,7 +359,7 @@ div(
                   ),
                   shinyWidgets::autonumericInput(
                     "annual_vmt",
-                    "Annual VMT per Capita within 3 Mile",
+                    "Annual VMT per Capita Within 3-Mile Radius",
                     value = 10655,
                     decimalPlaces = 0,
                     align = "left",
@@ -395,10 +395,10 @@ div(
                     choices = seq(2024, 2050, 1),
                     selected = 2024
                   ),
-                  numericInput("project_lifetime", "Project Lifetime (in years)", value = 4),
+                  numericInput("project_lifetime", "Project Lifetime (Years)", value = 4),
                   numericInput(
                     "average_commute",
-                    "Average One-way Commute Trip Distance (Mile)",
+                    "Average One-way Commute Trip Distance (Miles)",
                     value = 10.9
                   ),
                   numericInput("working_days", "Annual Number of Working Days", value = 260),
@@ -441,7 +441,7 @@ div(
                   ),
                   numericInput(
                     "shared_mobility_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 8
                   ),
                   numericInput(
@@ -451,7 +451,7 @@ div(
                   ),
                   numericInput(
                     "trip_miles",
-                    "Average Length of Vehicle Trip Displaced (Mile)",
+                    "Average Length of Vehicle Trip Displaced (Miles)",
                     value = 20
                   ),
                   numericInput(
@@ -460,7 +460,7 @@ div(
                     value = 1
                   ),
                   numericInput("average_occupancy", "Average Occupancy per Vehicle", value = 20),
-                  numericInput("prct_deadhead_miles", "Percent of Deadhead Miles", value = .83),
+                  numericInput("prct_deadhead_miles", "Percentage of Deadhead Miles (%)", value = .83),
                   tags$div(
                     class = "info-box",
                     textOutput("selected_community_type_sharedMobility")
@@ -488,18 +488,18 @@ div(
                   ),
                   numericInput(
                     "pedestrian_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 20
                   ),
                   shinyWidgets::autonumericInput(
                     "average_daily_traffic",
-                    "Average Annual Daily traffic (two way) on road parallel or adjacent to facility",
+                    "Average Annual Daily Traffic (two-way) on road parallel or adjacent to facility",
                     value = 6000,
                     decimalPlaces = 0,
                     align = "left",
                     emptyInputBehavior = "zero"
                   ),
-                  numericInput("one_way_facility_length", "Facility Length", value = 1),
+                  numericInput("one_way_facility_length", "Facility Length (Miles)", value = 1),
                   numericInput(
                     "no_key_destinations_25",
                     "Number of Key Destinations within 0.25 mile",
@@ -513,7 +513,7 @@ div(
                   numericInput("annual_use_days", "Facility Annual Days of Use", value = 214),
                   numericInput(
                     "average_trip_replaced",
-                    "Average Length of Auto Trip Replaced (Mile)",
+                    "Average Length of Auto Trip Replaced (Miles)",
                     value = .86
                   ),
                   tags$div(
@@ -552,7 +552,7 @@ div(
                   ),
                   numericInput(
                     "trails_bike_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 20
                   ),
                   shinyWidgets::autonumericInput(
@@ -583,7 +583,7 @@ div(
                     style = "display: flex; align-items: center;",
                     numericInput(
                       "length_trip_replaced_biking",
-                      "Average Length of Auto Trip Replaced (Mile)",
+                      "Average Length of Auto Trip Replaced (Miles)",
                       value = 3.6
                     ),
                     tags$i(
@@ -621,7 +621,7 @@ div(
                   ),
                   numericInput(
                     "intersection_delay_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 7
                   ),
                   numericInput("vehicle_per_hour", "Intersection Vehicle Per Hour", value = 1),
@@ -652,7 +652,7 @@ div(
                     choices = unique(CommunityType$CTU_NAME),
                     selected = CommunityType$CTU_NAME[2]
                   ),
-                  numericInput("corridor_distance", "Corridor Distance (Mile)", value = 1),
+                  numericInput("corridor_distance", "Corridor Distance (Miles)", value = 1),
                   selectInput(
                     "corridor_speed_project_start",
                     "Year",
@@ -661,7 +661,7 @@ div(
                   ),
                   numericInput(
                     "corridor_speed_project_lifetime",
-                    "Project Lifetime (in years)",
+                    "Project Lifetime (Years)",
                     value = 7
                   ),
                   numericInput(
@@ -757,7 +757,7 @@ div(
                   tags$li(strong("P:"), "Charger power level (e.g., 50 kW, 150 kW)"),
                   tags$li(
                     strong("U:"),
-                    "Average charger utilization rate dictated by charger type"
+                    "Average charger utilization rate based on charger type"
                   ),
                   tags$li(
                     strong("H:"),
@@ -775,11 +775,11 @@ div(
                 tags$ul(
                   tags$li(
                     strong("CIL or H:"),
-                    " Carbon intensity (CI) that accounts for LD vehicle WTW emissions."
+                    " Carbon intensity (CI) that accounts for LD vehicle WTW emissions"
                   ),
                   tags$li(
                     strong("CIE:"),
-                    " Carbon intensity of electricity grid; default values can be retrieved from the GREET model."
+                    " Carbon intensity of electricity grid; default values can be retrieved from the GREET model"
                   )
                 )
               ),
@@ -790,7 +790,7 @@ div(
                 tags$ul(
                   tags$li(
                     strong("R:"),
-                    "Increase in annual transit ridership; for new services, use projected total riders in a year instead."
+                    "Increase in annual transit ridership; for new services, use projected total riders in a year instead"
                   ),
                   tags$li(
                     strong("A:"),
@@ -804,11 +804,11 @@ div(
                 tags$ul(
                   tags$li(
                     strong("CIL"),
-                    "Carbon intensity that accounts for gasoline vehicle WTW emissions."
+                    "Carbon intensity that accounts for gasoline vehicle WTW emissions"
                   ),
                   tags$li(
                     strong("Added Transit VMT"),
-                    "Added Transit VMT = Additional transit VMT (annual) due to service expansion "
+                    "Added Transit VMT = Additional transit VMT (annual) due to service expansion"
                   ),
                   tags$li(
                     strong("CIB"),
@@ -823,11 +823,11 @@ div(
                 tags$ul(
                   tags$li(
                     strong("VE:"),
-                    "Total VMT reduction potential of various mobility elements."
+                    "Total VMT reduction potential of various mobility elements"
                   ),
                   tags$li(
                     strong("P:"),
-                    "Population within the service area (within approximately 1 mile of the identified hub location)."
+                    "Population within the service area (within approximately 1 mile of the identified hub location)"
                   ),
                   tags$li(
                     strong("VMTPC:"),
@@ -883,35 +883,35 @@ div(
                 tags$ul(
                   tags$li(
                     strong("V:"),
-                    "Number of vehicles or equipment directly associated or dispatched with the project."
+                    "Number of vehicles or equipment directly associated or dispatched with the project"
                   ),
                   tags$li(
                     strong("T:"),
-                    "Average number of annual trips per vehicle expected directly associated with the project."
+                    "Average number of annual trips per vehicle expected directly associated with the project"
                   ),
                   tags$li(
                     strong("L:"),
-                    "Estimated length of average vehicle trip directly associated with the project."
+                    "Estimated length of average vehicle trip directly associated with the project"
                   )
                 ),
                 p(HTML("Auto VMT Displaced (annual) = V × T × L × A × O × (1- DM)")),
                 tags$ul(
                   tags$li(
                     strong("V:"),
-                    "Number of vehicles or equipment directly associated or dispatched with the project."
+                    "Number of vehicles or equipment directly associated or dispatched with the project"
                   ),
                   tags$li(
                     strong("T:"),
-                    "Average number of annual trips per vehicle expected directly associated with the project."
+                    "Average number of annual trips per vehicle expected directly associated with the project"
                   ),
                   tags$li(
                     strong("L:"),
-                    "Estimated length of average vehicle trip directly associated with the project."
+                    "Estimated length of average vehicle trip directly associated with the project"
                   )
                 ),
                 tags$li(
                   strong("A:"),
-                  "Adjustment factor that accounts for the trips that are displaced by the project."
+                  "Adjustment factor that accounts for the trips that are displaced by the project"
                 ),
                 tags$li(
                   strong("O:"),
@@ -919,7 +919,7 @@ div(
                 ),
                 tags$li(
                   strong("DM:"),
-                  "Percentage of deadhead miles out of total vehicle miles."
+                  "Percentage of deadhead miles out of total vehicle miles"
                 )
               ),
               tabPanel(
@@ -929,19 +929,19 @@ div(
                 tags$ul(
                   tags$li(
                     strong("D:"),
-                    "Annual days of use of new facility; default is 214 days."
+                    "Annual days of use of new facility; default is 214 days"
                   ),
                   tags$li(
                     strong("AADT:"),
-                    "Average annual daily traffic (two-way) on road parallel or adjacent to facility."
+                    "Average annual daily traffic (two-way) on road parallel or adjacent to facility"
                   ),
                   tags$li(
                     strong("M:"),
-                    "Mode shift factor (see table below)."
+                    "Mode shift factor (see table below)"
                   ),
                   tags$li(
                     strong("C:"),
-                    "Credit for key destinations near facility (see table below)."
+                    "Credit for key destinations near facility (see table below)"
                   ),
                   tags$li(
                     strong("L:"),
@@ -963,19 +963,19 @@ div(
                 tags$ul(
                   tags$li(
                     strong("D:"),
-                    "Annual days of use of new facility; default is 214 days."
+                    "Annual days of use of new facility; default is 214 days"
                   ),
                   tags$li(
                     strong("AADT:"),
-                    "Average annual daily traffic (two-way) on road parallel or adjacent to facility."
+                    "Average annual daily traffic (two-way) on road parallel or adjacent to facility"
                   ),
                   tags$li(
                     strong("M:"),
-                    "Mode shift factor (see table below)."
+                    "Mode shift factor (see table below)"
                   ),
                   tags$li(
                     strong("C:"),
-                    "Credit for key destinations near facility (see table below)."
+                    "Credit for key destinations near facility (see table below)"
                   ),
                   tags$li(
                     strong("GFA:"),
@@ -1013,15 +1013,15 @@ div(
                 tags$ul(
                   tags$li(
                     strong("AADT no build:"),
-                    "Annual average daily traffic under the no-build condition."
+                    "Annual average daily traffic under the no-build condition"
                   ),
                   tags$li(
                     strong("EID:"),
-                    "Elasticity of induced VMT due to improved corridor speed; default value can be found in Table 26, with justification further explained in the following section."
+                    "Elasticity of induced VMT due to improved corridor speed; default value can be found in Table 26, with justification further explained in the following section"
                   ),
                   tags$li(
                     strong("K1:"),
-                    "Running fuel use factor, in gallon/hour. The default assumes LD gasoline vehicles only: 000019137 × cruise-speed² - 0.0020660 × cruise-speed + 0.088916."
+                    "Running fuel use factor, in gallon/hour. The default assumes LD gasoline vehicles only: 000019137 × cruise-speed² - 0.0020660 × cruise-speed + 0.088916"
                   )
                 ),
                 p(HTML("GHG Reduced (kg) = Fuel Consumption Reduced (Gallons) × 9.915"))

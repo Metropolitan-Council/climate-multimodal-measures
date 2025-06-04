@@ -979,10 +979,10 @@ function(input, output, session) {
     datatable(data.frame(
       Source = c(
         "Imagine 2050 Community Designations",
-        "US Census",
+        "U.S. Census",
         "Met Council Scenario Planning Tool ",
         "GREET 2023",
-        "Metro Transit Data",
+        "Metro Transit",
         "CARB",
         "Met Council Transit Experience and Satisfaction Survey",
         "Mobility Hub Planning and Implementation Guidebook",
@@ -995,7 +995,7 @@ function(input, output, session) {
         "Community Designations Data",
         "Population Data",
         "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
-        "Electrcity Emissions",
+        "Electricity Emissions",
         "Average Auto Trip Replaced",
         "Transit Dependency Adjustment Factors",
         "Transit Dependency Adjustment Factors",
