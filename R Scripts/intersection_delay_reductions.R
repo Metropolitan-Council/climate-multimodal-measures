@@ -23,6 +23,7 @@
 
 intersection_delay_reductions <-
   function(number_peak_hours,
+           location,
            vehicle_per_hour,
            peak_hour_delay_noBuild,
            peak_hour_delay_build,

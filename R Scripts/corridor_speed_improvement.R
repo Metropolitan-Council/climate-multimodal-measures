@@ -22,6 +22,7 @@
 #' )
 
 corridor_speed_improvements <- function(corridor_distance,
+                                        location,
                                         avg_annual_daily_traffic,
                                         avg_corridor_speed_no_build,
                                         avg_corridor_speed_build,
