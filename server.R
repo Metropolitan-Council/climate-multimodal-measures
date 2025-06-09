@@ -23,7 +23,6 @@ function(input, output, session) {
       working_days = input$working_days,
       # default should be 260 days
       average_commute = input$average_commute 
-      # TODO default should be based on the mapping the location and what that maps to in CommunityTypeShape
     )
   })
   
@@ -1008,6 +1007,33 @@ function(input, output, session) {
     ))
   })
   ################################# Reactions/Events#########################################
+  
+  observe({
+    req(input$location)
+    
+    default_commute <- 10.9
+    
+    community_type <- CommunityType %>%
+      filter(CTU_NAME == input$location) %>%
+      pull(MappedCommunity) %>%
+      na.omit() %>%
+      unique()
+    
+    if (length(community_type) != 1) {
+      avg_commute <- default_commute
+    } else {
+      commute_row <- VMTByCommunityType %>% filter(CD == community_type)
+      
+      avg_commute <- if (nrow(commute_row) > 0) {
+        commute_row$vmt / 2
+      } else {
+        default_commute
+      }
+    }
+    
+    updateNumericInput(session, "average_commute", value = round(avg_commute, 1))
+  })
+  
   
   observeEvent(input$transit_expansion_location, {
     # Get the selected community type

@@ -399,7 +399,9 @@ div(
                   numericInput(
                     "average_commute",
                     "Average One-way Commute Trip Distance (Miles)",
-                    value = 10.9
+                    value = NA,
+                    min = 0,
+                    step = 0.1
                   ),
                   numericInput("working_days", "Annual Number of Working Days", value = 260),
                   tags$div(
