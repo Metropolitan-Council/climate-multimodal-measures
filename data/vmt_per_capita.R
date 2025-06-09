@@ -1,5 +1,3 @@
-# TODO please comment each transformation
-
 AnnualVMTCommunityType <- AnnualVMT %>%
   left_join(CommunityTypeShape) %>% # Join with community type shape data
   group_by(year, MappedCommunity) %>% # Group by year and community type
