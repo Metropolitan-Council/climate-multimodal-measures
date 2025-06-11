@@ -1,5 +1,3 @@
-# TODO add source for 1.21 value, why multiplying by 1000
-
 FleetDataCommunityType <- FleetData %>%
   rename(CTU_NAME = ctu) %>%
   left_join(CommunityTypeShape) # Join with community type shape data
@@ -31,7 +29,7 @@ DieselCommercialCommunityType <- FleetDataCommunityType %>%
     .groups = "drop"
   ) %>%
   mutate(year = as.numeric(year)) %>%
-  mutate(EF = (total_dir_ghg_diesel / total_vmt_diesel) * 1000 * 1.21) %>% # Calculate EF for diesel buses 
+  mutate(EF = (total_dir_ghg_diesel / total_vmt_diesel) * 1000 * 1.21) %>% # Calculate EF for diesel buses (MOVES4)
   group_by(MappedCommunity) %>%
   complete(year = full_seq(year, 1)) %>% # Ensure all years are present
   mutate(EF = zoo::na.approx(EF, rule = 2)) %>% # Interpolate missing values
