@@ -1,3 +1,30 @@
+#' Calculate Benefits of Transit Expansion Projects
+#'
+#' @param ridership_increase (numeric), Increase in annual transit ridership
+#' @param route_type (character), Type of transit route (e.g., "Suburban Local", "Commuter Rail", "Bus Rapid Transit")
+#' @param added_transit (numeric), Additional transit service added, used to calculate GHG impact
+#' @param fuel_type (character), Type of fuel used by the added transit service (e.g., "Diesel", "Electric")
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param project_start (numeric), Year the project starts
+#' @param project_lifetime (numeric), Length of the project in years 
+#' @param average_trip_length (numeric), Length of average auto trip replaced  
+#' @param adjustment_factor (numeric), Adjustment factor to account for transit dependency
+#'
+#' @returns
+#' A data frame with VMT Reduction (miles), GHG Reduction (MT CO₂), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
+#' @export
+#'
+#' @examples
+#' transit_expansion(
+#' ridership_increase = 10000,
+#' route_type = "Suburban Local",
+#' added_transit = 50000,
+#' fuel_type = "Diesel",
+#' location = "Andover",
+#' project_start = 2025,
+#' project_lifetime = 14
+#' )
+
 transit_expansion <-
   function(ridership_increase,
            route_type,

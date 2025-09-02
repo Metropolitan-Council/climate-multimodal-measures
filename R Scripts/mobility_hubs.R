@@ -1,3 +1,29 @@
+#' Calculate Benefits of Mobility Hub Projects
+#'
+#' @param mobility_mode (character), Type of mobility mode (e.g., "Pedestrian Facility", "Bike Share", "carpool") for which the project is designed
+#' @param added_vmt (numeric), Additional VMT added by the project, used to calculate GHG impact
+#' @param project_lifetime (numeric), Length of the project in years
+#' @param project_start (numeric), Year the project starts
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param population_3mile (numeric), Population within a 3-mile radius of the project location, used to calculate VMT reduction potential
+#' @param reduction_potential (numeric), Potential reduction in VMT due to the project, if not provided, it will be calculated based on the mobility mode
+#' @param annual_vmt (numeric), Average annual VMT per capita within the service area
+#' 
+#' @returns
+#' #' A data frame with VMT Reduction (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
+#'
+#' @export
+#'
+#' @examples
+#' mobility_hubs(
+#'  mobility_mode = "Microtransit",
+#'  added_vmt = 1000,
+#'  project_lifetime = 20,
+#'  project_start = 2025,
+#'  location = "Andover",
+#'  population_3mile = 5000,
+#')
+
 mobility_hubs <-
   function(mobility_mode,
            added_vmt,

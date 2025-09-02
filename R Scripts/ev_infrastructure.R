@@ -1,5 +1,36 @@
+#'  Calculate Benefits of Public Infrastructure Projects 
+#'
+#' @param no_chargers (numeric), Number of chargers of a certain power level
+#' @param charger_type (logical), DCFC or Level 2
+#' @param charge_power (numeric), Power of the charger in kW
+#' @param annual_hours_available (numeric), Annual hours the charger is available for use
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param project_start (numeric), Year the project starts
+#' @param project_lifetime (numeric), Lifetime of the project in years
+#' @param utilization_rate (numeric), Average charger utilization rate; the percentage of time when a charger is actively in use
+#' @param average_energy_efficiency (numeric), Average energy efficiency of the vehicle type in Wh per mile; if not provided, defaults to Light-Duty vehicle efficiency
+#' @param percentage_ICE (numeric), Percentage of Internal Combustion Engine vehicles in the fleet; if not provided, defaults to the percentage from the closest year in the fleet data
+#'
+#' @returns
+#'  A data frame with VMT Reduction (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
+#' @export
+#'
+#' @examples
+#' ev_infrastructure(
+#'  no_chargers = 10,
+#'  charger_type = "DCFC",
+#'  charge_power = 150,
+#'  annual_hours_available = 8760,
+#'  location = "Andover",
+#'  project_start = 2025,
+#'  project_lifetime = 10,
+#'  utilization_rate = 3.75,
+#'  average_energy_efficiency = 378,
+#' percentage_ICE = .99
+#' )
+
 ev_infrastructure <- function(
-                              # ev_type,
+                              # ev_type, #commented in case we want to include MD later 
                               no_chargers,
                               charger_type,
                               charge_power,
@@ -86,13 +117,6 @@ ev_infrastructure <- function(
     # Convert percentage to a fraction for calculations
     current_percentage_ICE_fraction <- current_percentage_ICE / 100
     
-    print(paste("utilization rate: ", utilization_rate))
-    print(paste("no_chargers: ", no_chargers))
-    print(paste("charge_power: ", charge_power))
-    print(paste("annual_hours_available: ", annual_hours_available))
-    print(paste("average_energy_efficiency: ", average_energy_efficiency))
-    print(paste("current_percentage_ICE_fraction: ", current_percentage_ICE_fraction))
-    
     # Calculate VMT displaced for the current year
     vmt_displaced_year <- (no_chargers * charge_power * utilization_rate * annual_hours_available) / 
       average_energy_efficiency * current_percentage_ICE_fraction
@@ -139,3 +163,15 @@ ev_infrastructure <- function(
   )
   return(results)
 }
+
+test <- ev_infrastructure(
+  no_chargers = 10,
+  charger_type = "DCFC",
+  charge_power = 150,
+  annual_hours_available = 8760,
+  location = "Andover",
+  project_start = 2025,
+  project_lifetime = 10,
+  utilization_rate = 3.75,
+  average_energy_efficiency = 378,
+  percentage_ICE = .99)

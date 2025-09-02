@@ -1,9 +1,32 @@
+#' Calculate Benefits of Intersection Delay Reduction Projects 
+#'
+#' @param number_peak_hours (numeric), Number of peak hours per day where delay is reduced
+#' @param vehicle_per_hour (numeric), Number of vehicles per hour during peak hours
+#' @param peak_hour_delay_noBuild (numeric), Peak Hour Delay Per Vehicle under No-Build Condition
+#' @param peak_hour_delay_build (numeric), Peak Hour Delay Per Vehicle under Build Condition
+#' @param project_start (numeric), Year the project starts
+#' @param project_lifetime (numeric), Year the project ends
+#' 
+#' @returns
+#' A data frame with Fuel Consumption (gallons), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
+#' @export
+#'
+#' @examples
+#' intersection_delay_reductions(
+#' number_peak_hours = 2,
+#' vehicle_per_hour = 1147,
+#' peak_hour_delay_noBuild = 0.03,
+#' peak_hour_delay_build = 0.015,
+#' project_start = 2025,
+#' project_lifetime = 7
+#')
+
 intersection_delay_reductions <-
   function(number_peak_hours,
+           location,
            vehicle_per_hour,
            peak_hour_delay_noBuild,
            peak_hour_delay_build,
-           location,
            project_start,
            project_lifetime){
     

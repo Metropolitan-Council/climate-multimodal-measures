@@ -1,7 +1,7 @@
 AnnualVMTCommunityType <- AnnualVMT %>%
-  left_join(CommunityTypeShape) %>%
-  group_by(year, MappedCommunity) %>%
-  summarise(vmt = sum(vmt))
+  left_join(CommunityTypeShape) %>% # Join with community type shape data
+  group_by(year, MappedCommunity) %>% # Group by year and community type
+  summarise(vmt = sum(vmt)) # Summarise total VMT by community type
 
 population <- get_acs(
   geography = "tract",
@@ -10,9 +10,9 @@ population <- get_acs(
   geometry = TRUE,
   cache_table = TRUE
 ) %>%
-  sf::st_transform('+proj=longlat +datum=WGS84')
+  sf::st_transform("+proj=longlat +datum=WGS84") # Get census tract population data for Minnesota
 
-population <- ms_simplify(population, keep = 0.05, keep_shapes = TRUE)
+population <- ms_simplify(population, keep = 0.05, keep_shapes = TRUE) # Simplify the geometry of census tracts
 
 CommunityType <- CommunityType %>%
   mutate(
@@ -27,26 +27,26 @@ CommunityType <- CommunityType %>%
         "Agricultural",
         "Non-Council Area"
       ) ~ "Rural / Non-Council",
-      TRUE ~ NA_character_  
-    )
+      TRUE ~ NA_character_
+    ) # Map community types to broader categories
   )
 
-population <- st_transform(population, st_crs(CommunityType))
-joined_data <- st_join(population, CommunityType, join = st_intersects)
-intersected <- st_intersection(population %>% select(GEOID), CommunityType)
-intersected$intersection_area <- st_area(intersected)
+population <- st_transform(population, st_crs(CommunityType)) # Transform population data to match the CRS of CommunityType
+joined_data <- st_join(population, CommunityType, join = st_intersects) # Join population data with community type data based on spatial intersection
+intersected <- st_intersection(population %>% select(GEOID), CommunityType) # Perform spatial intersection to get overlapping areas
+intersected$intersection_area <- st_area(intersected) # Calculate the area of the intersection
 
 assigned_community <- intersected %>%
-  group_by(GEOID) %>%
-  slice_max(order_by = intersection_area, n = 1) %>%
+  group_by(GEOID) %>% # Group by GEOID to assign community type
+  slice_max(order_by = intersection_area, n = 1) %>% # Select the community type with the largest intersection area
   ungroup() %>%
-  select(GEOID, MappedCommunity)
+  select(GEOID, MappedCommunity) # Select GEOID and Mapped Community - output is an assigned community type per census tract
 
 assigned_community <- as.data.frame(assigned_community)
-census_tracts_with_community <- left_join(population, assigned_community, by = "GEOID")
+census_tracts_with_community <- left_join(population, assigned_community, by = "GEOID") # Join census tract population data with assigned community types
 
-VMTPerCapitaByCommunityType <- census_tracts_with_community %>%
+VMTPerCapitaByCommunityType <- census_tracts_with_community %>% 
   group_by(MappedCommunity) %>%
   summarise(estimate = sum(estimate)) %>%
   left_join(AnnualVMTCommunityType) %>%
-  mutate(VMTperCapita = vmt / estimate)
+  mutate(VMTperCapita = vmt / estimate) # Calculate VMT per capita by community type

@@ -1,3 +1,30 @@
+#' Calculate Benefits of Pedestrian Facility Projects
+#'
+#' @param average_daily_traffic (numeric), Average annual daily traffic on road parallel or adjacent to facility
+#' @param one_way_facility_length (numeric), Length of the one-way facility in miles
+#' @param no_key_destinations_25 (numeric), Number of key destinations within 1/4 mile of the facility 
+#' @param no_key_destinations_50 (numeric), Number of key destinations within 1/2 mile of the facility
+#' @param location (character), CTU name of the community where the project is located, used to assign community type
+#' @param project_start (numeric), Year the project starts
+#' @param project_lifetime (numeric), Lifetime of the project in years
+#' @param annual_use_days (numeric), Number of days the facility is used annually; if not provided, defaults to 214 days
+#' @param average_trip_replaced (numeric), Average trip length replaced by the facility in miles; if not provided, defaults to the average walking trip distance from TripDistances dataset
+#'
+#' @returns
+#' A data frame with VMT Reduction (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
+#' @export
+#'
+#' @examples
+#' pedestrian_facilities(
+#' average_daily_traffic = 6000,
+#' one_way_facility_length = 1,
+#' no_key_destinations_25  = 3,
+#' no_key_destinations_50 = 5,
+#' location = "Andover",
+#' project_start = 2025,
+#' project_lifetime = 20
+#' )
+
 pedestrian_facilities <- function(average_daily_traffic,
                                   one_way_facility_length,
                                   no_key_destinations_25,

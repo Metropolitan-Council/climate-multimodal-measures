@@ -1,8 +1,31 @@
+#' Calculate Benefits of Corridor Speed Improvement Projects 
+#'
+#' @param corridor_distance (numeric), Distance of the corridor in miles
+#' @param avg_annual_daily_traffic (numeric), Average annual daily traffic under the no-build scenario
+#' @param avg_corridor_speed_no_build (numeric), Average corridor speed under the no-build scenario in mph
+#' @param avg_corridor_speed_build (numeric), Average corridor speed under the build scenario in mph
+#' @param project_start (numeric), Year the project starts
+#' @param project_lifetime (numeric), Lifetime of the project in years
+#'
+#' @returns 
+#' A data frame with Fuel Consumption (gallons), Induced Vehicle Miles (miles), GHG Reduction (MT CO2), and Social Cost of Carbon ($) Reduction for each year of the project, including totals.
+#' @export 
+#'
+#' @examples 
+#'   corridor_speed_improvement(
+#'   corridor_distance = 10,
+#'   avg_annual_daily_traffic = 20000,
+#'   avg_corridor_speed_no_build = 25,
+#'   avg_corridor_speed_build = 35,
+#'   project_start = 2025,
+#'   project_lifetime = 7
+#' )
+
 corridor_speed_improvements <- function(corridor_distance,
+                                        location,
                                         avg_annual_daily_traffic,
                                         avg_corridor_speed_no_build,
                                         avg_corridor_speed_build,
-                                        location,
                                         project_start,
                                         project_lifetime) {
   service_days = 260 
@@ -79,3 +102,10 @@ corridor_speed_improvements <- function(corridor_distance,
   
   return(results)
 }
+
+test <- corridor_speed_improvements(corridor_distance = 5,
+                                        avg_annual_daily_traffic = 100,
+                                        avg_corridor_speed_no_build = 50,
+                                        avg_corridor_speed_build = 75,
+                                        project_start = 2025,
+                                        project_lifetime = 10)
