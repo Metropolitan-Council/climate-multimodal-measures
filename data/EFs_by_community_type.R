@@ -11,7 +11,7 @@ DieselEFsCommunityType <- FleetDataCommunityType %>%
     total_dir_ghg_diesel = sum(dir_ghg, na.rm = TRUE), # Sum direct GHG emissions for diesel vehicles
     .groups = "drop"
   ) %>%
-  mutate(year = as.numeric(year)) %>% 
+  mutate(year = as.numeric(year)) %>%
   mutate(EF = (total_dir_ghg_diesel / total_vmt_diesel) * 1000 * 1.21) %>% # Calculate EF for diesel vehicles
   group_by(MappedCommunity) %>%
   complete(year = full_seq(year, 1)) %>% # Ensure all years are present
@@ -25,7 +25,7 @@ DieselCommercialCommunityType <- FleetDataCommunityType %>%
   group_by(MappedCommunity, year) %>% # Group by community and year
   summarise(
     total_vmt_diesel = sum(vmt, na.rm = TRUE), # Sum VMT for diesel buses
-    total_dir_ghg_diesel = sum(dir_ghg, na.rm = TRUE),# Sum direct GHG emissions for diesel buses
+    total_dir_ghg_diesel = sum(dir_ghg, na.rm = TRUE), # Sum direct GHG emissions for diesel buses
     .groups = "drop"
   ) %>%
   mutate(year = as.numeric(year)) %>%

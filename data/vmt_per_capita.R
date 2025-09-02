@@ -45,7 +45,7 @@ assigned_community <- intersected %>%
 assigned_community <- as.data.frame(assigned_community)
 census_tracts_with_community <- left_join(population, assigned_community, by = "GEOID") # Join census tract population data with assigned community types
 
-VMTPerCapitaByCommunityType <- census_tracts_with_community %>% 
+VMTPerCapitaByCommunityType <- census_tracts_with_community %>%
   group_by(MappedCommunity) %>%
   summarise(estimate = sum(estimate)) %>%
   left_join(AnnualVMTCommunityType) %>%

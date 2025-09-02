@@ -297,19 +297,19 @@ div(
                   ),
                   div(
                     style = "display: flex; align-items: center;",
-                  numericInput(
-                    "transit_expansion_adjustment_factor",
-                    "Transit Dependency Adjustment Factor",
-                    value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]
+                    numericInput(
+                      "transit_expansion_adjustment_factor",
+                      "Transit Dependency Adjustment Factor",
+                      value = AdjustmentFactorsAndTripLengths$adjustment_factor[1]
+                    ),
+                    tags$i(
+                      class = "fas fa-question-circle",
+                      style = "margin-left: 5px; cursor: pointer;",
+                      `data-bs-toggle` = "tooltip",
+                      `data-bs-placement` = "right",
+                      title = "Adjustment factor to modify the estimated impact of new or expanded transit services by accounting for the share of riders who own vehicles and could realistically shift from driving to transit"
+                    )
                   ),
-                  tags$i(
-                    class = "fas fa-question-circle",
-                    style = "margin-left: 5px; cursor: pointer;",
-                    `data-bs-toggle` = "tooltip",
-                    `data-bs-placement` = "right",
-                    title = "Adjustment factor to modify the estimated impact of new or expanded transit services by accounting for the share of riders who own vehicles and could realistically shift from driving to transit"
-                  )
-                ),
                   tags$div(class = "info-box", textOutput("selected_community_type"), ),
                 )
               ), card(uiOutput("transit_expansion_ui"))
