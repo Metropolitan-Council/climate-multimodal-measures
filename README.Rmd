@@ -101,9 +101,9 @@ Data sources, including elasticites and default values, are available in two Exc
 - [MetCouncilTables.xlsx](data/raw data/MetCouncilTables.xlsx)
 - [input_default_values_sources.xlsx](data/raw data/input_default_values_sources.xlsx)
 
-<details>
-<summary>Key data sources</summary>
-
+<details>  
+  
+<summary>Key data sources</summary>  
 
 ```{r results='asis'}
 source_citations %>% 
