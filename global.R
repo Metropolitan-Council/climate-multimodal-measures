@@ -24,7 +24,9 @@ for (sheet in backgroundDataNames) {
   assign(sheet, read_excel(backgroundDataPath, sheet = sheet), envir = .GlobalEnv)
 }
 
-FleetData <- read_xlsx(paste0(here::here(), "/data/raw/FleetData.xlsx"))
+FleetData <- read_xlsx(paste0(here::here(), "/data/raw/FleetData.xlsx")) %>% 
+  filter(!mode %in% c("RU", "RI"))
+
 CommunityDesignation <- st_read(paste0(here::here(), "/data/raw/PROPOSED2050COMMUNITYDESIGNATIONS.gpkg")) %>%
   rename(COMDESNAME = CD2050)
 CommunityType <- CommunityDesignation
