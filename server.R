@@ -974,95 +974,112 @@ function(input, output, session) {
     )
   })
   ###################### Sources #########################################################
-
+  
   output$data_sources_table <- renderDT({
+    
+    source_table <- 
+      source_citations %>% 
+      select(-sheet) %>% 
+      bind_rows(
+        data.frame(
+          Source = c(
+            "Imagine 2050 Community Designations",
+            "U.S. Census",
+            "Met Council Scenario Planning Tool ",
+            "GREET 2023",
+            "Metro Transit",
+            "CARB",
+            "Met Council Transit Experience and Satisfaction Survey",
+            "Mobility Hub Planning and Implementation Guidebook",
+            "CARB 2018 Clean Miles Standard",
+            "CARB 2018 Clean Miles Standard ",
+            "EV WATTS Charging Station Dashboard Q4-23",
+            "Barr, Lawrence C. Testing for the significance of induced highway travel demand in metropolitan areas"
+          ),
+          Description = c(
+            "Metropoitan Council Imagine 2050 Community Designations Data",
+            "Population Data",
+            "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
+            "Electricity Emissions",
+            "Average Auto Trip Replaced",
+            "Transit Dependency Adjustment Factors",
+            "Transit Dependency Adjustment Factors",
+            "Total VMT Reduction Potential",
+            "Percentage of deadhead miles",
+            "Average Occupancy per Vehicle",
+            "EV Charge Utilization Rates",
+            "Elasticity of induced VMT due to improved corridor speed"
+          )
+        ) )
+    
+    
     datatable(
-      rownames = FALSE, 
-      data.frame(
-      Source = c(
-        "Imagine 2050 Community Designations",
-        "U.S. Census",
-        "Met Council Scenario Planning Tool ",
-        "GREET 2023",
-        "Metro Transit",
-        "CARB",
-        "Met Council Transit Experience and Satisfaction Survey",
-        "Mobility Hub Planning and Implementation Guidebook",
-        "CARB 2018 Clean Miles Standard",
-        "CARB 2018 Clean Miles Standard ",
-        "EV WATTS Charging Station Dashboard Q4-23",
-        "Barr, Lawrence C. Testing for the significance of induced highway travel demand in metropolitan areas"
-      ),
-      Description = c(
-        "Metropoitan Council Imagine 2050 Community Designations Data",
-        "Population Data",
-        "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
-        "Electricity Emissions",
-        "Average Auto Trip Replaced",
-        "Transit Dependency Adjustment Factors",
-        "Transit Dependency Adjustment Factors",
-        "Total VMT Reduction Potential",
-        "Percentage of deadhead miles",
-        "Average Occupancy per Vehicle",
-        "EV Charge Utilization Rates",
-        "Elasticity of induced VMT due to improved corridor speed"
-      )
-    ))
+      source_table,
+      escape = FALSE, # Enables rendering HTML
+      rownames = FALSE,
+      options = list(
+        dom = "ti", # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 50,  # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
+      ))
+    
   })
   ################################# Reactions/Events #########################################
-
+  
   observe({
     req(input$location)
-
+    
     default_commute <- 10.9
-
+    
     community_type <- CommunityType %>%
       filter(CTU_NAME == input$location) %>%
       pull(MappedCommunity) %>%
       na.omit() %>%
       unique()
-
+    
     if (length(community_type) != 1) {
       avg_commute <- default_commute
     } else {
       commute_row <- VMTByCommunityType %>% filter(CD == community_type)
-
+      
       avg_commute <- if (nrow(commute_row) > 0) {
         commute_row$vmt / 2
       } else {
         default_commute
       }
     }
-
+    
     updateNumericInput(session, "average_commute", value = round(avg_commute, 1))
   })
-
-
+  
+  
   observeEvent(input$transit_expansion_location, {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$transit_expansion_location) %>%
       pull(MappedCommunity)
-
+    
     # Update the text output for the community type
     output$selected_community_type <- renderText({
       paste("Selected Community Type:", community_type)
     })
   })
-
+  
   observeEvent(input$shared_mobility_location, {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$shared_mobility_location) %>%
       pull(MappedCommunity)
-
+    
     # Update the text output for the community type
     output$selected_community_type_sharedMobility <- renderText({
       paste("Selected Community Type:", community_type)
     })
   })
-
-
+  
+  
   observeEvent(
     {
       input$trails_bike_location

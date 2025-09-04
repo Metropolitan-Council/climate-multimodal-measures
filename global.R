@@ -110,3 +110,31 @@ met_council_datatable <- function(provided_data) {
 }
 
 additional_sources <- readxl::read_excel("data/raw/input_default_values_sources.xlsx")
+
+
+source_citations <- 
+  purrr::map_dfr(
+    c("AdjustmentFactorsAndTripLengths", "TripDistances", 
+      "DefaultLifetime", "AnnualVMT", "VehiclePopulation", "TransitDependencyAdjustments", 
+      "GREETCarbonIntensity", "FuelEfficiency", "VMTByCommunityType", 
+      "TotalVMTReductionPotential", "ChargerUtilizationRatesAndPower", 
+      "ModeShiftFactor", "CreditForKeyDestinations", "SocialCostCarbon"
+    ),
+    function(x){
+      pretty_name <- paste(str_split(x, "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])")[[1]], collapse = " ")
+      
+      data_source <- get(x) %>% 
+        select(data_source, source_note) %>% 
+        filter(!is.na(data_source)) %>% 
+        unique()
+      
+      tibble(
+        sheet = x,
+        Table = pretty_name,
+        Source = data_source$data_source,
+        Description = data_source$source_note
+      )
+      
+    }
+  )
+
