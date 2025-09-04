@@ -18,9 +18,10 @@ Demand Management (Employee Commute and Shared Mobility).
 
 <!-- Further details and study conclusions available on [metrocouncil.org](https://metrocouncil.org/Transportation/Performance/Travel-Behavior-Inventory/Data/Maximum-Mode-Shift.aspx). -->
 
-> \[!CAUTION\] This repository is contains materials for the interactive
-> R Shiny app and does not include all project deliverables. Please
-> [contact us](#contacts) for more information.
+> \[!CAUTION\]  
+> This repository is contains materials for the interactive R Shiny app
+> and does not include all project deliverables. Please [contact
+> us](#contacts) for more information.
 
 Presentations and reports
 

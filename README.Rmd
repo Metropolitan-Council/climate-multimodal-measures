@@ -59,8 +59,8 @@ Project types include `r listify(unique(section_sentences$sentence))`.
 
 <!-- Further details and study conclusions available on [metrocouncil.org](https://metrocouncil.org/Transportation/Performance/Travel-Behavior-Inventory/Data/Maximum-Mode-Shift.aspx). -->
 
-> [!CAUTION]
-> This repository is contains materials for the interactive R Shiny app and does not include all project deliverables. Please [contact us](#contacts) for more information. 
+> [!CAUTION]  
+> This repository is contains materials for the interactive R Shiny app and does not include all project deliverables. Please [contact us](#contacts) for more information.  
 
 Presentations and reports
 
