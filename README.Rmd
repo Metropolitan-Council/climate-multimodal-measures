@@ -105,7 +105,9 @@ Data sources, including elasticites and default values, are available in two Exc
 <details>
 <summary>Key data sources</summary>
 
-```{r}
+Essential data sources
+
+```{r results='asis'}
 source_citations %>% 
   select(Table, Source, Description) %>% 
   knitr::kable(format = "markdown")

@@ -92,6 +92,8 @@ two Excel workbooks.
 Key data sources
 </summary>
 
+Essential data sources
+
 | Table | Source | Description |
 |:---|:---|:---|
 | Adjustment Factors And Trip Lengths | Barbour, E., Handy, S., Kendall, A., & Volker, J. (2019, August 13). Updated default values for transit dependency and average length of unlinked transit passenger trips, for calculations using TAC methods for California Climate Investments programs (Technical Report No. 16TTD004). California Air Resources Board; Institute of Transportation Studies, University of California, Davis. Retrieved from <https://ww2.arb.ca.gov/sites/default/files/auction-proceeds/transit_factors_technical_081319.pdf> | Route types include Bus Rapid Transit, Commuter Express, Core Local, Suburban Local, Support |
