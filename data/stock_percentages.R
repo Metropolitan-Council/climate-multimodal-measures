@@ -1,6 +1,6 @@
 # Create a mapping of stock to fuel type
 stock_to_fuel_type <- c(
-  "BCIStock" = "electricity",
+  "BCIStock" = "diesel",
   "BEVStock" = "electricity",
   "CIStock" = "diesel",
   "EVStock" = "electricity",
