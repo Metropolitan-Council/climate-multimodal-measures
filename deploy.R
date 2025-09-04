@@ -1,3 +1,5 @@
+# You must have credentials loaded for the Met Council shinyapps.io account
+# to run this script
 rsconnect::deployApp(appDir = "../climate-multimodal-measures",
                      account = "metrotransitmn", 
                      server = "shinyapps.io", 
