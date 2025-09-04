@@ -101,25 +101,22 @@ Data sources, including elasticites and default values, are available in two Exc
 - [MetCouncilTables.xlsx](data/raw data/MetCouncilTables.xlsx)
 - [input_default_values_sources.xlsx](data/raw data/input_default_values_sources.xlsx)
 
-<details>
-
-<summary>Key data sources</summary>
-
+<details>   
+<summary>Key data sources</summary>  
 ```{r tab.cap="Key data sources"}
 source_citations %>% 
   select(Table, Source, Description) %>% 
   knitr::kable(format = "markdown")
 ```
+</details>  
 
-</details>
 
-
-### Funding
+### Funding  
 
 This project was completed over 2022-2025. ICF and HFTE (subcontractor) were selected through a competitive request for proposal process and compensated approximately $300,000 under contract 22P040. 
 
 
-### Contacts
+### Contacts  
 
 [Metropolitan Council](https://metrocouncil.org/)
 
@@ -137,4 +134,4 @@ ICF Inc.
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
-<img role="img" aria-label="Metropolitan Council, ICF, and HFTE logos" src="org-logos.png" alt="Metropolitan Council, ICF, and HFTE logos" style=" max-width: 40%; display: block; margin: 0 auto; box-sizing: content-box;background-color: transparent;">
+<img role="img" aria-label="Metropolitan Council, ICF, and HFTE logos" src="org-logos.png" alt="Metropolitan Council, ICF, and HFTE logos" style="max-width: 40%; display: block; margin: 0 auto; box-sizing: content-box;background-color: transparent;">

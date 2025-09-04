@@ -94,7 +94,7 @@ Key data sources
 | Table | Source | Description |
 |:---|:---|:---|
 | Adjustment Factors And Trip Lengths | Barbour, E., Handy, S., Kendall, A., & Volker, J. (2019, August 13). Updated default values for transit dependency and average length of unlinked transit passenger trips, for calculations using TAC methods for California Climate Investments programs (Technical Report No. 16TTD004). California Air Resources Board; Institute of Transportation Studies, University of California, Davis. Retrieved from <https://ww2.arb.ca.gov/sites/default/files/auction-proceeds/transit_factors_technical_081319.pdf> | Route types include Bus Rapid Transit, Commuter Express, Core Local, Suburban Local, Support |
-| Trip Distances | Travel Behavior Invneotry, Communications with Metropolitan Council staff | Mode types include Bicycle, For-Hire Vehicle, Household Vehicle, Long distance passenger mode, Micromobility, Missing, Other, Other Bus, Other Vehicle, Public Bus, Rail, School Bus, Smartphone ridehailing service, Walk |
+| Trip Distances | Travel Behavior Inventory, Communications with Metropolitan Council staff | Mode types include Bicycle, For-Hire Vehicle, Household Vehicle, Long distance passenger mode, Micromobility, Missing, Other, Other Bus, Other Vehicle, Public Bus, Rail, School Bus, Smartphone ridehailing service, Walk |
 | Default Lifetime | U.S. Bureau of Labor Statistics (BLS), 2024, Employee Tenure in 2024 (USDL-24-1971), retrieved June 30, 2025, <https://www.bls.gov/news.release/pdf/tenure.pdf> | TDM – Employee Commute VMT Reduction |
 | Default Lifetime | Minnesota Department of Transportation (MnDOT), 2023, Minnesota Carbon Reduction Strategy (Document No. 240817), retrieved June 27, 2025, <https://www.lrl.mn.gov/docs/2024/other/240817.pdf> | TDM – Micromobility |
 | Default Lifetime | U.S. Department of Transportation (USDOT), 2023, Benefit–Cost Analysis Guidance for Discretionary Grant Programs (Updated May 13, 2025), Office of the Secretary, retrieved June 27, 2025, <https://www.transportation.gov/sites/dot.gov/files/2023-12/Benefit%20Cost%20Analysis%20Guidance%202024%20Update.pdf> | Traffic Management Technologies |
@@ -144,4 +144,4 @@ Please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree
 to abide by its terms.
 
-<img role="img" aria-label="Metropolitan Council, ICF, and HFTE logos" src="org-logos.png" alt="Metropolitan Council, ICF, and HFTE logos" style=" max-width: 40%; display: block; margin: 0 auto; box-sizing: content-box;background-color: transparent;">
+<img role="img" aria-label="Metropolitan Council, ICF, and HFTE logos" src="org-logos.png" alt="Metropolitan Council, ICF, and HFTE logos" style="max-width: 40%; display: block; margin: 0 auto; box-sizing: content-box;background-color: transparent;">
