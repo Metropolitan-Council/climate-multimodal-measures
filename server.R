@@ -313,7 +313,7 @@ function(input, output, session) {
       write.csv(shared_mobility_results(), file, row.names = FALSE)
     }
   )
-  #################### Transit Expansion###############################################
+  #################### Transit Expansion ###############################################
   # EV Outreach Reduction Calculation
   transit_expansion_results <- reactive({
     if (is.null(input$project_start)) {
@@ -399,7 +399,7 @@ function(input, output, session) {
 
     updateNumericInput(session, "average_trip_length", value = selected_length)
   })
-  ################################ Corridor Speed Improvement######################################################################
+  ################################ Corridor Speed Improvement ######################################################################
 
   # Corridor Speed Improvement Results
   corridor_speed_improvement_results <- reactive({
@@ -472,7 +472,7 @@ function(input, output, session) {
     }
   )
 
-  ######################################## Intersection Delay###########################################
+  ######################################## Intersection Delay ###########################################
 
   # Intersection Delay Results
   intersection_delay_results <- reactive({
@@ -545,7 +545,7 @@ function(input, output, session) {
     }
   )
 
-  ########################## Mobility Hub######################################################
+  ########################## Mobility Hub ######################################################
   # Mobility Hub Results
   mobility_hub_results <- reactive({
     if (is.null(input$project_start)) {
@@ -622,7 +622,7 @@ function(input, output, session) {
     }
   )
 
-  ################################### Pedestrian Facilites##################################################
+  ################################### Pedestrian Facilities ##################################################
   # Pedestrian Facilities Results
   pedestrian_facilities_results <- reactive({
     if (is.null(input$project_start)) {
@@ -697,7 +697,7 @@ function(input, output, session) {
     }
   )
 
-  ############################## Multi-use Trails###########################################################
+  ############################## Multi-use Trails ###########################################################
 
   # Multi-Use Trails and Bicycle Facilities Results
   trails_bike_facilities_results <- reactive({
@@ -972,10 +972,12 @@ function(input, output, session) {
       value = ifelse(input$fleet %in% c("Bike", "Scooter"), 5, 8)
     )
   })
-  ###################### Sources#########################################################
+  ###################### Sources #########################################################
 
   output$data_sources_table <- renderDT({
-    datatable(data.frame(
+    datatable(
+      rownames = FALSE, 
+      data.frame(
       Source = c(
         "Imagine 2050 Community Designations",
         "U.S. Census",
@@ -991,7 +993,7 @@ function(input, output, session) {
         "Barr, Lawrence C. Testing for the significance of induced highway travel demand in metropolitan areas"
       ),
       Description = c(
-        "Community Designations Data",
+        "Metropoitan Council Imagine 2050 Community Designations Data",
         "Population Data",
         "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
         "Electricity Emissions",
@@ -1006,7 +1008,7 @@ function(input, output, session) {
       )
     ))
   })
-  ################################# Reactions/Events#########################################
+  ################################# Reactions/Events #########################################
 
   observe({
     req(input$location)
