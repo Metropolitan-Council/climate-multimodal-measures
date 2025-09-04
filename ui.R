@@ -62,9 +62,10 @@ div(
       style = "margin-bottom: 20px;",
       h4("🛠 This tool is still under construction"),
       p("This tool is preliminary and should be used for informational purposes only."),
-      p("Please ", a("contact us", 
-                     href = "https://metrocouncil.org/About-Us/Contact.aspx", 
-                     target = "_blank"),  " for more information.")
+      p("Please ", a("contact us",
+        href = "https://metrocouncil.org/About-Us/Contact.aspx",
+        target = "_blank"
+      ), " for more information.")
     ),
     page_navbar(
       # Add dependencies for Bootstrap 5 and FontAwesome
@@ -86,7 +87,7 @@ div(
         )
       ),
 
-      
+
       # Define Navigation Panels
       nav_panel(
         title = tags$span("Calculations", style = "color: #002b5c; font-weight: bold; font-size: 18px"),

@@ -20,7 +20,7 @@ listify <- function(my_vector) {
   if (length(my_vector) > 1) {
     paste(
       paste(my_vector[1:length(my_vector) - 1],
-            collapse = ", "
+        collapse = ", "
       ),
       "and",
       my_vector[length(my_vector)]
@@ -33,20 +33,20 @@ listify <- function(my_vector) {
 
 source("global.R")
 
-app_sections <- additional_sources %>% 
-  select(Panel, Subpanel) %>% 
+app_sections <- additional_sources %>%
+  select(Panel, Subpanel) %>%
   unique()
 
 
-section_sentences <- app_sections %>% 
+section_sentences <- app_sections %>%
   group_by(Panel) %>%
   reframe(
     sentence = paste0(
       Panel, " (", listify(Subpanel), ")"
     ),
     .groups = "keep"
-  ) %>% unique()
-
+  ) %>%
+  unique()
 ```
 
 # Regional Transportation and Climate Change Multimodal Measures
@@ -106,10 +106,12 @@ Data sources, including elasticites and default values, are available in two Exc
 <summary>Key data sources</summary>  
 
 ```{r results='asis'}
-source_citations %>% 
-  select(Table, Source, Description) %>% 
-  knitr::kable(format = "markdown",
-               align = NULL)
+source_citations %>%
+  select(Table, Source, Description) %>%
+  knitr::kable(
+    format = "markdown",
+    align = NULL
+  )
 ```
 
 </details>

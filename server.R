@@ -25,7 +25,7 @@ function(input, output, session) {
       average_commute = input$average_commute
     )
   })
-  
+
   output$employee_commute_ui <- renderUI({
     tagList(
       div(
@@ -40,7 +40,7 @@ function(input, output, session) {
     if (is.null(input$project_start)) {
       return()
     }
-    
+
     # Render table with HTML enabled, and disable sorting
     DT::datatable(
       employee_commute_results(),
@@ -50,7 +50,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -60,8 +60,8 @@ function(input, output, session) {
         fontWeight = styleEqual("Total", "bold")
       )
   })
-  
-  
+
+
   output$download_employee_commute <- downloadHandler(
     filename = function() {
       paste("Employee_Commute_Data_", Sys.Date(), ".csv", sep = "")
@@ -70,7 +70,7 @@ function(input, output, session) {
       write.csv(employee_commute_results(), file, row.names = FALSE)
     }
   )
-  
+
   ####################### EV Outreach #############################################################################
   # observeEvent(input$audience, {
   #   req(input$audience)
@@ -80,12 +80,12 @@ function(input, output, session) {
   #                        14 else 8)
   # })
   # EV Outreach Reduction Calculation
-  
+
   ev_outreach_results <- reactive({
     if (is.null(input$no_participants) |
-        is.null(input$ev_outreach_project_start) |
-        is.null(input$ev_outreach_project_lifetime) |
-        is.null(input$conversion_rate)) {
+      is.null(input$ev_outreach_project_start) |
+      is.null(input$ev_outreach_project_lifetime) |
+      is.null(input$conversion_rate)) {
       # is.null(input$audience)) {
       return()
     }
@@ -98,7 +98,7 @@ function(input, output, session) {
       location = input$ev_outreach_location
     )
   })
-  
+
   output$ev_outreach_ui <- renderUI({
     tagList(
       div(
@@ -109,12 +109,12 @@ function(input, output, session) {
       dataTableOutput("ev_outreach_table") # Table renders below the button
     )
   })
-  
+
   output$ev_outreach_table <- renderDataTable({
     if (is.null(input$ev_outreach_project_start)) {
       return()
     }
-    
+
     # Render table with HTML enabled, and disable sorting
     DT::datatable(
       ev_outreach_results(),
@@ -124,7 +124,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -134,8 +134,8 @@ function(input, output, session) {
         fontWeight = styleEqual("Total", "bold")
       )
   })
-  
-  
+
+
   output$download_ev_outreach <- downloadHandler(
     filename = function() {
       paste("EV_Outreach_Data_", Sys.Date(), ".csv", sep = "")
@@ -144,14 +144,14 @@ function(input, output, session) {
       write.csv(ev_outreach_results(), file, row.names = FALSE)
     }
   )
-  
+
   ############################ EV Infrastructure ##############################################################
-  
+
   # Reactive expression for ev_infrastructure calculations
   ev_infrastructure_results <- reactive({
     # Ensure project start date is provided
     req(input$ev_infrastructure_project_start)
-    
+
     ev_infrastructure(
       # ev_type = input$ev_type,
       no_chargers = input$no_chargers,
@@ -166,7 +166,7 @@ function(input, output, session) {
       percentage_ICE = input$percentage_ICE
     )
   })
-  
+
   output$ev_infrastructure_ui <- renderUI({
     tagList(
       div(
@@ -177,15 +177,15 @@ function(input, output, session) {
       dataTableOutput("ev_infrastructure_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for ev_infrastructure results
   output$ev_infrastructure_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$ev_infrastructure_project_start)
-    
+
     # Get the results from the reactive expression
     results <- ev_infrastructure_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -194,7 +194,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     DT::datatable(
       ev_infrastructure_results(),
       escape = FALSE, # Enables rendering HTML
@@ -203,7 +203,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -213,7 +213,7 @@ function(input, output, session) {
         fontWeight = styleEqual("Total", "bold")
       )
   })
-  
+
   output$download_ev_infrastructure <- downloadHandler(
     filename = function() {
       paste("EV_infrastructure_Data_", Sys.Date(), ".csv", sep = "")
@@ -223,7 +223,7 @@ function(input, output, session) {
     }
   )
   ########################## Shared Mobility ################################################
-  
+
   # Shared Mobility
   shared_mobility_results <- reactive({
     if (is.null(input$project_start)) {
@@ -247,7 +247,7 @@ function(input, output, session) {
       prct_deadhead_miles = input$prct_deadhead_miles # default zero for bike and scooter and .4 for rideshares
     )
   })
-  
+
   output$shared_mobility_ui <- renderUI({
     tagList(
       div(
@@ -258,15 +258,15 @@ function(input, output, session) {
       dataTableOutput("shared_mobility_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for ev_infrastructure results
   output$shared_mobility_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$shared_mobility_project_start)
-    
+
     # Get the results from the reactive expression
     results <- shared_mobility_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -275,7 +275,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     output$shared_mobility_ui <- renderUI({
       tagList(
         div(
@@ -286,7 +286,7 @@ function(input, output, session) {
         dataTableOutput("shared_mobility_table") # Table renders below the button
       )
     })
-    
+
     DT::datatable(
       shared_mobility_results(),
       escape = FALSE, # Enables rendering HTML
@@ -295,7 +295,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -334,7 +334,7 @@ function(input, output, session) {
       adjustment_factor = input$adjustment_factor # default is based on the route type chosen and maps to AdjustmentFactorsAndTripLengths
     )
   })
-  
+
   output$transit_expansion_ui <- renderUI({
     tagList(
       div(
@@ -345,16 +345,16 @@ function(input, output, session) {
       dataTableOutput("transit_expansion_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for transit_expansion results
   output$transit_expansion_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$transit_expansion_project_start)
     req(input$ridership_increase)
-    
+
     # Get the results from the reactive expression
     results <- transit_expansion_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -363,7 +363,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     DT::datatable(
       transit_expansion_results(),
       escape = FALSE, # Enables rendering HTML
@@ -372,7 +372,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -390,18 +390,18 @@ function(input, output, session) {
       write.csv(transit_expansion_results(), file, row.names = FALSE)
     }
   )
-  
+
   observeEvent(input$route_type, {
     selected_factor <- AdjustmentFactorsAndTripLengths$adjustment_factor[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
-    
+
     selected_length <- AdjustmentFactorsAndTripLengths$average_trip_length_mi_trip[AdjustmentFactorsAndTripLengths$route_type == input$route_type]
-    
+
     updateNumericInput(session, "transit_expansion_adjustment_factor", value = selected_factor)
-    
+
     updateNumericInput(session, "average_trip_length", value = selected_length)
   })
   ################################ Corridor Speed Improvement ######################################################################
-  
+
   # Corridor Speed Improvement Results
   corridor_speed_improvement_results <- reactive({
     if (is.null(input$project_start)) {
@@ -417,7 +417,7 @@ function(input, output, session) {
       project_lifetime = input$corridor_speed_project_lifetime
     )
   })
-  
+
   output$corridor_speed_ui <- renderUI({
     tagList(
       div(
@@ -428,15 +428,15 @@ function(input, output, session) {
       dataTableOutput("corridor_speed_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for transit_expansion results
   output$corridor_speed_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$corridor_speed_project_start)
-    
+
     # Get the results from the reactive expression
     results <- corridor_speed_improvement_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -445,7 +445,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     DT::datatable(
       corridor_speed_improvement_results(),
       escape = FALSE, # Enables rendering HTML
@@ -454,7 +454,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -472,9 +472,9 @@ function(input, output, session) {
       write.csv(corridor_speed_improvement_results(), file, row.names = FALSE)
     }
   )
-  
+
   ######################################## Intersection Delay ###########################################
-  
+
   # Intersection Delay Results
   intersection_delay_results <- reactive({
     if (is.null(input$project_start)) {
@@ -490,7 +490,7 @@ function(input, output, session) {
       project_lifetime = input$intersection_delay_project_lifetime
     )
   })
-  
+
   output$intersection_delay_ui <- renderUI({
     tagList(
       div(
@@ -501,15 +501,15 @@ function(input, output, session) {
       dataTableOutput("intersection_delay_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for transit_expansion results
   output$intersection_delay_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$intersection_delay_project_start)
-    
+
     # Get the results from the reactive expression
     results <- intersection_delay_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -518,7 +518,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     DT::datatable(
       intersection_delay_results(),
       escape = FALSE, # Enables rendering HTML
@@ -527,7 +527,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -545,7 +545,7 @@ function(input, output, session) {
       write.csv(intersection_delay_results(), file, row.names = FALSE)
     }
   )
-  
+
   ########################## Mobility Hub ######################################################
   # Mobility Hub Results
   mobility_hub_results <- reactive({
@@ -567,7 +567,7 @@ function(input, output, session) {
       annual_vmt = input$annual_vmt # Auto populate with VMT per capita based on community type of chosen location
     )
   })
-  
+
   output$mobility_hub_ui <- renderUI({
     tagList(
       div(
@@ -578,15 +578,15 @@ function(input, output, session) {
       dataTableOutput("mobility_hub_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for transit_expansion results
   output$mobility_hub_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$hub_project_start)
-    
+
     # Get the results from the reactive expression
     results <- mobility_hub_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -595,7 +595,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     DT::datatable(
       mobility_hub_results(),
       escape = FALSE, # Enables rendering HTML
@@ -604,7 +604,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -622,7 +622,7 @@ function(input, output, session) {
       write.csv(mobility_hub_results(), file, row.names = FALSE)
     }
   )
-  
+
   ################################### Pedestrian Facilities ##################################################
   # Pedestrian Facilities Results
   pedestrian_facilities_results <- reactive({
@@ -642,7 +642,7 @@ function(input, output, session) {
       average_trip_replaced = input$average_trip_replaced # Default based on community type distinction
     )
   })
-  
+
   output$pedestrian_facility_ui <- renderUI({
     tagList(
       div(
@@ -653,15 +653,15 @@ function(input, output, session) {
       dataTableOutput("pedestrian_facility_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for transit_expansion results
   output$pedestrian_facility_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$pedestrian_project_start)
-    
+
     # Get the results from the reactive expression
     results <- pedestrian_facilities_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -670,7 +670,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     DT::datatable(
       pedestrian_facilities_results(),
       escape = FALSE, # Enables rendering HTML
@@ -679,7 +679,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -697,9 +697,9 @@ function(input, output, session) {
       write.csv(pedestrian_facility_results(), file, row.names = FALSE)
     }
   )
-  
+
   ############################## Multi-use Trails ###########################################################
-  
+
   # Multi-Use Trails and Bicycle Facilities Results
   trails_bike_facilities_results <- reactive({
     if (is.null(input$project_start)) {
@@ -720,7 +720,7 @@ function(input, output, session) {
       length_trip_replaced_biking = input$length_trip_replaced_biking # Default is 3.6
     )
   })
-  
+
   output$trails_bike_ui <- renderUI({
     tagList(
       div(
@@ -731,15 +731,15 @@ function(input, output, session) {
       dataTableOutput("trails_bike_table") # Table renders below the button
     )
   })
-  
+
   # Render DataTable for transit_expansion results
   output$trails_bike_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$trails_bike_project_start)
-    
+
     # Get the results from the reactive expression
     results <- trails_bike_facilities_results()
-    
+
     # Check if results are NULL or empty
     if (is.null(results) || nrow(results) == 0) {
       return(DT::datatable(
@@ -748,7 +748,7 @@ function(input, output, session) {
         options = list(dom = "t", ordering = FALSE)
       ))
     }
-    
+
     DT::datatable(
       trails_bike_facilities_results(),
       escape = FALSE, # Enables rendering HTML
@@ -757,7 +757,7 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -775,9 +775,9 @@ function(input, output, session) {
       write.csv(trails_bike_facilities_results(), file, row.names = FALSE)
     }
   )
-  
+
   ################################ Map ######################################################################
-  
+
   foundational.map <- shiny::reactive({
     leaflet() %>%
       addTiles(urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
@@ -860,45 +860,45 @@ function(input, output, session) {
       }
     ")
   })
-  
-  
+
+
   output$myMap <- renderLeaflet({
     foundational.map()
   })
-  
+
   # Observe the reset signal and re-render the map
   observeEvent(input$reset_map, {
     output$myMap <- renderLeaflet({
       foundational.map() # This will reset the map
     })
   })
-  
-  
+
+
   shiny::observeEvent(input$myMap_shape_click, {
     click <- input$myMap_shape_click
-    
+
     if (is.null(click$id)) {
       req(click$id)
     } else {
       print(click)
       # Create an sf point from the click coordinates
       clicked_point <- st_sfc(st_point(c(click$lng, click$lat)), crs = 4326) # Create point geometry in WGS84 (EPSG:4326)
-      
+
       # Now, transform the point to a projected CRS like EPSG:3857 for accurate buffering in meters
       clicked_point_projected <- st_transform(clicked_point, crs = 3857)
-      
+
       # Create a buffer (circle) around the point with the given radius in meters
       buffer_circle <- st_buffer(clicked_point_projected, dist = 1609) # Buffer in meters (1 miles)
-      
+
       # Transform back to WGS84 for visualization/intersection (if needed)
       buffer_circle_wgs84 <- st_transform(buffer_circle, crs = 4326)
-      
+
       # Perform the intersection with your spatial dataset (population)
       intersections <- st_intersection(
         st_transform(population, crs = 4326),
         buffer_circle_wgs84
       )
-      
+
       intersection_calcs <- intersections %>%
         left_join(
           population %>%
@@ -913,10 +913,10 @@ function(input, output, session) {
           area_share = area_in_circle / total_tract_area,
           estimated_pop = estimate * area_share
         )
-      
+
       hold_population <- isolate(round(sum(intersection_calcs$estimated_pop)))
       updateNumericInput(session, "population_3mile", value = as.numeric(hold_population))
-      
+
       # output$tract_info <- renderText(paste(click$lng, click$lat, hold_population))
       leaflet::leafletProxy(mapId = "myMap") %>%
         clearGroup(group = "circle") %>%
@@ -928,30 +928,30 @@ function(input, output, session) {
         )
     }
   })
-  
+
   map_selected_location <- reactiveVal()
   # First observeEvent to capture the map click and store the CTU_NAME
   observeEvent(input$myMap_shape_click, {
     click <- input$myMap_shape_click
-    
+
     if (!is.null(click)) {
       clicked_CTU_NAME <- click$id
       map_selected_location(clicked_CTU_NAME)
       # print(paste("Clicked CTU_NAME:", clicked_CTU_NAME))
     }
   })
-  
+
   observe({
     CTU_NAME <- map_selected_location()
-    
+
     # Check if CTU_NAME is NULL or "mpo_area" and replace it with "Other"
     if (is.null(CTU_NAME) || CTU_NAME == "mpo_area") {
       CTU_NAME <- "Other"
       community_type <- "Rural / Non-Council"
     }
-    
+
     output$map_tab_label <- renderText(paste0("Map (selected ", CTU_NAME, ")"))
-    
+
     updateSelectInput(session, "location", selected = CTU_NAME)
     updateSelectInput(session, "ev_infrastructure_location", selected = CTU_NAME)
     updateSelectInput(session, "shared_mobility_location", selected = CTU_NAME)
@@ -961,11 +961,11 @@ function(input, output, session) {
     updateSelectInput(session, "ev_outreach_location", selected = CTU_NAME)
     updateSelectInput(session, "intersection_delay_location", selected = CTU_NAME)
     updateSelectInput(session, "corridor_speed_location", selected = CTU_NAME)
-    
+
     # If you have a text output to show the community type
     output$community_type_label <- renderText(paste("Community Type:", community_type))
   })
-  
+
   observeEvent(input$fleet, {
     updateNumericInput(
       session,
@@ -974,12 +974,11 @@ function(input, output, session) {
     )
   })
   ###################### Sources #########################################################
-  
+
   output$data_sources_table <- renderDT({
-    
-    source_table <- 
-      source_citations %>% 
-      select(-sheet) %>% 
+    source_table <-
+      source_citations %>%
+      select(-sheet) %>%
       bind_rows(
         data.frame(
           Source = c(
@@ -1010,9 +1009,10 @@ function(input, output, session) {
             "EV Charge Utilization Rates",
             "Elasticity of induced VMT due to improved corridor speed"
           )
-        ) )
-    
-    
+        )
+      )
+
+
     datatable(
       source_table,
       escape = FALSE, # Enables rendering HTML
@@ -1021,65 +1021,65 @@ function(input, output, session) {
         dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 50,  # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
-      ))
-    
+      )
+    )
   })
   ################################# Reactions/Events #########################################
-  
+
   observe({
     req(input$location)
-    
+
     default_commute <- 10.9
-    
+
     community_type <- CommunityType %>%
       filter(CTU_NAME == input$location) %>%
       pull(MappedCommunity) %>%
       na.omit() %>%
       unique()
-    
+
     if (length(community_type) != 1) {
       avg_commute <- default_commute
     } else {
       commute_row <- VMTByCommunityType %>% filter(CD == community_type)
-      
+
       avg_commute <- if (nrow(commute_row) > 0) {
         commute_row$vmt / 2
       } else {
         default_commute
       }
     }
-    
+
     updateNumericInput(session, "average_commute", value = round(avg_commute, 1))
   })
-  
-  
+
+
   observeEvent(input$transit_expansion_location, {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$transit_expansion_location) %>%
       pull(MappedCommunity)
-    
+
     # Update the text output for the community type
     output$selected_community_type <- renderText({
       paste("Selected Community Type:", community_type)
     })
   })
-  
+
   observeEvent(input$shared_mobility_location, {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$shared_mobility_location) %>%
       pull(MappedCommunity)
-    
+
     # Update the text output for the community type
     output$selected_community_type_sharedMobility <- renderText({
       paste("Selected Community Type:", community_type)
     })
   })
-  
-  
+
+
   observeEvent(
     {
       input$trails_bike_location
@@ -1093,16 +1093,16 @@ function(input, output, session) {
       community_type <- CommunityTypeShape %>%
         filter(CTU_NAME == input$trails_bike_location) %>%
         pull(MappedCommunity)
-      
+
       # Update the text output for the community type
       output$selected_community_type_trailsBikes <- renderText({
         paste("Selected Community Type:", community_type)
       })
-      
+
       # Determine traffic and facility length ranges for mode shift factor calculation
       average_daily_traffic <- input$trails_bike_average_daily_traffic
       one_way_facility_length <- input$trails_bike_facility_length_range
-      
+
       # Use case_when for traffic range
       traffic_range <- case_when(
         average_daily_traffic <= 12000 ~ "1 to 12,000",
@@ -1110,7 +1110,7 @@ function(input, output, session) {
         average_daily_traffic <= 30000 ~ "24,001 to 30,000",
         TRUE ~ NA_character_
       )
-      
+
       # Use case_when for facility length range
       facility_length_range <- case_when(
         one_way_facility_length == 1 ~ "1",
@@ -1119,7 +1119,7 @@ function(input, output, session) {
         one_way_facility_length > 2 ~ "2",
         TRUE ~ NA_character_
       )
-      
+
       # Calculate mode shift factor
       mode_shift_factor <- ModeShiftFactor %>%
         filter(
@@ -1127,14 +1127,14 @@ function(input, output, session) {
           one_way_facility_length_miles_low == facility_length_range
         ) %>%
         pull(mode_shift_factor_m)
-      
+
       destination_category_50 <- case_when(
         input$trails_bike_no_key_destinations_50 <= 2 ~ "0 to 2",
         input$trails_bike_no_key_destinations_50 == 3 ~ "3",
         input$trails_bike_no_key_destinations_50 >= 4 & input$trails_bike_no_key_destinations_50 <= 6 ~ "4 to 6",
         input$trails_bike_no_key_destinations_50 >= 7 ~ "7 or more"
       )
-      
+
       # Determine the category for the number of key destinations
       destination_category_25 <- case_when(
         input$trails_bike_no_key_destinations_25 <= 2 ~ "0 to 2",
@@ -1142,75 +1142,75 @@ function(input, output, session) {
         input$trails_bike_no_key_destinations_25 >= 4 & input$trails_bike_no_key_destinations_25 <= 6 ~ "4 to 6",
         input$trails_bike_no_key_destinations_25 >= 7 ~ "7 or more"
       )
-      
+
       # Filter the CreditForKeyDestinations dataframe to get the relevant rows
       credit_25 <- CreditForKeyDestinations %>%
         filter(number_of_key_destinations == destination_category_25) %>%
         pull(credit_within_1_4_mile_of_facility_c)
-      
+
       credit_50 <- CreditForKeyDestinations %>%
         filter(number_of_key_destinations == destination_category_50) %>%
         pull(credit_within_1_2_mile_of_facility_c)
-      
+
       # Compare and assign the larger credit value
       key_destination_credit <- max(credit_25, credit_50, na.rm = TRUE)
-      
+
       # Update the text output for mode shift factor
       output$mode_shift_factor_trailsBike <- renderText({
         paste("Mode Shift Factor:", ifelse(length(mode_shift_factor) > 0, mode_shift_factor, "Not Found"))
       })
-      
+
       # Update the text output for key destination credit
       output$credit_key_destinations_trailsBike <- renderText({
         paste("Key Destination Credit:", ifelse(length(key_destination_credit) > 0, key_destination_credit, "Not Found"))
       })
     }
   )
-  
-  
+
+
   observeEvent(input$ev_outreach_location, {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$ev_outreach_location) %>%
       pull(MappedCommunity)
-    
+
     average_annual_accrual <- round(PerVehicleVMT %>% filter(MappedCommunity == community_type) %>% pull(PerVehicleVMT), 0)
-    
+
     # Update the text output for the community type
     output$selected_community_type_EVOutreach <- renderText({
       paste("Selected Community Type:", community_type)
     })
-    
+
     # Update the text output for the community type
     output$average_annual_accrual <- renderText({
       paste("Average Annual Accrual:", average_annual_accrual)
     })
   })
-  
+
   observeEvent(list(input$hub_location, input$mobility_mode), {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$hub_location) %>%
       pull(MappedCommunity)
-    
+
     # Calculate the reduction potential based on all selected mobility modes
     reduction_potential <- TotalVMTReductionPotential %>%
       filter(mobility_mode %in% input$mobility_mode) %>%
       summarise(total_vmt_reduction_potential = sum(total_vmt_reduction_potential, na.rm = TRUE)) %>%
       pull(total_vmt_reduction_potential)
-    
+
     # Update the numeric input directly with the new value
     updateNumericInput(session,
-                       "reduction_potential",
-                       value = reduction_potential
+      "reduction_potential",
+      value = reduction_potential
     )
     output$selected_community_type_mobilityHub <- renderText({
       paste("Selected Community Type:", community_type)
     })
   })
-  
-  
-  
+
+
+
   observeEvent(
     {
       input$pedestrian_location
@@ -1224,16 +1224,16 @@ function(input, output, session) {
       community_type <- CommunityTypeShape %>%
         filter(CTU_NAME == input$pedestrian_location) %>%
         pull(MappedCommunity)
-      
+
       # Update the text output for the community type
       output$selected_community_type_pedestrianFacility <- renderText({
         paste("Selected Community Type:", community_type)
       })
-      
+
       # Determine traffic and facility length ranges for mode shift factor calculation
       average_daily_traffic <- input$average_daily_traffic
       one_way_facility_length <- input$one_way_facility_length
-      
+
       # Use case_when for traffic range
       traffic_range <- case_when(
         average_daily_traffic <= 12000 ~ "1 to 12,000",
@@ -1241,7 +1241,7 @@ function(input, output, session) {
         average_daily_traffic <= 30000 ~ "24,001 to 30,000",
         TRUE ~ NA_character_
       )
-      
+
       # Use case_when for facility length range
       facility_length_range <- case_when(
         one_way_facility_length == 1 ~ "1",
@@ -1250,7 +1250,7 @@ function(input, output, session) {
         one_way_facility_length > 2 ~ "2",
         TRUE ~ NA_character_
       )
-      
+
       # Calculate mode shift factor
       mode_shift_factor <- ModeShiftFactor %>%
         filter(
@@ -1258,14 +1258,14 @@ function(input, output, session) {
           one_way_facility_length_miles_low == facility_length_range
         ) %>%
         pull(mode_shift_factor_m)
-      
+
       # Determine the number of key destinations
       if (input$no_key_destinations_25 > input$no_key_destinations_50) {
         no_key_destinations <- input$no_key_destinations_25
       } else {
         no_key_destinations <- input$no_key_destinations_50
       }
-      
+
       # Calculate key destination credit
       key_destination_credit <- CreditForKeyDestinations %>%
         filter(
@@ -1277,43 +1277,43 @@ function(input, output, session) {
           )
         ) %>%
         pull(credit_within_1_2_mile_of_facility_c)
-      
+
       # Update the text output for mode shift factor
       output$mode_shift_factor_pedestrianFacility <- renderText({
         paste("Mode Shift Factor:", ifelse(length(mode_shift_factor) > 0, mode_shift_factor, "Not Found"))
       })
-      
+
       # Update the text output for key destination credit
       output$credit_key_destinations_pedestrianFacility <- renderText({
         paste("Key Destination Credit:", ifelse(length(key_destination_credit) > 0, key_destination_credit, "Not Found"))
       })
     }
   )
-  
+
   observeEvent(input$location, {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$location) %>%
       pull(MappedCommunity)
-    
+
     # Update the text output for the community type
     output$selected_community_type_employeeCommute <- renderText({
       paste("Selected Community Type:", community_type)
     })
   })
-  
+
   observeEvent(input$intersection_delay_location, {
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$intersection_delay_location) %>%
       pull(MappedCommunity)
-    
+
     # Update the text output for the community type
     output$selected_community_type_intersectionDelay <- renderText({
       paste("Selected Community Type:", community_type)
     })
   })
-  
+
   observeEvent(
     {
       input$corridor_speed_location
@@ -1325,21 +1325,21 @@ function(input, output, session) {
       community_type <- CommunityTypeShape %>%
         filter(CTU_NAME == input$corridor_speed_location) %>%
         pull(MappedCommunity)
-      
+
       # Update the text output for the community type
       output$selected_community_type_corridorSpeed <- renderText({
         paste("Selected Community Type:", community_type)
       })
-      
+
       # Calculate k1 values for build and no-build scenarios
       # TODO Make sure these match with items listed in MetCouncilTables.xlsx
       # TODO document what each value means,
       k1_speed_build <- 0.000019137 * input$avg_corridor_speed_build^2 - 0.0020660 * input$avg_corridor_speed_build + 0.088916
       k1_speed_no_build <- 0.000019137 * input$avg_corridor_speed_no_build^2 - 0.0020660 * input$avg_corridor_speed_no_build + 0.088916
-      
+
       # Calculate speed improvement percentage
       speed_improvement_prct <- ((input$avg_corridor_speed_build - input$avg_corridor_speed_no_build) / input$avg_corridor_speed_no_build)
-      
+
       # Determine induced demand elasticity based on speed improvement percentage
       # TODO Make sure these match with items listed in MetCouncilTables.xlsx
       if (speed_improvement_prct <= .05) {
@@ -1349,14 +1349,14 @@ function(input, output, session) {
       } else if (speed_improvement_prct > .20) {
         induced_demand_elasticity <- 0.3
       }
-      
+
       # Update the text output for induced demand elasticity
       output$induced_demand_elasticity <- renderText({
         paste("Induced Demand Elasticity:", round(induced_demand_elasticity, 2))
       })
     }
   )
-  
+
   observeEvent(input$fleet, {
     if (input$fleet == "Scooter") {
       updateNumericInput(session, "average_occupancy", value = 1)
@@ -1375,69 +1375,69 @@ function(input, output, session) {
       updateNumericInput(session, "trip_miles", value = 5.87)
     }
   })
-  
-  
+
+
   observe({
     req(input$ev_infrastructure_location, input$ev_infrastructure_project_start, input$charger_type)
-    
+
     # Get the selected community type
     community_type <- CommunityTypeShape %>%
       filter(CTU_NAME == input$ev_infrastructure_location) %>%
       pull(MappedCommunity)
-    
+
     # Update the text output for the community type
     output$selected_community_type_EVInfrastructure <- renderText({
       paste("Selected Community Type:", community_type)
     })
-    
+
     # # Ensure current_year is defined based on the selected project start year
     current_year <- as.numeric(input$ev_infrastructure_project_start)
-    
+
     # Filter FleetData based on the selected community type
     filtered_FleetData <- FleetData %>%
       filter(MappedCommunity == community_type) %>%
       mutate(year = as.numeric(year))
-    
+
     # Determine the closest year
     closest_year <- filtered_FleetData %>%
       summarise(closest_year = year[which.min(abs(year - current_year))]) %>%
       pull(closest_year)
-    
+
     # Filter the dataset to get the fleet proportions from the closest year
     fleet_proportion <- filtered_FleetData %>%
       filter(year == closest_year)
-    
+
     # Calculate percentage_ICE and round to 2 decimals
     percentage_ICE <- round(fleet_proportion$electricity, 2) * 100
-    
+
     # Update the numeric input for percentage_ICE
     updateNumericInput(session, "percentage_ICE", value = percentage_ICE)
-    
+
     # Dynamically update average_energy_efficiency
     average_energy_efficiency <- FuelEfficiency %>%
       filter(`Vehicle Type` == "Light-Duty") %>%
       pull(`Fuel Efficiency (Wh/mi)`)
-    
+
     # Convert Wh/mi to kWh/mi by dividing by 1000
     average_energy_efficiency <- round(average_energy_efficiency / 1000, 2)
-    
+
     # Update the numeric input for average_energy_efficiency
     updateNumericInput(session, "average_energy_efficiency", value = average_energy_efficiency)
-    
+
     # Dynamically update charge_power based on the selected charger_type
     charge_power <- if (input$charger_type == "DCFC") {
       150 # Default power for DCFC
     } else {
       19.2 # Default power for Level 2 chargers
     }
-    
+
     # Update the numeric input for charge_power
     updateNumericInput(session, "charge_power", value = charge_power)
   })
-  
+
   observeEvent(input$charger_type, {
     updateNumericInput(session, "utilization_rate",
-                       value = ifelse(input$charger_type == "DCFC", 4, 15)
+      value = ifelse(input$charger_type == "DCFC", 4, 15)
     )
   })
 }
