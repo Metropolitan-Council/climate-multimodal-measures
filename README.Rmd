@@ -102,14 +102,16 @@ Data sources, including elasticites and default values, are available in two Exc
 - [input_default_values_sources.xlsx](data/raw data/input_default_values_sources.xlsx)
 
 <br>
-<details>   
-<summary>Key data sources</summary>  
-```{r tab.cap="Key data sources"}
+<details>
+<summary>Key data sources</summary>
+
+```{r}
 source_citations %>% 
   select(Table, Source, Description) %>% 
   knitr::kable(format = "markdown")
 ```
-</details>  
+
+</details>
 
 
 ### Funding  

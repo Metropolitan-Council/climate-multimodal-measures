@@ -115,8 +115,6 @@ Key data sources
 | Credit For Key Destinations | California Air Resources Board (CARB). (2023, November 1). Clean Mobility Benefits Quantification Methodology \[Final\]. California Climate Investments. Retrieved June 11, 2025, from <https://ww2.arb.ca.gov/sites/default/files/auction-proceeds/Clean_Mobility_QM_FINAL_November2023.pdf> | Credits for number of key destinations and distance from facility |
 | Social Cost Carbon | U.S. Environmental Protection Agency (EPA), 2023, Report on the Social Cost of Greenhouse Gases: Estimates Incorporating Recent Scientific Advances, retrieved June 5, 2025, <https://www.epa.gov/system/files/documents/2023-12/epa_scghg_2023_report_final.pdf> | NA |
 
-Key data sources
-
 </details>
 
 ### Funding
