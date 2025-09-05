@@ -130,11 +130,13 @@ compensated approximately \$300,000 under contract 22P040.
   [email](mailto:tony.fischer@metc.state.mn.us)  
 - Liz Roten [email](mailto:liz.roten@metc.state.mn.us) @eroten
 
-ICF Inc.
+<!-- ICF Inc. -->
 
-- Stephanie Kong [email](mailto:stephanie.kong@icf.com)
-- Mallory Giesie [email](mailto:Mallory.Giesie@icf.com)
-- Ramon Garcia Molina [email](mailto:ramon.molinagarcia@icf.com)
+<!-- - Stephanie Kong [email](mailto:stephanie.kong@icf.com) -->
+
+<!-- - Mallory Giesie [email](mailto:Mallory.Giesie@icf.com) -->
+
+<!-- - Ramon Garcia Molina [email](mailto:ramon.molinagarcia@icf.com) -->
 
 ### Code of Conduct
 

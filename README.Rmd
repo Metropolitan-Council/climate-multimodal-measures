@@ -129,11 +129,11 @@ This project was completed over 2022-2025. ICF and HFTE (subcontractor) were sel
 - Primary contact: Tony Fischer [email](mailto:tony.fischer@metc.state.mn.us)  
 - Liz Roten [email](mailto:liz.roten@metc.state.mn.us) @eroten
 
-ICF Inc.
+<!-- ICF Inc. -->
 
-- Stephanie Kong [email](mailto:stephanie.kong@icf.com)
-- Mallory Giesie [email](mailto:Mallory.Giesie@icf.com)
-- Ramon Garcia Molina [email](mailto:ramon.molinagarcia@icf.com)
+<!-- - Stephanie Kong [email](mailto:stephanie.kong@icf.com) -->
+<!-- - Mallory Giesie [email](mailto:Mallory.Giesie@icf.com) -->
+<!-- - Ramon Garcia Molina [email](mailto:ramon.molinagarcia@icf.com) -->
 
 
 ### Code of Conduct 
