@@ -15,9 +15,8 @@ library(rmapshaper)
 library(shinyBS)
 library(councilR)
 library(shinyWidgets)
-options(tigris_use_cache = TRUE)
 
-backgroundDataPath <- paste0(here::here(), "/data/raw data/MetCouncilTables.xlsx")
+backgroundDataPath <- paste0(here::here(), "/data/raw/MetCouncilTables.xlsx")
 
 backgroundDataNames <- excel_sheets(backgroundDataPath)
 
@@ -25,8 +24,10 @@ for (sheet in backgroundDataNames) {
   assign(sheet, read_excel(backgroundDataPath, sheet = sheet), envir = .GlobalEnv)
 }
 
-FleetData <- read_xlsx(paste0(here::here(), "/data/raw data/FleetData.xlsx"))
-CommunityDesignation <- st_read(paste0(here::here(), "/data/raw data/PROPOSED2050COMMUNITYDESIGNATIONS.gpkg")) %>%
+FleetData <- read_xlsx(paste0(here::here(), "/data/raw/FleetData.xlsx")) %>%
+  filter(!mode %in% c("RU", "RI"))
+
+CommunityDesignation <- st_read(paste0(here::here(), "/data/raw/PROPOSED2050COMMUNITYDESIGNATIONS.gpkg")) %>%
   rename(COMDESNAME = CD2050)
 CommunityType <- CommunityDesignation
 mpo_area <- import_from_gpkg("https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_metc/trans_metro_planning_org_area/gpkg_trans_metro_planning_org_area.zip") %>% st_zm()
@@ -44,7 +45,7 @@ added_functions <- c(
   "corridor_speed_improvement", "intersection_delay_reductions"
 )
 for (added_function in added_functions) {
-  source(paste0(getwd(), "/R Scripts/", added_function, ".R"))
+  source(paste0(getwd(), "/R/", added_function, ".R"))
 }
 
 population <- get_acs(
@@ -109,3 +110,32 @@ met_council_datatable <- function(provided_data) {
     ) %>%
     formatStyle(cols_to_center, textAlign = "center")
 }
+
+additional_sources <- readxl::read_excel("data/raw/input_default_values_sources.xlsx")
+
+
+source_citations <-
+  purrr::map_dfr(
+    c(
+      "AdjustmentFactorsAndTripLengths", "TripDistances",
+      "DefaultLifetime", "AnnualVMT", "VehiclePopulation", "TransitDependencyAdjustments",
+      "GREETCarbonIntensity", "FuelEfficiency", "VMTByCommunityType",
+      "TotalVMTReductionPotential", "ChargerUtilizationRatesAndPower",
+      "ModeShiftFactor", "CreditForKeyDestinations", "SocialCostCarbon"
+    ),
+    function(x) {
+      pretty_name <- paste(str_split(x, "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])")[[1]], collapse = " ")
+
+      data_source <- get(x) %>%
+        select(data_source, source_note) %>%
+        filter(!is.na(data_source)) %>%
+        unique()
+
+      tibble(
+        sheet = x,
+        Table = pretty_name,
+        Source = data_source$data_source,
+        Description = data_source$source_note
+      )
+    }
+  )

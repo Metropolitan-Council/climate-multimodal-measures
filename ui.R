@@ -57,6 +57,16 @@ div(
   div(
     class = "navbar-wrapper",
     style = "flex-grow: 1; display: flex; flex-direction: column; background-color: white; padding: 15px;",
+    div(
+      class = "alert alert-warning",
+      style = "margin-bottom: 20px;",
+      h4("🛠 This tool is still under construction"),
+      p("This tool is preliminary and should be used for informational purposes only."),
+      p("Please ", a("contact us",
+        href = "https://metrocouncil.org/About-Us/Contact.aspx",
+        target = "_blank"
+      ), " for more information.")
+    ),
     page_navbar(
       # Add dependencies for Bootstrap 5 and FontAwesome
       tags$head(

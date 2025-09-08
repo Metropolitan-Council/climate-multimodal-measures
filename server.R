@@ -47,10 +47,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -121,10 +121,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -200,10 +200,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -292,10 +292,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -313,7 +313,7 @@ function(input, output, session) {
       write.csv(shared_mobility_results(), file, row.names = FALSE)
     }
   )
-  #################### Transit Expansion###############################################
+  #################### Transit Expansion ###############################################
   # EV Outreach Reduction Calculation
   transit_expansion_results <- reactive({
     if (is.null(input$project_start)) {
@@ -350,6 +350,7 @@ function(input, output, session) {
   output$transit_expansion_table <- renderDataTable({
     # Ensure project start date is provided
     req(input$transit_expansion_project_start)
+    req(input$ridership_increase)
 
     # Get the results from the reactive expression
     results <- transit_expansion_results()
@@ -368,10 +369,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -399,7 +400,7 @@ function(input, output, session) {
 
     updateNumericInput(session, "average_trip_length", value = selected_length)
   })
-  ################################ Corridor Speed Improvement######################################################################
+  ################################ Corridor Speed Improvement ######################################################################
 
   # Corridor Speed Improvement Results
   corridor_speed_improvement_results <- reactive({
@@ -450,10 +451,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -472,7 +473,7 @@ function(input, output, session) {
     }
   )
 
-  ######################################## Intersection Delay###########################################
+  ######################################## Intersection Delay ###########################################
 
   # Intersection Delay Results
   intersection_delay_results <- reactive({
@@ -523,10 +524,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -545,7 +546,7 @@ function(input, output, session) {
     }
   )
 
-  ########################## Mobility Hub######################################################
+  ########################## Mobility Hub ######################################################
   # Mobility Hub Results
   mobility_hub_results <- reactive({
     if (is.null(input$project_start)) {
@@ -600,10 +601,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -622,7 +623,7 @@ function(input, output, session) {
     }
   )
 
-  ################################### Pedestrian Facilites##################################################
+  ################################### Pedestrian Facilities ##################################################
   # Pedestrian Facilities Results
   pedestrian_facilities_results <- reactive({
     if (is.null(input$project_start)) {
@@ -675,10 +676,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -697,7 +698,7 @@ function(input, output, session) {
     }
   )
 
-  ############################## Multi-use Trails###########################################################
+  ############################## Multi-use Trails ###########################################################
 
   # Multi-Use Trails and Bicycle Facilities Results
   trails_bike_facilities_results <- reactive({
@@ -753,10 +754,10 @@ function(input, output, session) {
       escape = FALSE, # Enables rendering HTML
       rownames = FALSE,
       options = list(
-        dom = "tip", # ✅ Enable pagination, search bar, and info
+        dom = "ti", # ✅ Enable pagination, search bar, and info
         scrollX = TRUE, # ✅ Allows horizontal scrolling
         ordering = FALSE, # ✅ Disable sorting buttons on headers
-        pageLength = 10, # ✅ Show 10 rows per page by default
+        pageLength = 50, # ✅ Show 10 rows per page by default
         lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
       )
     ) %>%
@@ -972,41 +973,60 @@ function(input, output, session) {
       value = ifelse(input$fleet %in% c("Bike", "Scooter"), 5, 8)
     )
   })
-  ###################### Sources#########################################################
+  ###################### Sources #########################################################
 
   output$data_sources_table <- renderDT({
-    datatable(data.frame(
-      Source = c(
-        "Imagine 2050 Community Designations",
-        "U.S. Census",
-        "Met Council Scenario Planning Tool ",
-        "GREET 2023",
-        "Metro Transit",
-        "CARB",
-        "Met Council Transit Experience and Satisfaction Survey",
-        "Mobility Hub Planning and Implementation Guidebook",
-        "CARB 2018 Clean Miles Standard",
-        "CARB 2018 Clean Miles Standard ",
-        "EV WATTS Charging Station Dashboard Q4-23",
-        "Barr, Lawrence C. Testing for the significance of induced highway travel demand in metropolitan areas"
-      ),
-      Description = c(
-        "Community Designations Data",
-        "Population Data",
-        "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
-        "Electricity Emissions",
-        "Average Auto Trip Replaced",
-        "Transit Dependency Adjustment Factors",
-        "Transit Dependency Adjustment Factors",
-        "Total VMT Reduction Potential",
-        "Percentage of deadhead miles",
-        "Average Occupancy per Vehicle",
-        "EV Charge Utilization Rates",
-        "Elasticity of induced VMT due to improved corridor speed"
+    source_table <-
+      source_citations %>%
+      select(-sheet) %>%
+      bind_rows(
+        data.frame(
+          Source = c(
+            "Imagine 2050 Community Designations",
+            "U.S. Census",
+            "Met Council Scenario Planning Tool ",
+            "GREET 2023",
+            "Metro Transit",
+            "CARB",
+            "Met Council Transit Experience and Satisfaction Survey",
+            "Mobility Hub Planning and Implementation Guidebook",
+            "CARB 2018 Clean Miles Standard",
+            "CARB 2018 Clean Miles Standard ",
+            "EV WATTS Charging Station Dashboard Q4-23",
+            "Barr, Lawrence C. Testing for the significance of induced highway travel demand in metropolitan areas"
+          ),
+          Description = c(
+            "Metropoitan Council Imagine 2050 Community Designations Data",
+            "Population Data",
+            "Vehicle Stock Data, VMT Data, Direct GHG Emissions from Transportation",
+            "Electricity Emissions",
+            "Average Auto Trip Replaced",
+            "Transit Dependency Adjustment Factors",
+            "Transit Dependency Adjustment Factors",
+            "Total VMT Reduction Potential",
+            "Percentage of deadhead miles",
+            "Average Occupancy per Vehicle",
+            "EV Charge Utilization Rates",
+            "Elasticity of induced VMT due to improved corridor speed"
+          )
+        )
       )
-    ))
+
+
+    datatable(
+      source_table,
+      escape = FALSE, # Enables rendering HTML
+      rownames = FALSE,
+      options = list(
+        dom = "ti", # ✅ Enable pagination, search bar, and info
+        scrollX = TRUE, # ✅ Allows horizontal scrolling
+        ordering = FALSE, # ✅ Disable sorting buttons on headers
+        pageLength = 50, # ✅ Show 10 rows per page by default
+        lengthMenu = c(5, 10, 25, 50, 100) # ✅ Allow users to select number of rows
+      )
+    )
   })
-  ################################# Reactions/Events#########################################
+  ################################# Reactions/Events #########################################
 
   observe({
     req(input$location)

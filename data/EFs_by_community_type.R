@@ -4,6 +4,7 @@ FleetDataCommunityType <- FleetData %>%
 
 
 DieselEFsCommunityType <- FleetDataCommunityType %>%
+  filter(mode == "PLDV") %>%
   filter(stock == "CIStock") %>% # Filter for CIStock (diesel) vehicles
   group_by(MappedCommunity, year) %>% # Group by community and year
   summarise(
@@ -38,6 +39,7 @@ DieselCommercialCommunityType <- FleetDataCommunityType %>%
 
 
 GasolineEFsCommunityType <- FleetDataCommunityType %>%
+  filter(mode == "PLDV") %>%
   filter(stock %in% c("SIStock", "HEVStock")) %>% # Filter for SIStock (gasoline) and HEVStock (hybrid) vehicles
   group_by(MappedCommunity, year) %>% # Group by community and year
   summarise(
