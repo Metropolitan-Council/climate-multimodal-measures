@@ -1,18 +1,9 @@
 AnnualVMTCommunityType <- AnnualVMT %>%
   left_join(CommunityTypeShape) %>% # Join with community type shape data
   group_by(year, MappedCommunity) %>% # Group by year and community type
-  summarise(vmt = sum(vmt)) # Summarise total VMT by community type
+  summarise(vmt = sum(vmt), .groups = "keep") # Summarise total VMT by community type
 
-population <- get_acs(
-  geography = "tract",
-  table = "B01003",
-  state = "MN",
-  geometry = TRUE,
-  cache_table = TRUE
-) %>%
-  sf::st_transform("+proj=longlat +datum=WGS84") # Get census tract population data for Minnesota
 
-population <- ms_simplify(population, keep = 0.05, keep_shapes = TRUE) # Simplify the geometry of census tracts
 
 CommunityType <- CommunityType %>%
   mutate(

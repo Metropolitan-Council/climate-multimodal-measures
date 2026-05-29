@@ -36,6 +36,7 @@ source(paste0(getwd(), "/data/community_type_mapping.R"))
 source(paste0(getwd(), "/data/EFs_by_community_type.R"))
 source(paste0(getwd(), "/data/stock_percentages.R"))
 source(paste0(getwd(), "/data/vmt_per_vehicle.R"))
+source(paste0(getwd(), "/data/population.R"))
 source(paste0(getwd(), "/data/vmt_per_capita.R"))
 
 added_functions <- c(
@@ -47,20 +48,6 @@ added_functions <- c(
 for (added_function in added_functions) {
   source(paste0(getwd(), "/R/", added_function, ".R"))
 }
-
-population <- get_acs(
-  geography = "tract",
-  table = "B01003",
-  state = "MN",
-  geometry = TRUE,
-  cache_table = TRUE
-) %>%
-  sf::st_transform("+proj=longlat +datum=WGS84")
-
-population <- ms_simplify(population,
-  keep = 0.05,
-  keep_shapes = TRUE
-)
 
 locations <- CommunityDesignation %>%
   st_transform(., crs = 4326)
