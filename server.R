@@ -1084,7 +1084,7 @@ function(input, output, session) {
     {
       input$trails_bike_location
       input$trails_bike_average_daily_traffic
-      input$trails_bike_one_way_facility_length
+      input$trails_bike_facility_length_range
       input$trails_bike_no_key_destinations_25
       input$trails_bike_no_key_destinations_50
     },
@@ -1099,15 +1099,11 @@ function(input, output, session) {
         paste("Selected Community Type:", community_type)
       })
 
-      # Use input values directly for mode shift factor lookup
-      traffic_range <- input$trails_bike_average_daily_traffic
-      facility_length_range <- input$trails_bike_facility_length_range
-
       # Calculate mode shift factor
       mode_shift_factor <- ModeShiftFactor %>%
         filter(
-          average_daily_traffic_vehicle_trips_per_day == traffic_range,
-          one_way_facility_length_miles_low == facility_length_range
+          average_daily_traffic_vehicle_trips_per_day == input$trails_bike_average_daily_traffic,
+          one_way_facility_length_miles_low == input$trails_bike_facility_length_range
         ) %>%
         pull(mode_shift_factor_m)
 
@@ -1175,7 +1171,6 @@ function(input, output, session) {
       paste("Selected Community Type:", community_type)
     })
   })
-
 
 
   observeEvent(
