@@ -47,28 +47,15 @@ pedestrian_facilities <- function(average_daily_traffic,
       pull(distance_avg)
   }
 
-  # Use case_when for traffic range
-  traffic_range <- case_when(
-    average_daily_traffic <= 12000 ~ "1 to 12,000",
-    average_daily_traffic <= 24000 ~ "12,001 to 24,000",
-    average_daily_traffic <= 30000 ~ "24,001 to 30,000",
-    TRUE ~ NA_character_
-  )
+  # Use AADT range string directly for ModeShiftFactor lookup; parse midpoint for formula
+  traffic_range <- average_daily_traffic
+  aadt_bounds <- as.numeric(gsub(",", "", str_extract_all(average_daily_traffic, "[\\d,]+")[[1]]))
+  average_daily_traffic <- mean(aadt_bounds)
 
-  # Use case_when for facility length range
-  facility_length_range <- case_when(
-    one_way_facility_length <= 1 ~ "1",
-    one_way_facility_length > 1 &
-      one_way_facility_length <= 2 ~ "1.01",
-    one_way_facility_length > 2 ~ "2",
-    TRUE ~ NA_character_
-  )
-
-  # Using dplyr to filter and pull the mode_shift_factor_m value
   mode_shift_factor <- ModeShiftFactor %>%
     filter(
       average_daily_traffic_vehicle_trips_per_day == traffic_range,
-      one_way_facility_length_miles_low == facility_length_range
+      one_way_facility_length_miles_low == one_way_facility_length
     ) %>%
     pull(mode_shift_factor_m)
 

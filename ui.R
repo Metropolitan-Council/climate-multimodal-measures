@@ -503,15 +503,16 @@ div(
                     "Project Lifetime (Years)",
                     value = 20
                   ),
-                  shinyWidgets::autonumericInput(
+                  selectInput(
                     "average_daily_traffic",
                     "Average Annual Daily Traffic (two-way) on road parallel or adjacent to facility",
-                    value = 6000,
-                    decimalPlaces = 0,
-                    align = "left",
-                    emptyInputBehavior = "zero"
+                    choices = unique(ModeShiftFactor$average_daily_traffic_vehicle_trips_per_day)
                   ),
-                  numericInput("one_way_facility_length", "Facility Length (Miles)", value = 1),
+                  selectInput(
+                    "one_way_facility_length",
+                    "Facility Length (Miles)",
+                    choices = unique(ModeShiftFactor$one_way_facility_length_miles_low)
+                  ),
                   numericInput(
                     "no_key_destinations_25",
                     "Number of Key Destinations within 0.25 mile",
@@ -567,18 +568,15 @@ div(
                     "Project Lifetime (Years)",
                     value = 20
                   ),
-                  shinyWidgets::autonumericInput(
+                  selectInput(
                     "trails_bike_average_daily_traffic",
-                    "Average Annual Daily traffic (two way) on road parallel or adjacent to facility",
-                    value = 6000,
-                    decimalPlaces = 0,
-                    align = "left",
-                    emptyInputBehavior = "zero"
+                    "Average Annual Daily Traffic (two-way) on road parallel or adjacent to facility",
+                    choices = unique(ModeShiftFactor$average_daily_traffic_vehicle_trips_per_day)
                   ),
-                  numericInput(
+                  selectInput(
                     "trails_bike_facility_length_range",
-                    "Facility Length",
-                    value = 1
+                    "Facility Length (Miles)",
+                    choices = unique(ModeShiftFactor$one_way_facility_length_miles_low)
                   ),
                   numericInput(
                     "trails_bike_no_key_destinations_25",

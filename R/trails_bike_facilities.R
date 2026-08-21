@@ -55,20 +55,10 @@ trails_bike_facilities <- function(average_daily_traffic,
     1
   )
 
-  traffic_range <- case_when(
-    average_daily_traffic <= 12000 ~ "1 to 12,000",
-    average_daily_traffic <= 24000 ~ "12,001 to 24,000",
-    average_daily_traffic <= 30000 ~ "24,001 to 30,000",
-    TRUE ~ NA_character_
-  )
-
-  facility_length_range <- case_when(
-    facility_length_range == 1 ~ "1",
-    facility_length_range > 1 &
-      facility_length_range <= 2 ~ "1.01",
-    facility_length_range > 2 ~ "2",
-    TRUE ~ NA_character_
-  )
+  # Use AADT range string directly for ModeShiftFactor lookup; parse midpoint for formula
+  traffic_range <- average_daily_traffic
+  aadt_bounds <- as.numeric(gsub(",", "", str_extract_all(average_daily_traffic, "[\\d,]+")[[1]]))
+  average_daily_traffic <- mean(aadt_bounds)
 
   mode_shift_factor <- ModeShiftFactor %>%
     filter(

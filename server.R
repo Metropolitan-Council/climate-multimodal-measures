@@ -1099,26 +1099,9 @@ function(input, output, session) {
         paste("Selected Community Type:", community_type)
       })
 
-      # Determine traffic and facility length ranges for mode shift factor calculation
-      average_daily_traffic <- input$trails_bike_average_daily_traffic
-      one_way_facility_length <- input$trails_bike_facility_length_range
-
-      # Use case_when for traffic range
-      traffic_range <- case_when(
-        average_daily_traffic <= 12000 ~ "1 to 12,000",
-        average_daily_traffic <= 24000 ~ "12,001 to 24,000",
-        average_daily_traffic <= 30000 ~ "24,001 to 30,000",
-        TRUE ~ NA_character_
-      )
-
-      # Use case_when for facility length range
-      facility_length_range <- case_when(
-        one_way_facility_length == 1 ~ "1",
-        one_way_facility_length > 1 &
-          one_way_facility_length <= 2 ~ "1.01",
-        one_way_facility_length > 2 ~ "2",
-        TRUE ~ NA_character_
-      )
+      # Use input values directly for mode shift factor lookup
+      traffic_range <- input$trails_bike_average_daily_traffic
+      facility_length_range <- input$trails_bike_facility_length_range
 
       # Calculate mode shift factor
       mode_shift_factor <- ModeShiftFactor %>%
@@ -1230,26 +1213,9 @@ function(input, output, session) {
         paste("Selected Community Type:", community_type)
       })
 
-      # Determine traffic and facility length ranges for mode shift factor calculation
-      average_daily_traffic <- input$average_daily_traffic
-      one_way_facility_length <- input$one_way_facility_length
-
-      # Use case_when for traffic range
-      traffic_range <- case_when(
-        average_daily_traffic <= 12000 ~ "1 to 12,000",
-        average_daily_traffic <= 24000 ~ "12,001 to 24,000",
-        average_daily_traffic <= 30000 ~ "24,001 to 30,000",
-        TRUE ~ NA_character_
-      )
-
-      # Use case_when for facility length range
-      facility_length_range <- case_when(
-        one_way_facility_length == 1 ~ "1",
-        one_way_facility_length > 1 &
-          one_way_facility_length <= 2 ~ "1.01",
-        one_way_facility_length > 2 ~ "2",
-        TRUE ~ NA_character_
-      )
+      # Use input values directly for mode shift factor lookup
+      traffic_range <- input$average_daily_traffic
+      facility_length_range <- input$one_way_facility_length
 
       # Calculate mode shift factor
       mode_shift_factor <- ModeShiftFactor %>%
