@@ -29,10 +29,10 @@ corridor_speed_improvements <- function(corridor_distance,
                                         project_lifetime) {
   service_days <- 260
   k1_speed_build <- 0.000019137 * avg_corridor_speed_build^2 - 0.0020660 * avg_corridor_speed_build + 0.088916
-  K1_speed_no_build <- 0.000019137 * avg_corridor_speed_no_build^2 - 0.0020660 * avg_corridor_speed_no_build + 0.088916
+  k1_speed_no_build <- 0.000019137 * avg_corridor_speed_no_build^2 - 0.0020660 * avg_corridor_speed_no_build + 0.088916
 
-  print(k1_speed_build)
-  print(K1_speed_no_build)
+  print(paste0("k1_speed_build: ", k1_speed_build))
+  print(paste0("k1_speed_no_build: ", k1_speed_no_build))
 
   speed_improvement_prct <- ((avg_corridor_speed_build - avg_corridor_speed_no_build) / avg_corridor_speed_no_build)
 
@@ -54,7 +54,7 @@ corridor_speed_improvements <- function(corridor_distance,
     # Calculate VMT displaced for the current year
     fuel_consumption_reduced[i] <- (corridor_distance *
       avg_annual_daily_traffic *
-      (K1_speed_no_build - k1_speed_build)) * service_days
+      (k1_speed_no_build - k1_speed_build)) * service_days
 
     # Calculate induced demand
     induced_demand[i] <- corridor_distance *

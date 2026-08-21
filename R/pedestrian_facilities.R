@@ -1,9 +1,9 @@
 #' Calculate Benefits of Pedestrian Facility Projects
 #'
-#' @param average_daily_traffic (numeric), Average annual daily traffic on road parallel or adjacent to facility
-#' @param one_way_facility_length (numeric), Length of the one-way facility in miles
-#' @param no_key_destinations_25 (numeric), Number of key destinations within 1/4 mile of the facility
-#' @param no_key_destinations_50 (numeric), Number of key destinations within 1/2 mile of the facility
+#' @param average_daily_traffic (character), AADT range from ModeShiftFactor table (e.g., "1 to 12,000")
+#' @param one_way_facility_length (character), Facility length range from ModeShiftFactor table (e.g., "Less than or equal to 1 mile")
+#' @param no_key_destinations_25 (character), Key destinations range from CreditForKeyDestinations table (e.g., "0 to 2")
+#' @param no_key_destinations_50 (character), Key destinations range from CreditForKeyDestinations table (e.g., "0 to 2")
 #' @param location (character), CTU name of the community where the project is located, used to assign community type
 #' @param project_start (numeric), Year the project starts
 #' @param project_lifetime (numeric), Lifetime of the project in years
@@ -16,10 +16,10 @@
 #'
 #' @examples
 #' pedestrian_facilities(
-#'   average_daily_traffic = 6000,
-#'   one_way_facility_length = 1,
-#'   no_key_destinations_25 = 3,
-#'   no_key_destinations_50 = 5,
+#'   average_daily_traffic = "1 to 12,000",
+#'   one_way_facility_length = "Less than or equal to 1 mile",
+#'   no_key_destinations_25 = "3",
+#'   no_key_destinations_50 = "4 to 6",
 #'   location = "Andover",
 #'   project_start = 2025,
 #'   project_lifetime = 20
@@ -47,53 +47,24 @@ pedestrian_facilities <- function(average_daily_traffic,
       pull(distance_avg)
   }
 
-  # Use case_when for traffic range
-  traffic_range <- case_when(
-    average_daily_traffic <= 12000 ~ "1 to 12,000",
-    average_daily_traffic <= 24000 ~ "12,001 to 24,000",
-    average_daily_traffic <= 30000 ~ "24,001 to 30,000",
-    TRUE ~ NA_character_
-  )
+  # Use AADT range string directly for ModeShiftFactor lookup; parse midpoint for formula
+  traffic_range <- average_daily_traffic
+  aadt_bounds <- as.numeric(gsub(",", "", str_extract_all(average_daily_traffic, "[\\d,]+")[[1]]))
+  average_daily_traffic <- mean(aadt_bounds)
 
-  # Use case_when for facility length range
-  facility_length_range <- case_when(
-    one_way_facility_length <= 1 ~ "1",
-    one_way_facility_length > 1 &
-      one_way_facility_length <= 2 ~ "1.01",
-    one_way_facility_length > 2 ~ "2",
-    TRUE ~ NA_character_
-  )
-
-  # Using dplyr to filter and pull the mode_shift_factor_m value
   mode_shift_factor <- ModeShiftFactor %>%
     filter(
       average_daily_traffic_vehicle_trips_per_day == traffic_range,
-      one_way_facility_length_miles_low == facility_length_range
+      one_way_facility_length_miles_low == one_way_facility_length
     ) %>%
     pull(mode_shift_factor_m)
 
-  # Determine the category for the number of key destinations
-  destination_category_25 <- case_when(
-    no_key_destinations_25 <= 2 ~ "0 to 2",
-    no_key_destinations_25 == 3 ~ "3",
-    no_key_destinations_25 >= 4 & no_key_destinations_25 <= 6 ~ "4 to 6",
-    no_key_destinations_25 >= 7 ~ "7 or more"
-  )
-
-  destination_category_50 <- case_when(
-    no_key_destinations_50 <= 2 ~ "0 to 2",
-    no_key_destinations_50 == 3 ~ "3",
-    no_key_destinations_50 >= 4 & no_key_destinations_50 <= 6 ~ "4 to 6",
-    no_key_destinations_50 >= 7 ~ "7 or more"
-  )
-
-  # Filter the CreditForKeyDestinations dataframe to get the relevant rows
   credit_25 <- CreditForKeyDestinations %>%
-    filter(number_of_key_destinations == destination_category_25) %>%
+    filter(number_of_key_destinations == no_key_destinations_25) %>%
     pull(credit_within_1_4_mile_of_facility_c)
 
   credit_50 <- CreditForKeyDestinations %>%
-    filter(number_of_key_destinations == destination_category_50) %>%
+    filter(number_of_key_destinations == no_key_destinations_50) %>%
     pull(credit_within_1_2_mile_of_facility_c)
 
   # Compare and assign the larger credit value
