@@ -1,9 +1,9 @@
 #' Calculate Benefits of Pedestrian Facility Projects
 #'
-#' @param average_daily_traffic (numeric), Average annual daily traffic on road parallel or adjacent to facility
-#' @param one_way_facility_length (numeric), Length of the one-way facility in miles
-#' @param no_key_destinations_25 (numeric), Number of key destinations within 1/4 mile of the facility
-#' @param no_key_destinations_50 (numeric), Number of key destinations within 1/2 mile of the facility
+#' @param average_daily_traffic (character), AADT range from ModeShiftFactor table (e.g., "1 to 12,000")
+#' @param one_way_facility_length (character), Facility length range from ModeShiftFactor table (e.g., "Less than or equal to 1 mile")
+#' @param no_key_destinations_25 (character), Key destinations range from CreditForKeyDestinations table (e.g., "0 to 2")
+#' @param no_key_destinations_50 (character), Key destinations range from CreditForKeyDestinations table (e.g., "0 to 2")
 #' @param location (character), CTU name of the community where the project is located, used to assign community type
 #' @param project_start (numeric), Year the project starts
 #' @param project_lifetime (numeric), Lifetime of the project in years
@@ -16,10 +16,10 @@
 #'
 #' @examples
 #' pedestrian_facilities(
-#'   average_daily_traffic = 6000,
-#'   one_way_facility_length = 1,
-#'   no_key_destinations_25 = 3,
-#'   no_key_destinations_50 = 5,
+#'   average_daily_traffic = "1 to 12,000",
+#'   one_way_facility_length = "Less than or equal to 1 mile",
+#'   no_key_destinations_25 = "3",
+#'   no_key_destinations_50 = "4 to 6",
 #'   location = "Andover",
 #'   project_start = 2025,
 #'   project_lifetime = 20
