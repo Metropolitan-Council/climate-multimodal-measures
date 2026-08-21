@@ -6,6 +6,7 @@ rsconnect::deployApp(
   server = "shinyapps.io",
   appName = "beta-climate-multimodal-measures",
   appTitle = "beta-climate-multimodal-measures",
+  packageRepositoryResolutionR = "lockfile",
   launch.browser = function(url) {
     message("Deployment completed: ", url)
   },
