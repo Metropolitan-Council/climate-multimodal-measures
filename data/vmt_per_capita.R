@@ -4,7 +4,6 @@ AnnualVMTCommunityType <- AnnualVMT %>%
   summarise(vmt = sum(vmt), .groups = "keep") # Summarise total VMT by community type
 
 
-
 CommunityType <- CommunityType %>%
   mutate(
     MappedCommunity = case_when(
