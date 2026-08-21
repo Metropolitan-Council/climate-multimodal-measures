@@ -513,15 +513,15 @@ div(
                     "Facility Length (Miles)",
                     choices = unique(ModeShiftFactor$one_way_facility_length_miles_low)
                   ),
-                  numericInput(
+                  selectInput(
                     "no_key_destinations_25",
                     "Number of Key Destinations within 0.25 mile",
-                    value = 1
+                    choices = unique(CreditForKeyDestinations$number_of_key_destinations)
                   ),
-                  numericInput(
+                  selectInput(
                     "no_key_destinations_50",
                     "Number of Key Destinations within 0.5 mile",
-                    value = 1
+                    choices = unique(CreditForKeyDestinations$number_of_key_destinations)
                   ),
                   numericInput("annual_use_days", "Facility Annual Days of Use", value = 214),
                   numericInput(
@@ -578,15 +578,15 @@ div(
                     "Facility Length (Miles)",
                     choices = unique(ModeShiftFactor$one_way_facility_length_miles_low)
                   ),
-                  numericInput(
+                  selectInput(
                     "trails_bike_no_key_destinations_25",
                     "Number of Key Destinations within 0.25 mile",
-                    value = 1
+                    choices = unique(CreditForKeyDestinations$number_of_key_destinations)
                   ),
-                  numericInput(
+                  selectInput(
                     "trails_bike_no_key_destinations_50",
                     "Number of Key Destinations within 0.5 mile",
-                    value = 1
+                    choices = unique(CreditForKeyDestinations$number_of_key_destinations)
                   ),
                   numericInput("trails_bike_days_open", "Facility Annual Days of Use", value = 214),
                   div(

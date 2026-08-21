@@ -1111,28 +1111,12 @@ function(input, output, session) {
         ) %>%
         pull(mode_shift_factor_m)
 
-      destination_category_50 <- case_when(
-        input$trails_bike_no_key_destinations_50 <= 2 ~ "0 to 2",
-        input$trails_bike_no_key_destinations_50 == 3 ~ "3",
-        input$trails_bike_no_key_destinations_50 >= 4 & input$trails_bike_no_key_destinations_50 <= 6 ~ "4 to 6",
-        input$trails_bike_no_key_destinations_50 >= 7 ~ "7 or more"
-      )
-
-      # Determine the category for the number of key destinations
-      destination_category_25 <- case_when(
-        input$trails_bike_no_key_destinations_25 <= 2 ~ "0 to 2",
-        input$trails_bike_no_key_destinations_25 == 3 ~ "3",
-        input$trails_bike_no_key_destinations_25 >= 4 & input$trails_bike_no_key_destinations_25 <= 6 ~ "4 to 6",
-        input$trails_bike_no_key_destinations_25 >= 7 ~ "7 or more"
-      )
-
-      # Filter the CreditForKeyDestinations dataframe to get the relevant rows
       credit_25 <- CreditForKeyDestinations %>%
-        filter(number_of_key_destinations == destination_category_25) %>%
+        filter(number_of_key_destinations == input$trails_bike_no_key_destinations_25) %>%
         pull(credit_within_1_4_mile_of_facility_c)
 
       credit_50 <- CreditForKeyDestinations %>%
-        filter(number_of_key_destinations == destination_category_50) %>%
+        filter(number_of_key_destinations == input$trails_bike_no_key_destinations_50) %>%
         pull(credit_within_1_2_mile_of_facility_c)
 
       # Compare and assign the larger credit value
@@ -1225,24 +1209,16 @@ function(input, output, session) {
         ) %>%
         pull(mode_shift_factor_m)
 
-      # Determine the number of key destinations
-      if (input$no_key_destinations_25 > input$no_key_destinations_50) {
-        no_key_destinations <- input$no_key_destinations_25
-      } else {
-        no_key_destinations <- input$no_key_destinations_50
-      }
-
       # Calculate key destination credit
-      key_destination_credit <- CreditForKeyDestinations %>%
-        filter(
-          case_when(
-            no_key_destinations <= 2 ~ number_of_key_destinations == "0 to 2",
-            no_key_destinations == 3 ~ number_of_key_destinations == "3",
-            no_key_destinations >= 4 & no_key_destinations <= 6 ~ number_of_key_destinations == "4 to 6",
-            no_key_destinations >= 7 ~ number_of_key_destinations == "7 or more"
-          )
-        ) %>%
+      credit_25 <- CreditForKeyDestinations %>%
+        filter(number_of_key_destinations == input$no_key_destinations_25) %>%
+        pull(credit_within_1_4_mile_of_facility_c)
+
+      credit_50 <- CreditForKeyDestinations %>%
+        filter(number_of_key_destinations == input$no_key_destinations_50) %>%
         pull(credit_within_1_2_mile_of_facility_c)
+
+      key_destination_credit <- max(credit_25, credit_50, na.rm = TRUE)
 
       # Update the text output for mode shift factor
       output$mode_shift_factor_pedestrianFacility <- renderText({

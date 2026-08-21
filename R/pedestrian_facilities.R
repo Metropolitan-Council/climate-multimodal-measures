@@ -59,28 +59,12 @@ pedestrian_facilities <- function(average_daily_traffic,
     ) %>%
     pull(mode_shift_factor_m)
 
-  # Determine the category for the number of key destinations
-  destination_category_25 <- case_when(
-    no_key_destinations_25 <= 2 ~ "0 to 2",
-    no_key_destinations_25 == 3 ~ "3",
-    no_key_destinations_25 >= 4 & no_key_destinations_25 <= 6 ~ "4 to 6",
-    no_key_destinations_25 >= 7 ~ "7 or more"
-  )
-
-  destination_category_50 <- case_when(
-    no_key_destinations_50 <= 2 ~ "0 to 2",
-    no_key_destinations_50 == 3 ~ "3",
-    no_key_destinations_50 >= 4 & no_key_destinations_50 <= 6 ~ "4 to 6",
-    no_key_destinations_50 >= 7 ~ "7 or more"
-  )
-
-  # Filter the CreditForKeyDestinations dataframe to get the relevant rows
   credit_25 <- CreditForKeyDestinations %>%
-    filter(number_of_key_destinations == destination_category_25) %>%
+    filter(number_of_key_destinations == no_key_destinations_25) %>%
     pull(credit_within_1_4_mile_of_facility_c)
 
   credit_50 <- CreditForKeyDestinations %>%
-    filter(number_of_key_destinations == destination_category_50) %>%
+    filter(number_of_key_destinations == no_key_destinations_50) %>%
     pull(credit_within_1_2_mile_of_facility_c)
 
   # Compare and assign the larger credit value
