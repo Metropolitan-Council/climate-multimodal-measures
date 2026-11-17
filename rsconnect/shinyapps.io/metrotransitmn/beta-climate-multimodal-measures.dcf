@@ -5,7 +5,7 @@ account: metrotransitmn
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 15353767
-bundleId: 12446265
+bundleId: 12835366
 url: https://metrotransitmn.shinyapps.io/beta-climate-multimodal-measures/
 version: 1
 asMultiple: FALSE
