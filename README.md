@@ -18,7 +18,7 @@ Demand Management (Employee Commute and Shared Mobility).
 
 <!-- Further details and study conclusions available on [metrocouncil.org](https://metrocouncil.org/Transportation/Performance/Travel-Behavior-Inventory/Data/Maximum-Mode-Shift.aspx). -->
 
-> \[!CAUTION\]  
+> \[!CAUTION\]\
 > This repository is contains materials for the interactive R Shiny app
 > and does not include all project deliverables. Please [contact
 > us](#contacts) for more information.
@@ -45,6 +45,10 @@ Presentations and reports
 
 All data needed to run the app are included in the repository or
 imported directly using R.
+
+The MPO boundary is read from the local shapefile in
+`data/raw/Metropolitan_Planning_Organization_Area_-_2020/` using `sf`;
+no boundary download is needed at startup.
 
 #### Running the shiny app
 
@@ -127,7 +131,7 @@ compensated approximately \$300,000 under contract 22P040.
 [Metropolitan Council](https://metrocouncil.org/)
 
 - Primary contact: Tony Fischer
-  [email](mailto:tony.fischer@metc.state.mn.us)  
+  [email](mailto:tony.fischer@metc.state.mn.us)\
 - Liz Roten [email](mailto:liz.roten@metc.state.mn.us) @eroten
 
 <!-- ICF Inc. -->

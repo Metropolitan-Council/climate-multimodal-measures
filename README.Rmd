@@ -83,6 +83,8 @@ Presentations and reports
 
 All data needed to run the app are included in the repository or imported directly using R. 
 
+The MPO boundary is read from the local shapefile in `data/raw/Metropolitan_Planning_Organization_Area_-_2020/` using `sf`; no boundary download is needed at startup.
+
 #### Running the shiny app
 
 1. Clone the repository and open the `.Rproj` file in RStudio
