@@ -780,7 +780,7 @@ function(input, output, session) {
 
   foundational.map <- shiny::reactive({
     leaflet() %>%
-      addTiles(urlTemplate = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png") %>%
+      addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       # Add population layer
       addPolygons(
         data = population,
